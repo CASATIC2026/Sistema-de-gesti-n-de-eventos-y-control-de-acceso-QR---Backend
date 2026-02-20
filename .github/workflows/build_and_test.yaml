@@ -2,9 +2,9 @@ name: .NET Core Desktop
 
 on:
   push:
-    branches: [ "backend" ]
+    branches: [ "tester" ]
   pull_request:
-    branches: [ "backend" ]
+    branches: [ "tester" ]
 
 permissions:
   contents: read
