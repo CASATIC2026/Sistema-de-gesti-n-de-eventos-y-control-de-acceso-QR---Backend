@@ -5,7 +5,7 @@ namespace EventAccessControl.API.Models
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string? Description { get; set; }
-        public DateTime EventDate { get; set; }
+        public DateOnly EventDate { get; set; }
         public int MaxCapacity { get; set; }
         public string? Location { get; set; }
         public bool IsActive { get; set; } = true;

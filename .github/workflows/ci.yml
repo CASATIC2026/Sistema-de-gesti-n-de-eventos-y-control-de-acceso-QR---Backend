@@ -1,0 +1,65 @@
+name: CI-CD EventAccessControl API
+
+on:
+  push:
+    branches: [ "main", "develop" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: eventaccesscontrol_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U postgres"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    env:
+      ConnectionStrings__DefaultConnection: Host=localhost;Port=5432;Database=eventaccesscontrol_test;Username=postgres;Password=postgres
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build project
+        run: dotnet build --no-restore --configuration Release
+
+      - name: Install EF Tools
+        run: dotnet tool install --global dotnet-ef
+
+      - name: Apply EF Core migrations
+        run: |
+          dotnet ef database update \
+          --project EventAccessControl.API \
+          --startup-project EventAccessControl.API
+
+      - name: Run tests
+        run: dotnet test --no-build --verbosity normal
+
+      - name: Publish API
+        run: dotnet publish EventAccessControl.API -c Release -o publish
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: api-build
+          path: publish

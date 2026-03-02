@@ -11,7 +11,7 @@ namespace EventAccessControl.API.DTOs
         public string? Description { get; set; }
 
         [Required]
-        public DateTime EventDate { get; set; }
+        public DateOnly EventDate { get; set; }
 
         [Required]
         [Range(1, 100000)]
