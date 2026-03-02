@@ -5,19 +5,33 @@ using EventAccessControl.API.Models;
 using EventAccessControl.API.DTOs;
 
 namespace EventAccessControl.API.Controllers
-{
+{   
+    /// <summary>
+    /// Controlador para gestionar eventos, incluyendo creación, consulta, actualización y desactivación lógica.
+    /// </summary>
     [ApiController]
     [Route("api/[controller]")]
     public class EventController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
 
+        /// <summary>
+        /// Constructor que inyecta el contexto de la base de datos para acceder a los eventos.
+        /// </summary>
+        /// <param name="context"></param>
         public EventController(ApplicationDbContext context)
         {
             _context = context;
         }
 
         // POST: api/event
+        /// <summary>
+        /// Crea un nuevo evento con los datos proporcionados en el DTO. La fecha del evento debe ser futura.
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <returns></returns>
+        /// <response code="201">Evento creado exitosamente.</response>
+        /// <response code="400">Datos inválidos o fecha del evento no es futura.</response>
         [HttpPost]
         public async Task<IActionResult> CreateEvent(CreateEventDto dto)
         {
@@ -42,6 +56,12 @@ namespace EventAccessControl.API.Controllers
         }
 
         // GET: api/event
+        /// <summary>
+        /// Obtiene una lista de todos los eventos, ordenados por fecha. Incluye eventos activos e inactivos.
+        /// </summary>
+        /// <returns></returns>
+        /// <response code="200">Lista de eventos obtenida exitosamente.</response>
+        /// <response code="500">Error interno del servidor.</response>
         [HttpGet]
         public async Task<IActionResult> GetAllEvents()
         {
@@ -53,6 +73,13 @@ namespace EventAccessControl.API.Controllers
         }
 
         // GET: api/event/{id}
+        /// <summary>
+        /// Obtiene los detalles de un evento específico por su ID, incluyendo la lista de tickets asociados. Retorna 404 si el evento no existe.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <response code="200">Evento encontrado y detalles retornados exitosamente.</response>
+        /// <response code="404">Evento no encontrado.</response>
         [HttpGet("{id}")]
         public async Task<IActionResult> GetEventById(Guid id)
         {
@@ -67,6 +94,14 @@ namespace EventAccessControl.API.Controllers
         }
 
         // PUT: api/event/{id}
+        /// <summary>
+        /// Actualiza los detalles de un evento existente. Permite modificar el nombre, descripción, fecha, capacidad máxima, ubicación y estado activo. Retorna 404 si el evento no existe.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="dto"></param>
+        /// <returns></returns>
+        /// <response code="204">Evento actualizado exitosamente.</response>
+        /// <response code="400">Datos inválidos.</response>
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateEvent(Guid id, [FromBody] UpdateEventDto dto)
         {
@@ -91,6 +126,13 @@ namespace EventAccessControl.API.Controllers
         }
 
         // DELETE lógico (desactivar)
+        /// <summary>
+        /// Desactiva un evento estableciendo su propiedad IsActive a false. El evento no se elimina físicamente de la base de datos. Retorna 404 si el evento no existe.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <response code="204">Evento desactivado exitosamente.</response>
+        /// <response code="404">Evento no encontrado.</response>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeactivateEvent(Guid id)
         {

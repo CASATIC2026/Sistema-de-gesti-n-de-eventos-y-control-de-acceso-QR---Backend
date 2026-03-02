@@ -7,19 +7,36 @@ using System.Security.Cryptography;
 using System.Text;
 
 namespace EventAccessControl.API.Controllers
-{
+{   
+    /// <summary>
+    /// Controlador para gestionar tickets, incluyendo registro de tickets para eventos específicos y consulta de tickets por evento. Implementa validaciones de aforo y registro 
+    /// duplicado.
+    /// </summary>
     [ApiController]
     [Route("api/[controller]")]
     public class TicketController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
 
+        /// <summary>
+        /// Constructor que inyecta el contexto de la base de datos para acceder a los tickets y eventos.
+        /// </summary>
+        /// <param name="context"></param>
         public TicketController(ApplicationDbContext context)
         {
             _context = context;
         }
 
         // POST: api/ticket/register
+        /// <summary>
+        /// Registra un nuevo ticket para un evento específico utilizando el correo electrónico del usuario. Valida que el evento exista, esté activo, no haya ocurrido, y que no 
+        /// se exceda el aforo. También evita registros duplicados por correo electrónico. Retorna un código único para el ticket registrado.
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <returns></returns>
+        /// <response code="200">Registro exitoso y código del ticket retornado.</response>
+        /// <response code="400">Datos inválidos, evento no activo, evento ya ocurrido, aforo completo o correo ya registrado.</response>
+        /// <response code="404">Evento no encontrado.</response>
         [HttpPost("register")]
         public async Task<IActionResult> RegisterTicket(RegisterTicketDto dto)
         {
@@ -78,6 +95,15 @@ namespace EventAccessControl.API.Controllers
         }
 
         // GET: api/ticket/event/{eventId}
+        /// <summary>
+        /// Obtiene la lista de tickets registrados para un evento específico, incluyendo el correo del usuario, estado de uso y fecha de uso. Retorna una lista vacía si no hay 
+        /// tickets registrados o si el evento no existe.
+        /// </summary>
+        /// <param name="eventId"></param>
+        /// <returns></returns>
+        /// <response code="200">Lista de tickets obtenida exitosamente (puede estar vacía).</response>
+        /// <response code="404">Evento no encontrado.</response>
+        /// <response code="500">Error interno del servidor.</response>
         [HttpGet("event/{eventId}")]
         public async Task<IActionResult> GetTicketsByEvent(Guid eventId)
         {

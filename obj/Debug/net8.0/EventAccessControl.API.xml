@@ -1,0 +1,252 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>EventAccessControl.API</name>
+    </assembly>
+    <members>
+        <member name="T:EventAccessControl.API.Controllers.EventController">
+            <summary>
+            Controlador para gestionar eventos, incluyendo creación, consulta, actualización y desactivación lógica.
+            </summary>
+        </member>
+        <member name="M:EventAccessControl.API.Controllers.EventController.#ctor(EventAccessControl.API.Data.ApplicationDbContext)">
+            <summary>
+            Constructor que inyecta el contexto de la base de datos para acceder a los eventos.
+            </summary>
+            <param name="context"></param>
+        </member>
+        <member name="M:EventAccessControl.API.Controllers.EventController.CreateEvent(EventAccessControl.API.DTOs.CreateEventDto)">
+            <summary>
+            Crea un nuevo evento con los datos proporcionados en el DTO. La fecha del evento debe ser futura.
+            </summary>
+            <param name="dto"></param>
+            <returns></returns>
+            <response code="201">Evento creado exitosamente.</response>
+            <response code="400">Datos inválidos o fecha del evento no es futura.</response>
+        </member>
+        <member name="M:EventAccessControl.API.Controllers.EventController.GetAllEvents">
+            <summary>
+            Obtiene una lista de todos los eventos, ordenados por fecha. Incluye eventos activos e inactivos.
+            </summary>
+            <returns></returns>
+            <response code="200">Lista de eventos obtenida exitosamente.</response>
+            <response code="500">Error interno del servidor.</response>
+        </member>
+        <member name="M:EventAccessControl.API.Controllers.EventController.GetEventById(System.Guid)">
+            <summary>
+            Obtiene los detalles de un evento específico por su ID, incluyendo la lista de tickets asociados. Retorna 404 si el evento no existe.
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+            <response code="200">Evento encontrado y detalles retornados exitosamente.</response>
+            <response code="404">Evento no encontrado.</response>
+        </member>
+        <member name="M:EventAccessControl.API.Controllers.EventController.UpdateEvent(System.Guid,EventAccessControl.API.DTOs.UpdateEventDto)">
+            <summary>
+            Actualiza los detalles de un evento existente. Permite modificar el nombre, descripción, fecha, capacidad máxima, ubicación y estado activo. Retorna 404 si el evento no existe.
+            </summary>
+            <param name="id"></param>
+            <param name="dto"></param>
+            <returns></returns>
+            <response code="204">Evento actualizado exitosamente.</response>
+            <response code="400">Datos inválidos.</response>
+        </member>
+        <member name="M:EventAccessControl.API.Controllers.EventController.DeactivateEvent(System.Guid)">
+            <summary>
+            Desactiva un evento estableciendo su propiedad IsActive a false. El evento no se elimina físicamente de la base de datos. Retorna 404 si el evento no existe.
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+            <response code="204">Evento desactivado exitosamente.</response>
+            <response code="404">Evento no encontrado.</response>
+        </member>
+        <member name="T:EventAccessControl.API.Controllers.TicketController">
+            <summary>
+            Controlador para gestionar tickets, incluyendo registro de tickets para eventos específicos y consulta de tickets por evento. Implementa validaciones de aforo y registro 
+            duplicado.
+            </summary>
+        </member>
+        <member name="M:EventAccessControl.API.Controllers.TicketController.#ctor(EventAccessControl.API.Data.ApplicationDbContext)">
+            <summary>
+            Constructor que inyecta el contexto de la base de datos para acceder a los tickets y eventos.
+            </summary>
+            <param name="context"></param>
+        </member>
+        <member name="M:EventAccessControl.API.Controllers.TicketController.RegisterTicket(EventAccessControl.API.DTOs.RegisterTicketDto)">
+            <summary>
+            Registra un nuevo ticket para un evento específico utilizando el correo electrónico del usuario. Valida que el evento exista, esté activo, no haya ocurrido, y que no 
+            se exceda el aforo. También evita registros duplicados por correo electrónico. Retorna un código único para el ticket registrado.
+            </summary>
+            <param name="dto"></param>
+            <returns></returns>
+            <response code="200">Registro exitoso y código del ticket retornado.</response>
+            <response code="400">Datos inválidos, evento no activo, evento ya ocurrido, aforo completo o correo ya registrado.</response>
+            <response code="404">Evento no encontrado.</response>
+        </member>
+        <member name="M:EventAccessControl.API.Controllers.TicketController.GetTicketsByEvent(System.Guid)">
+            <summary>
+            Obtiene la lista de tickets registrados para un evento específico, incluyendo el correo del usuario, estado de uso y fecha de uso. Retorna una lista vacía si no hay 
+            tickets registrados o si el evento no existe.
+            </summary>
+            <param name="eventId"></param>
+            <returns></returns>
+            <response code="200">Lista de tickets obtenida exitosamente (puede estar vacía).</response>
+            <response code="404">Evento no encontrado.</response>
+            <response code="500">Error interno del servidor.</response>
+        </member>
+        <member name="T:EventAccessControl.API.Migrations.InitialCreate">
+            <inheritdoc />
+        </member>
+        <member name="M:EventAccessControl.API.Migrations.InitialCreate.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:EventAccessControl.API.Migrations.InitialCreate.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:EventAccessControl.API.Migrations.InitialCreate.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:EventAccessControl.API.Migrations.ChangeEventDateToDateOnly">
+            <inheritdoc />
+        </member>
+        <member name="M:EventAccessControl.API.Migrations.ChangeEventDateToDateOnly.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:EventAccessControl.API.Migrations.ChangeEventDateToDateOnly.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:EventAccessControl.API.Migrations.ChangeEventDateToDateOnly.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:EventAccessControl.API.Models.Event">
+            <summary>
+            Modelo que representa un evento en el sistema. Contiene información básica del evento como nombre, descripción, fecha, capacidad máxima, ubicación y estado de actividad. 
+            Además, incluye una colección de tickets asociados al evento. Este modelo se utiliza para gestionar los eventos disponibles
+            </summary>
+        </member>
+        <member name="P:EventAccessControl.API.Models.Event.Id">
+            <summary>
+            Identificador único del evento, generado automáticamente. Se utiliza para referenciar el evento en operaciones de consulta, registro de tickets y validación de acceso.
+            </summary>
+        </member>
+        <member name="P:EventAccessControl.API.Models.Event.Description">
+            <summary>
+            Descripción opcional del evento. Se utiliza para proporcionar información adicional sobre el evento, como detalles del programa, ponentes, actividades, etc. No es un 
+            campo obligatorio, pero puede ser útil para los usuarios al momento de decidir registrarse en un evento.
+            </summary>
+        </member>
+        <member name="P:EventAccessControl.API.Models.Event.EventDate">
+            <summary>
+            Fecha del evento, representada como DateOnly para almacenar solo la parte de la fecha sin la hora. Se utiliza para programar el evento y para validar que los tickets se 
+            registren para eventos futuros. Es un campo obligatorio y debe ser una fecha futura al momento de la creación del evento. Se utiliza para mostrar la fecha del evento a 
+            los usuarios y para realizar validaciones relacionadas con la fecha del evento, como evitar registros para eventos que ya ocurrieron.
+            </summary>
+        </member>
+        <member name="P:EventAccessControl.API.Models.Event.MaxCapacity">
+            <summary>
+            Capacidad máxima de asistentes para el evento. Se utiliza para controlar el aforo del evento y para validar que no se registren más tickets de los permitidos. Es un campo 
+            obligatorio y debe ser un número positivo. Se utiliza para mostrar la capacidad del evento a los usuarios y para realizar validaciones relacionadas con el aforo, como 
+            evitar registros cuando se alcanza la capacidad máxima del evento.
+            También se utiliza para mostrar el número de tickets disponibles en tiempo real a medida que los usuarios se registran para el evento, restando el número de tickets 
+            registrados del valor de MaxCapacity para mostrar la cantidad de espacios restantes.
+            </summary>
+        </member>
+        <member name="P:EventAccessControl.API.Models.Event.Location">
+            <summary>
+            Ubicación opcional del evento. Se utiliza para proporcionar información sobre dónde se llevará a cabo el evento, como la dirección, el nombre del lugar, o cualquier 
+            detalle relevante sobre la ubicación. No es un campo obligatorio, pero puede ser útil para los usuarios al momento de decidir registrarse en un evento, especialmente 
+            si el evento es presencial. Se utiliza para mostrar la ubicación del evento a los usuarios y para proporcionar información adicional sobre el evento en la interfaz 
+            de usuario.
+            </summary>
+        </member>
+        <member name="P:EventAccessControl.API.Models.Event.IsActive">
+            <summary>
+            Indica si el evento está activo o no. Un evento activo es aquel que está disponible para que los usuarios se registren y asistan. Un evento inactivo es aquel que ha sido 
+            desactivado, lo que significa que los usuarios no pueden registrarse ni asistir al evento. Este campo se utiliza para controlar la disponibilidad del evento y para 
+            realizar validaciones relacionadas con el estado del evento, como evitar registros para eventos inactivos.
+            También se utiliza para mostrar el estado del evento a los usuarios, permitiendo que los usuarios vean claramente si un evento está activo o inactivo en la interfaz de 
+            usuario. Además, se utiliza para filtrar eventos activos e inactivos en las consultas a la base de datos, permitiendo que los usuarios solo vean eventos activos al buscar 
+            eventos disponibles para registrarse.
+            La desactivación de un evento no elimina los registros de tickets asociados, pero impide que se registren nuevos tickets para ese evento y que los usuarios intenten 
+            ingresar al evento utilizando tickets ya registrados. Esto permite mantener un historial completo de los eventos y sus tickets, incluso si el evento ya no está activo.
+            La activación o desactivación de un evento se puede realizar a través de una actualización del evento utilizando el endpoint de actualización, lo que permite a los 
+            administradores controlar la disponibilidad de los eventos de manera flexible según las necesidades del sistema.
+            </summary>
+        </member>
+        <member name="P:EventAccessControl.API.Models.Event.CreatedAt">
+            <summary>
+            Fecha y hora en que el evento fue creado. Se establece automáticamente al momento de la creación del evento. Se utiliza para llevar un registro de cuándo se creó el 
+            evento y para auditorías posteriores.
+            </summary>
+        </member>
+        <member name="P:EventAccessControl.API.Models.Event.Tickets">
+            <summary>
+            Colección de tickets asociados al evento. Se utiliza para establecer la relación entre el evento y los tickets registrados para ese evento. Esta colección se carga de 
+            manera explícita mediante Include en las consultas a la base de datos cuando se necesita acceder a los tickets de un evento específico, como en el proceso de registro 
+            de tickets o en la consulta de tickets por evento. No es un campo obligatorio, ya que un evento puede no tener tickets registrados, pero se utiliza para facilitar el 
+            acceso a los tickets relacionados con el evento cuando sea necesario.
+            La colección de tickets se utiliza para validar el aforo del evento al momento de registrar un nuevo ticket, contando el número de tickets registrados para el evento 
+            y comparándolo con la capacidad máxima del evento. También se utiliza para mostrar la lista de tickets registrados para un evento específico, incluyendo información 
+            como el correo del usuario, estado de uso y fecha de uso de cada ticket.
+            La relación entre el evento y los tickets es de uno a muchos, ya que un evento puede tener múltiples tickets registrados, pero cada ticket solo puede estar asociado 
+            a un evento específico. Esta relación se establece mediante la propiedad EventId en el modelo Ticket, que actúa como clave foránea que referencia la entidad Event. 
+            La colección de tickets en el modelo Event permite acceder fácilmente a los tickets relacionados con ese evento cuando sea necesario, facilitando las operaciones de 
+            consulta y validación relacionadas con los tickets de un evento específico.
+            </summary>
+        </member>
+        <member name="T:EventAccessControl.API.Models.Ticket">
+            <summary>
+            Modelo que representa un ticket registrado para un evento específico, asociado a un correo electrónico de usuario. Incluye información sobre el estado de uso del ticket, 
+            fecha de uso, y una referencia al evento al que pertenece. Implementa control de concurrencia optimista mediante RowVersion para evitar registros duplicados y garantizar 
+            la integridad de los datos en escenarios de alta concurrencia.
+            </summary>
+        </member>
+        <member name="P:EventAccessControl.API.Models.Ticket.Id">
+            <summary>
+            Identificador único del ticket, generado automáticamente. Se utiliza para referenciar el ticket en operaciones de consulta y validación.
+            </summary>
+        </member>
+        <member name="P:EventAccessControl.API.Models.Ticket.EventId">
+            <summary>
+            Identificador del evento al que pertenece el ticket. Es una clave foránea que referencia la entidad Event. Es obligatorio para asociar el ticket a un evento específico.
+            </summary>
+        </member>
+        <member name="P:EventAccessControl.API.Models.Ticket.UserEmail">
+            <summary>
+            Correo electrónico del usuario para el cual se registra el ticket. Es obligatorio y se utiliza para validar registros duplicados y para identificar al usuario asociado 
+            al ticket.
+            </summary>
+        </member>
+        <member name="P:EventAccessControl.API.Models.Ticket.TokenHash">
+            <summary>
+            Hash del código único generado para el ticket. Se utiliza para validar la autenticidad del ticket durante los intentos de ingreso al evento. Es un valor que se genera al 
+            momento de registrar el ticket y se almacena en la base de datos para su posterior comparación durante
+            </summary>
+        </member>
+        <member name="P:EventAccessControl.API.Models.Ticket.IsUsed">
+            <summary>
+            Indica si el ticket ha sido utilizado para ingresar al evento. Es un valor booleano que se establece en true cuando el ticket es validado exitosamente en un intento de 
+            ingreso. Se utiliza para evitar el uso múltiple de un mismo ticket.
+            </summary>
+        </member>
+        <member name="P:EventAccessControl.API.Models.Ticket.UsedAt">
+            <summary>
+            Fecha y hora en que el ticket fue utilizado para ingresar al evento. Es un valor nullable que se establece cuando IsUsed es true. Se utiliza para llevar un registro de 
+            cuándo se utilizó el ticket y para auditorías posteriores.
+            </summary>
+        </member>
+        <member name="P:EventAccessControl.API.Models.Ticket.CreatedAt">
+            <summary>
+            Fecha y hora en que el ticket fue creado. Se establece automáticamente al momento de la creación del ticket. Se utiliza para llevar un registro de cuándo se registró el 
+            ticket y para auditorías posteriores.
+            </summary>
+        </member>
+        <member name="P:EventAccessControl.API.Models.Ticket.RowVersion">
+            <summary>
+            Campo de control de concurrencia optimista que se utiliza para evitar registros duplicados y garantizar la integridad de los datos en escenarios de alta concurrencia. 
+            Se actualiza automáticamente por Entity Framework cada vez que se modifica el registro del ticket. Si dos solicitudes intentan registrar un ticket para el mismo evento y 
+            correo electrónico al mismo tiempo, solo una de ellas podrá completar la operación exitosamente, mientras que la otra recibirá un error de concurrencia.
+            </summary>
+        </member>
+    </members>
+</doc>

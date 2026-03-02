@@ -106,3 +106,5 @@ C:\Users\GrupoA\Desktop\EventAccessControl.API\obj\Debug\net8.0\refint\EventAcce
 C:\Users\GrupoA\Desktop\EventAccessControl.API\obj\Debug\net8.0\EventAccessControl.API.pdb
 C:\Users\GrupoA\Desktop\EventAccessControl.API\obj\Debug\net8.0\EventAccessControl.API.genruntimeconfig.cache
 C:\Users\GrupoA\Desktop\EventAccessControl.API\obj\Debug\net8.0\ref\EventAccessControl.API.dll
+C:\Users\GrupoA\Desktop\EventAccessControl.API\bin\Debug\net8.0\EventAccessControl.API.xml
+C:\Users\GrupoA\Desktop\EventAccessControl.API\obj\Debug\net8.0\EventAccessControl.API.xml
