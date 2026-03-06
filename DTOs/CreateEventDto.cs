@@ -31,7 +31,7 @@ namespace EventAccessControl.API.DTOs
         /// Capacidad máxima de asistentes al evento, que es un campo obligatorio para establecer un límite en la cantidad de personas que pueden asistir al evento. 
         /// </summary>
         [Required]
-        [Range(1, 100000)]
+        [Range(1, 100000, ErrorMessage = "La capacidad debe estar entre 1 y 100000.")]
         public int MaxCapacity { get; set; }
 
         /// <summary>

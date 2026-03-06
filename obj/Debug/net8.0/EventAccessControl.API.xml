@@ -94,6 +94,102 @@
             <response code="404">Evento no encontrado.</response>
             <response code="500">Error interno del servidor.</response>
         </member>
+        <member name="T:EventAccessControl.API.DTOs.CreateEventDto">
+            <summary>
+            DTO utilizado para la creación de un nuevo evento. Este modelo se utiliza para recibir los datos necesarios para crear un evento en el sistema.
+            </summary>
+        </member>
+        <member name="P:EventAccessControl.API.DTOs.CreateEventDto.Name">
+            <summary>
+            Nombre del evento, que es un campo obligatorio para identificar el evento.
+            </summary>
+        </member>
+        <member name="P:EventAccessControl.API.DTOs.CreateEventDto.Description">
+            <summary>
+            Descripción opcional del evento, que puede incluir detalles adicionales sobre el evento, como el tema, los oradores, o cualquier otra información relevante. 
+            Este campo es opcional y tiene una longitud máxima de 1000 caracteres para permitir una descripción detallada sin exceder un límite razonable.
+            </summary>
+        </member>
+        <member name="P:EventAccessControl.API.DTOs.CreateEventDto.EventDate">
+            <summary>
+            Fecha del evento, que es un campo obligatorio para establecer cuándo se llevará a cabo el evento. Se utiliza el tipo DateOnly para representar solo la fecha sin la hora, 
+            ya que no es necesario incluir información de hora para este tipo de eventos.
+            </summary>
+        </member>
+        <member name="P:EventAccessControl.API.DTOs.CreateEventDto.MaxCapacity">
+            <summary>
+            Capacidad máxima de asistentes al evento, que es un campo obligatorio para establecer un límite en la cantidad de personas que pueden asistir al evento. 
+            </summary>
+        </member>
+        <member name="P:EventAccessControl.API.DTOs.CreateEventDto.Location">
+            <summary>
+            Ubicación del evento, que es un campo opcional para proporcionar información sobre dónde se llevará a cabo el evento. 
+            Este campo puede incluir detalles como la dirección, el nombre del lugar, o cualquier otra información relevante sobre la ubicación del evento.
+            </summary>
+        </member>
+        <member name="T:EventAccessControl.API.DTOs.RegisterTicketDto">
+            <summary>
+            DTO utilizado para registrar un nuevo ticket para un evento específico. Este modelo se utiliza para recibir los datos necesarios para crear un ticket en el sistema, 
+            incluyendo el identificador del evento al que se asociará el ticket y el correo electrónico del usuario que posee el ticket. El campo EventId es obligatorio para establecer 
+            la relación entre el ticket y el evento correspondiente, mientras que el campo UserEmail es obligatorio para identificar al usuario que posee el ticket y para enviar 
+            notificaciones relacionadas con el evento. Este DTO es esencial para la funcionalidad de registro de tickets en el sistema de control de acceso a eventos.
+            </summary>
+        </member>
+        <member name="P:EventAccessControl.API.DTOs.RegisterTicketDto.EventId">
+            <summary>
+            Identificador del evento al que se asociará el ticket. Es un campo obligatorio que se utiliza para establecer la relación entre el ticket y el evento correspondiente, 
+            lo que permite realizar consultas relacionadas con los tickets de un evento específico y para gestionar la asignación de tickets a eventos en el sistema.
+            </summary>
+        </member>
+        <member name="P:EventAccessControl.API.DTOs.RegisterTicketDto.UserEmail">
+            <summary>
+            Correo electrónico del usuario que posee el ticket. Es un campo obligatorio que se utiliza para identificar al usuario que posee el ticket y para enviar notificaciones 
+            relacionadas con el evento, como recordatorios, actualizaciones o cualquier otra comunicación relevante. 
+            </summary>
+        </member>
+        <member name="T:EventAccessControl.API.DTOs.UpdateEventDto">
+            <summary>
+            DTO utilizado para actualizar la información de un evento existente. Este modelo se utiliza para recibir los datos necesarios para modificar un evento en el sistema,
+            incluyendo el nombre, la descripción, la fecha, la capacidad máxima, la ubicación y el estado activo del evento.
+            </summary>
+        </member>
+        <member name="P:EventAccessControl.API.DTOs.UpdateEventDto.Name">
+            <summary>
+            Nombre del evento, que es un campo obligatorio para identificar el evento. Este campo se utiliza para actualizar el nombre del evento en el sistema, lo que permite 
+            mantener la información del evento actualizada y relevante para los usuarios.
+            </summary>
+        </member>
+        <member name="P:EventAccessControl.API.DTOs.UpdateEventDto.Description">
+            <summary>
+            Descripción opcional del evento, que puede incluir detalles adicionales sobre el evento, como el tema, los oradores, o cualquier otra información relevante. 
+            Se utiliza para actualizar la descripción del evento en el sistema, lo que permite mantener la información del evento actualizada y relevante para los usuarios.
+            </summary>
+        </member>
+        <member name="P:EventAccessControl.API.DTOs.UpdateEventDto.EventDate">
+            <summary>
+            Fecha del evento, que es un campo obligatorio para establecer cuándo se llevará a cabo el evento. Se utiliza el tipo DateOnly para representar solo la fecha sin la hora, 
+            ya que no es necesario incluir información de hora para este tipo de eventos. 
+            </summary>
+        </member>
+        <member name="P:EventAccessControl.API.DTOs.UpdateEventDto.MaxCapacity">
+            <summary>
+            Capacidad máxima de asistentes al evento, que es un campo obligatorio para establecer un límite en la cantidad de personas que pueden asistir al evento. Se utiliza el 
+            tipo int y se valida para asegurarse de que el valor esté dentro de un rango razonable (1 a 100000) para evitar errores en la actualización del evento.
+            </summary>
+        </member>
+        <member name="P:EventAccessControl.API.DTOs.UpdateEventDto.Location">
+            <summary>
+            Ubicación del evento, que es un campo opcional para proporcionar información sobre dónde se llevará a cabo el evento. Este campo puede incluir detalles como la 
+            dirección, el nombre del lugar, o cualquier otra información relevante sobre la ubicación del evento.  
+            </summary>
+        </member>
+        <member name="P:EventAccessControl.API.DTOs.UpdateEventDto.IsActive">
+            <summary>
+            Indica si el evento está activo o no, lo que es un campo obligatorio para establecer el estado del evento en el sistema. Este campo se utiliza para actualizar el estado 
+            del evento, lo que permite controlar la visibilidad y la disponibilidad del evento para los usuarios. Un evento inactivo puede ser ocultado de las listas de eventos 
+            disponibles o puede ser marcado como cerrado para nuevas inscripciones, dependiendo de la lógica de negocio implementada en el sistema.
+            </summary>
+        </member>
         <member name="T:EventAccessControl.API.Migrations.InitialCreate">
             <inheritdoc />
         </member>
@@ -118,6 +214,50 @@
         <member name="M:EventAccessControl.API.Migrations.ChangeEventDateToDateOnly.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
+        <member name="T:EventAccessControl.API.Models.CheckInLog">
+            <summary>
+            Modelo que representa un registro de intento de ingreso al evento utilizando un ticket. Se utiliza para llevar un historial de los intentos de ingreso, incluyendo la fecha y 
+            hora del intento, el resultado del intento (éxito o fallo), y cualquier información adicional relevante, como el dispositivo utilizado para el intento. Este modelo se 
+            relaciona con el modelo Ticket a través de la propiedad TicketId, lo que permite asociar cada intento de ingreso con el ticket correspondiente. El registro de estos intentos 
+            es útil para auditorías, análisis de seguridad y para proporcionar información detallada sobre el uso de los tickets en los eventos.
+            </summary>
+        </member>
+        <member name="P:EventAccessControl.API.Models.CheckInLog.Id">
+            <summary>
+            Identificador único del registro de intento de ingreso, generado automáticamente. Se utiliza para referenciar el registro en operaciones de consulta y auditoría.
+            </summary>
+        </member>
+        <member name="P:EventAccessControl.API.Models.CheckInLog.TicketId">
+            <summary>
+            Identificador del ticket utilizado en el intento de ingreso. Es una clave foránea que referencia la entidad Ticket. Es obligatorio para asociar el intento de ingreso con 
+            un ticket específico y para realizar consultas relacionadas con los intentos de ingreso de un ticket en particular.
+            </summary>
+        </member>
+        <member name="P:EventAccessControl.API.Models.CheckInLog.AttemptTime">
+            <summary>
+            Fecha y hora en que se realizó el intento de ingreso al evento utilizando el ticket. Se establece automáticamente al momento de crear el registro del intento de ingreso. 
+            Se utiliza para llevar un registro cronológico de los intentos de ingreso y para auditorías.
+            </summary>
+        </member>
+        <member name="P:EventAccessControl.API.Models.CheckInLog.Result">
+            <summary>
+            Resultado del intento de ingreso, indicando si fue exitoso o fallido. Es un campo obligatorio que se utiliza para analizar el uso de los tickets y para identificar 
+            patrones de uso, intentos de ingreso fallidos, o posibles problemas con los tickets. 
+            </summary>
+        </member>
+        <member name="P:EventAccessControl.API.Models.CheckInLog.DeviceInfo">
+            <summary>
+            Información adicional relevante sobre el intento de ingreso, como el dispositivo utilizado para el intento, la ubicación del intento, o cualquier otro detalle que pueda
+            ser útil paraauditorías o análisis posteriores. 
+            </summary>
+        </member>
+        <member name="P:EventAccessControl.API.Models.CheckInLog.Ticket">
+            <summary>
+            Propiedad de navegación que establece la relación entre el registro de intento de ingreso y el ticket utilizado en ese intento. Permite acceder a la información del ticket
+            asociado al intento de ingreso, lo que es útil para realizar consultas relacionadas con los intentos de ingreso de un ticket en particular, o para analizar el uso de los 
+            tickets en general.
+            </summary>
+        </member>
         <member name="T:EventAccessControl.API.Models.Event">
             <summary>
             Modelo que representa un evento en el sistema. Contiene información básica del evento como nombre, descripción, fecha, capacidad máxima, ubicación y estado de actividad. 
@@ -127,6 +267,12 @@
         <member name="P:EventAccessControl.API.Models.Event.Id">
             <summary>
             Identificador único del evento, generado automáticamente. Se utiliza para referenciar el evento en operaciones de consulta, registro de tickets y validación de acceso.
+            </summary>
+        </member>
+        <member name="P:EventAccessControl.API.Models.Event.Name">
+            <summary>
+            Nombre del evento. Es un campo obligatorio que se utiliza para identificar el evento y para mostrarlo a los usuarios. Se recomienda que el nombre sea descriptivo y 
+            único para facilitar la identificación del evento.
             </summary>
         </member>
         <member name="P:EventAccessControl.API.Models.Event.Description">
@@ -147,30 +293,19 @@
             Capacidad máxima de asistentes para el evento. Se utiliza para controlar el aforo del evento y para validar que no se registren más tickets de los permitidos. Es un campo 
             obligatorio y debe ser un número positivo. Se utiliza para mostrar la capacidad del evento a los usuarios y para realizar validaciones relacionadas con el aforo, como 
             evitar registros cuando se alcanza la capacidad máxima del evento.
-            También se utiliza para mostrar el número de tickets disponibles en tiempo real a medida que los usuarios se registran para el evento, restando el número de tickets 
-            registrados del valor de MaxCapacity para mostrar la cantidad de espacios restantes.
+            
             </summary>
         </member>
         <member name="P:EventAccessControl.API.Models.Event.Location">
             <summary>
             Ubicación opcional del evento. Se utiliza para proporcionar información sobre dónde se llevará a cabo el evento, como la dirección, el nombre del lugar, o cualquier 
-            detalle relevante sobre la ubicación. No es un campo obligatorio, pero puede ser útil para los usuarios al momento de decidir registrarse en un evento, especialmente 
-            si el evento es presencial. Se utiliza para mostrar la ubicación del evento a los usuarios y para proporcionar información adicional sobre el evento en la interfaz 
-            de usuario.
+            detalle relevante sobre la ubicación. 
             </summary>
         </member>
         <member name="P:EventAccessControl.API.Models.Event.IsActive">
             <summary>
             Indica si el evento está activo o no. Un evento activo es aquel que está disponible para que los usuarios se registren y asistan. Un evento inactivo es aquel que ha sido 
-            desactivado, lo que significa que los usuarios no pueden registrarse ni asistir al evento. Este campo se utiliza para controlar la disponibilidad del evento y para 
-            realizar validaciones relacionadas con el estado del evento, como evitar registros para eventos inactivos.
-            También se utiliza para mostrar el estado del evento a los usuarios, permitiendo que los usuarios vean claramente si un evento está activo o inactivo en la interfaz de 
-            usuario. Además, se utiliza para filtrar eventos activos e inactivos en las consultas a la base de datos, permitiendo que los usuarios solo vean eventos activos al buscar 
-            eventos disponibles para registrarse.
-            La desactivación de un evento no elimina los registros de tickets asociados, pero impide que se registren nuevos tickets para ese evento y que los usuarios intenten 
-            ingresar al evento utilizando tickets ya registrados. Esto permite mantener un historial completo de los eventos y sus tickets, incluso si el evento ya no está activo.
-            La activación o desactivación de un evento se puede realizar a través de una actualización del evento utilizando el endpoint de actualización, lo que permite a los 
-            administradores controlar la disponibilidad de los eventos de manera flexible según las necesidades del sistema.
+            desactivado, lo que significa que los usuarios no pueden registrarse ni asistir al evento. 
             </summary>
         </member>
         <member name="P:EventAccessControl.API.Models.Event.CreatedAt">
@@ -181,17 +316,7 @@
         </member>
         <member name="P:EventAccessControl.API.Models.Event.Tickets">
             <summary>
-            Colección de tickets asociados al evento. Se utiliza para establecer la relación entre el evento y los tickets registrados para ese evento. Esta colección se carga de 
-            manera explícita mediante Include en las consultas a la base de datos cuando se necesita acceder a los tickets de un evento específico, como en el proceso de registro 
-            de tickets o en la consulta de tickets por evento. No es un campo obligatorio, ya que un evento puede no tener tickets registrados, pero se utiliza para facilitar el 
-            acceso a los tickets relacionados con el evento cuando sea necesario.
-            La colección de tickets se utiliza para validar el aforo del evento al momento de registrar un nuevo ticket, contando el número de tickets registrados para el evento 
-            y comparándolo con la capacidad máxima del evento. También se utiliza para mostrar la lista de tickets registrados para un evento específico, incluyendo información 
-            como el correo del usuario, estado de uso y fecha de uso de cada ticket.
-            La relación entre el evento y los tickets es de uno a muchos, ya que un evento puede tener múltiples tickets registrados, pero cada ticket solo puede estar asociado 
-            a un evento específico. Esta relación se establece mediante la propiedad EventId en el modelo Ticket, que actúa como clave foránea que referencia la entidad Event. 
-            La colección de tickets en el modelo Event permite acceder fácilmente a los tickets relacionados con ese evento cuando sea necesario, facilitando las operaciones de 
-            consulta y validación relacionadas con los tickets de un evento específico.
+            Colección de tickets asociados al evento. Se utiliza para establecer la relación entre el evento y los tickets registrados para ese evento. 
             </summary>
         </member>
         <member name="T:EventAccessControl.API.Models.Ticket">

@@ -96,11 +96,10 @@ namespace EventAccessControl.API.Migrations
                     b.Property<bool>("IsUsed")
                         .HasColumnType("boolean");
 
-                    b.Property<byte[]>("RowVersion")
+                    b.Property<long>("RowVersion")
                         .IsConcurrencyToken()
-                        .IsRequired()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("bytea");
+                        .HasColumnType("bigint");
 
                     b.Property<string>("TokenHash")
                         .IsRequired()
@@ -133,13 +132,11 @@ namespace EventAccessControl.API.Migrations
 
             modelBuilder.Entity("EventAccessControl.API.Models.Ticket", b =>
                 {
-                    b.HasOne("EventAccessControl.API.Models.Event", "Event")
+                    b.HasOne("EventAccessControl.API.Models.Event", null)
                         .WithMany("Tickets")
                         .HasForeignKey("EventId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Event");
                 });
 
             modelBuilder.Entity("EventAccessControl.API.Models.Event", b =>

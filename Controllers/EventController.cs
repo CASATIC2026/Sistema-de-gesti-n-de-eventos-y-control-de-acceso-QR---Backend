@@ -74,7 +74,7 @@ namespace EventAccessControl.API.Controllers
 
         // GET: api/event/{id}
         /// <summary>
-        /// Obtiene los detalles de un evento específico por su ID, incluyendo la lista de tickets asociados. Retorna 404 si el evento no existe.
+        /// Obtiene los detalles de un evento específico por su ID, incluyendo la lista de tickets asociados.
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -95,7 +95,7 @@ namespace EventAccessControl.API.Controllers
 
         // PUT: api/event/{id}
         /// <summary>
-        /// Actualiza los detalles de un evento existente. Permite modificar el nombre, descripción, fecha, capacidad máxima, ubicación y estado activo. Retorna 404 si el evento no existe.
+        /// Actualiza los detalles de un evento existente. Permite modificar el nombre, descripción, fecha, capacidad máxima, ubicación y estado activo.
         /// </summary>
         /// <param name="id"></param>
         /// <param name="dto"></param>
@@ -127,7 +127,7 @@ namespace EventAccessControl.API.Controllers
 
         // DELETE lógico (desactivar)
         /// <summary>
-        /// Desactiva un evento estableciendo su propiedad IsActive a false. El evento no se elimina físicamente de la base de datos. Retorna 404 si el evento no existe.
+        /// Desactiva un evento estableciendo su propiedad IsActive a false. El evento no se elimina físicamente de la base de datos.
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
