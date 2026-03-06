@@ -34,7 +34,7 @@
         </member>
         <member name="M:EventAccessControl.API.Controllers.EventController.GetEventById(System.Guid)">
             <summary>
-            Obtiene los detalles de un evento específico por su ID, incluyendo la lista de tickets asociados. Retorna 404 si el evento no existe.
+            Obtiene los detalles de un evento específico por su ID, incluyendo la lista de tickets asociados.
             </summary>
             <param name="id"></param>
             <returns></returns>
@@ -43,7 +43,7 @@
         </member>
         <member name="M:EventAccessControl.API.Controllers.EventController.UpdateEvent(System.Guid,EventAccessControl.API.DTOs.UpdateEventDto)">
             <summary>
-            Actualiza los detalles de un evento existente. Permite modificar el nombre, descripción, fecha, capacidad máxima, ubicación y estado activo. Retorna 404 si el evento no existe.
+            Actualiza los detalles de un evento existente. Permite modificar el nombre, descripción, fecha, capacidad máxima, ubicación y estado activo.
             </summary>
             <param name="id"></param>
             <param name="dto"></param>
@@ -53,7 +53,7 @@
         </member>
         <member name="M:EventAccessControl.API.Controllers.EventController.DeactivateEvent(System.Guid)">
             <summary>
-            Desactiva un evento estableciendo su propiedad IsActive a false. El evento no se elimina físicamente de la base de datos. Retorna 404 si el evento no existe.
+            Desactiva un evento estableciendo su propiedad IsActive a false. El evento no se elimina físicamente de la base de datos.
             </summary>
             <param name="id"></param>
             <returns></returns>
@@ -214,6 +214,18 @@
         <member name="M:EventAccessControl.API.Migrations.ChangeEventDateToDateOnly.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
+        <member name="T:EventAccessControl.API.Migrations.FixConcurrencyWithXmin">
+            <inheritdoc />
+        </member>
+        <member name="M:EventAccessControl.API.Migrations.FixConcurrencyWithXmin.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:EventAccessControl.API.Migrations.FixConcurrencyWithXmin.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:EventAccessControl.API.Migrations.FixConcurrencyWithXmin.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
         <member name="T:EventAccessControl.API.Models.CheckInLog">
             <summary>
             Modelo que representa un registro de intento de ingreso al evento utilizando un ticket. Se utiliza para llevar un historial de los intentos de ingreso, incluyendo la fecha y 
@@ -366,7 +378,7 @@
             ticket y para auditorías posteriores.
             </summary>
         </member>
-        <member name="P:EventAccessControl.API.Models.Ticket.RowVersion">
+        <member name="P:EventAccessControl.API.Models.Ticket.Event">
             <summary>
             Campo de control de concurrencia optimista que se utiliza para evitar registros duplicados y garantizar la integridad de los datos en escenarios de alta concurrencia. 
             Se actualiza automáticamente por Entity Framework cada vez que se modifica el registro del ticket. Si dos solicitudes intentan registrar un ticket para el mismo evento y 

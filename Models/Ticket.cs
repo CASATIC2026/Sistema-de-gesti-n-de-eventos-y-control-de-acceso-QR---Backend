@@ -49,14 +49,6 @@ namespace EventAccessControl.API.Models
         /// </summary>
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
-        /// <summary>
-        /// Campo de control de concurrencia optimista que se utiliza para evitar registros duplicados y garantizar la integridad de los datos en escenarios de alta concurrencia. 
-        /// Se actualiza automáticamente por Entity Framework cada vez que se modifica el registro del ticket. Si dos solicitudes intentan registrar un ticket para el mismo evento y 
-        /// correo electrónico al mismo tiempo, solo una de ellas podrá completar la operación exitosamente, mientras que la otra recibirá un error de concurrencia.
-        /// </summary>
-        [Timestamp]
-        public byte[] RowVersion { get; set; }
-
         public Event Event { get; set; }
     }
 }
