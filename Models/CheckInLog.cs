@@ -17,7 +17,7 @@ namespace EventAccessControl.API.Models
         /// Identificador del ticket utilizado en el intento de ingreso. Es una clave foránea que referencia la entidad Ticket. Es obligatorio para asociar el intento de ingreso con 
         /// un ticket específico y para realizar consultas relacionadas con los intentos de ingreso de un ticket en particular.
         /// </summary>
-        public Guid TicketId { get; set; }
+        public Guid? TicketId { get; set; }
 
         /// <summary>
         /// Fecha y hora en que se realizó el intento de ingreso al evento utilizando el ticket. Se establece automáticamente al momento de crear el registro del intento de ingreso. 
@@ -42,6 +42,6 @@ namespace EventAccessControl.API.Models
         /// asociado al intento de ingreso, lo que es útil para realizar consultas relacionadas con los intentos de ingreso de un ticket en particular, o para analizar el uso de los 
         /// tickets en general.
         /// </summary>
-        public Ticket Ticket { get; set; }
+        public Ticket? Ticket { get; set; }
     }
 }

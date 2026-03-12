@@ -108,3 +108,9 @@ C:\Users\GrupoA\Desktop\EventAccessControl.API\obj\Debug\net8.0\EventAccessContr
 C:\Users\GrupoA\Desktop\EventAccessControl.API\obj\Debug\net8.0\ref\EventAccessControl.API.dll
 C:\Users\GrupoA\Desktop\EventAccessControl.API\bin\Debug\net8.0\EventAccessControl.API.xml
 C:\Users\GrupoA\Desktop\EventAccessControl.API\obj\Debug\net8.0\EventAccessControl.API.xml
+C:\Users\GrupoA\Desktop\EventAccessControl.API\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+C:\Users\GrupoA\Desktop\EventAccessControl.API\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\GrupoA\Desktop\EventAccessControl.API\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+C:\Users\GrupoA\Desktop\EventAccessControl.API\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+C:\Users\GrupoA\Desktop\EventAccessControl.API\bin\Debug\net8.0\QRCoder.dll
+C:\Users\GrupoA\Desktop\EventAccessControl.API\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll

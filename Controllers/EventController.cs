@@ -147,5 +147,39 @@ namespace EventAccessControl.API.Controllers
 
             return NoContent();
         }
+
+        /// <summary>
+        /// Obtiene estadísticas de un evento específico, incluyendo la cantidad de tickets registrados, la cantidad de tickets utilizados para ingreso, y la cantidad de tickets 
+        /// restantes disponibles según la capacidad máxima del evento. Esta información es útil para monitorear el uso de los tickets y para gestionar el aforo del evento en 
+        /// tiempo real. El endpoint retorna un DTO con las estadísticas del evento solicitado.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet("{id}/stats")]
+        public async Task<IActionResult> GetEventStats(Guid id)
+        {
+            var eventEntity = await _context.Events
+                .FirstOrDefaultAsync(e => e.Id == id);
+
+            if (eventEntity == null)
+                return NotFound("Evento no encontrado.");
+
+            var ticketsRegistered = await _context.Tickets
+                .CountAsync(t => t.EventId == id);
+
+            var checkedIn = await _context.Tickets
+                .CountAsync(t => t.EventId == id && t.IsUsed);
+
+            var stats = new EventStatsDto
+            {
+                EventId = eventEntity.Id,
+                Capacity = eventEntity.MaxCapacity,
+                TicketsRegistered = ticketsRegistered,
+                CheckedIn = checkedIn,
+                Remaining = eventEntity.MaxCapacity - checkedIn
+            };
+
+            return Ok(stats);
+        }
     }
 }

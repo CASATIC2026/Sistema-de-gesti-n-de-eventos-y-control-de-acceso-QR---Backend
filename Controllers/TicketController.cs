@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using EventAccessControl.API.Data;
 using EventAccessControl.API.Models;
 using EventAccessControl.API.DTOs;
+using EventAccessControl.API.Services;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -14,17 +15,22 @@ namespace EventAccessControl.API.Controllers
     /// </summary>
     [ApiController]
     [Route("api/[controller]")]
+
     public class TicketController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly TokenService _tokenService;
+        private readonly QRService _qrService;
 
         /// <summary>
         /// Constructor que inyecta el contexto de la base de datos para acceder a los tickets y eventos.
         /// </summary>
         /// <param name="context"></param>
-        public TicketController(ApplicationDbContext context)
+        public TicketController(ApplicationDbContext context, TokenService tokenService, QRService qrService)
         {
             _context = context;
+            _tokenService = tokenService;
+            _qrService = qrService;
         }
 
         // POST: api/ticket/register
@@ -67,31 +73,46 @@ namespace EventAccessControl.API.Controllers
             if (alreadyRegistered)
                 return BadRequest("Este correo ya está registrado en el evento.");
 
-            // Generar código único (Mes 1)
-            var rawCode = Guid.NewGuid().ToString();
+            // Crear ticket con nuevo ID
+            var ticketId = Guid.NewGuid();
 
-            // Crear hash del código (simulando seguridad futura)
-            var tokenHash = GenerateSha256Hash(rawCode);
+            // Generar token JWT
+            var token = _tokenService.GenerateTicketToken(
+                ticketId,
+                dto.EventId,
+                dto.UserEmail
+            );
 
-            var ticket = new Ticket
+            // Hash del token usando SHA256
+            using (var sha256 = System.Security.Cryptography.SHA256.Create())
             {
-                Id = Guid.NewGuid(),
-                EventId = dto.EventId,
-                UserEmail = dto.UserEmail,
-                TokenHash = tokenHash,
-                IsUsed = false,
-                CreatedAt = DateTime.UtcNow
-            };
+                var hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(token));
+                var tokenHash = Convert.ToBase64String(hashedBytes);
 
-            _context.Tickets.Add(ticket);
-            await _context.SaveChangesAsync();
+                var ticket = new Ticket
+                {
+                    Id = ticketId,
+                    EventId = dto.EventId,
+                    UserEmail = dto.UserEmail,
+                    TokenHash = tokenHash,
+                    IsUsed = false,
+                    CreatedAt = DateTime.UtcNow
+                };
 
-            return Ok(new
-            {
-                Message = "Registro exitoso",
-                TicketId = ticket.Id,
-                Code = rawCode // Solo para pruebas (luego será JWT)
-            });
+                var qrBase64 = _qrService.GenerateQRCodeBase64(token);
+
+                _context.Tickets.Add(ticket);
+                await _context.SaveChangesAsync();
+
+                return Ok(new
+                {
+                    Message = "Registro exitoso",
+                    TicketId = ticket.Id,
+                    Code = qrBase64
+                });
+            }
+
+
         }
 
         // GET: api/ticket/event/{eventId}
@@ -119,6 +140,90 @@ namespace EventAccessControl.API.Controllers
                 .ToListAsync();
 
             return Ok(tickets);
+        }
+
+        [HttpPost("validate-entry")]
+        public async Task<IActionResult> ValidateEntry([FromBody] ValidateEntryDto dto)
+        {
+            var principal = _tokenService.ValidateToken(dto.Token);
+
+            if (principal == null)
+            {
+                _context.CheckInLogs.Add(new CheckInLog
+                {
+                    Result = "INVALID",
+                    DeviceInfo = HttpContext.Connection.RemoteIpAddress?.ToString()
+                });
+
+                await _context.SaveChangesAsync();
+
+                return BadRequest("QR inválido.");
+            }
+            
+
+            var ticketId = Guid.Parse(principal.FindFirst("ticketId")!.Value);
+
+            var ticket = await _context.Tickets
+                .FirstOrDefaultAsync(t => t.Id == ticketId);
+
+            if (ticket == null)
+            {
+                _context.CheckInLogs.Add(new CheckInLog
+                {
+                    Result = "INVALID",
+                    DeviceInfo = HttpContext.Connection.RemoteIpAddress?.ToString()
+                });
+
+                await _context.SaveChangesAsync();
+
+                return NotFound("Ticket no encontrado.");
+            }
+
+            if (ticket.IsUsed)
+            {
+                _context.CheckInLogs.Add(new CheckInLog
+                {
+                    TicketId = ticket.Id,
+                    Result = "DUPLICATE",
+                    DeviceInfo = HttpContext.Connection.RemoteIpAddress?.ToString()
+                });
+
+                await _context.SaveChangesAsync();
+
+                return BadRequest(new
+                {
+                    message = "Ticket ya utilizado",
+                    usedAt = ticket.UsedAt
+                });
+            }
+
+            ticket.IsUsed = true;
+            ticket.UsedAt = DateTime.UtcNow;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return BadRequest("El ticket fue validado simultáneamente.");
+            }
+
+            _context.CheckInLogs.Add(new CheckInLog
+            {
+                TicketId = ticket.Id,
+                Result = "SUCCESS",
+                DeviceInfo = HttpContext.Connection.RemoteIpAddress?.ToString()
+            });
+
+            await _context.SaveChangesAsync();
+
+            return Ok(new
+            {
+                message = "Acceso permitido",
+                ticketId = ticket.Id,
+                time = ticket.UsedAt
+            });
         }
 
         private string GenerateSha256Hash(string input)

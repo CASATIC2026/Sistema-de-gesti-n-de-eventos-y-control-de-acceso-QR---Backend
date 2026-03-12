@@ -60,13 +60,22 @@
             <response code="204">Evento desactivado exitosamente.</response>
             <response code="404">Evento no encontrado.</response>
         </member>
+        <member name="M:EventAccessControl.API.Controllers.EventController.GetEventStats(System.Guid)">
+            <summary>
+            Obtiene estadísticas de un evento específico, incluyendo la cantidad de tickets registrados, la cantidad de tickets utilizados para ingreso, y la cantidad de tickets 
+            restantes disponibles según la capacidad máxima del evento. Esta información es útil para monitorear el uso de los tickets y para gestionar el aforo del evento en 
+            tiempo real. El endpoint retorna un DTO con las estadísticas del evento solicitado.
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
         <member name="T:EventAccessControl.API.Controllers.TicketController">
             <summary>
             Controlador para gestionar tickets, incluyendo registro de tickets para eventos específicos y consulta de tickets por evento. Implementa validaciones de aforo y registro 
             duplicado.
             </summary>
         </member>
-        <member name="M:EventAccessControl.API.Controllers.TicketController.#ctor(EventAccessControl.API.Data.ApplicationDbContext)">
+        <member name="M:EventAccessControl.API.Controllers.TicketController.#ctor(EventAccessControl.API.Data.ApplicationDbContext,EventAccessControl.API.Services.TokenService,EventAccessControl.API.Services.QRService)">
             <summary>
             Constructor que inyecta el contexto de la base de datos para acceder a los tickets y eventos.
             </summary>
@@ -264,6 +273,18 @@
             <inheritdoc />
         </member>
         <member name="M:EventAccessControl.API.Migrations.FixConcurrencyWithXmin.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:EventAccessControl.API.Migrations.AddCheckInLogs">
+            <inheritdoc />
+        </member>
+        <member name="M:EventAccessControl.API.Migrations.AddCheckInLogs.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:EventAccessControl.API.Migrations.AddCheckInLogs.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:EventAccessControl.API.Migrations.AddCheckInLogs.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
         <member name="T:EventAccessControl.API.Models.CheckInLog">
