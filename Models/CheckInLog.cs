@@ -33,7 +33,7 @@ namespace EventAccessControl.API.Models
 
         /// <summary>
         /// Información adicional relevante sobre el intento de ingreso, como el dispositivo utilizado para el intento, la ubicación del intento, o cualquier otro detalle que pueda
-        /// ser útil paraauditorías o análisis posteriores. 
+        /// ser útil para auditorías o análisis posteriores. 
         /// </summary>
         public string? DeviceInfo { get; set; }
 

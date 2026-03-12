@@ -94,6 +94,46 @@
             <response code="404">Evento no encontrado.</response>
             <response code="500">Error interno del servidor.</response>
         </member>
+        <member name="T:EventAccessControl.API.Data.ApplicationDbContext">
+            <summary>
+            Contexto de la base de datos para la aplicación de control de acceso a eventos. Define las entidades Event, Ticket y CheckInLog, y configura el control de concurrencia 
+            optimista para la entidad Ticket utilizando el campo Xmin. Este contexto se utiliza para interactuar con la base de datos y realizar operaciones CRUD sobre las entidades 
+            definidas.
+            </summary>
+        </member>
+        <member name="M:EventAccessControl.API.Data.ApplicationDbContext.#ctor(Microsoft.EntityFrameworkCore.DbContextOptions{EventAccessControl.API.Data.ApplicationDbContext})">
+            <summary>
+            Constructor que recibe las opciones de configuración para el contexto de la base de datos. Estas opciones se utilizan para configurar la conexión a la base de datos y 
+            otros aspectos relacionados con el contexto. 
+            </summary>
+            <param name="options"></param>
+        </member>
+        <member name="P:EventAccessControl.API.Data.ApplicationDbContext.Events">
+            <summary>
+            DbSet que representa la colección de eventos en la base de datos. Permite realizar operaciones CRUD sobre los eventos, como crear nuevos eventos, consultar eventos 
+            existentes, actualizar eventos y eliminar eventos.
+            </summary>
+        </member>
+        <member name="P:EventAccessControl.API.Data.ApplicationDbContext.Tickets">
+            <summary>
+            DbSet que representa la colección de tickets en la base de datos. Permite realizar operaciones CRUD sobre los tickets, como registrar nuevos tickets para eventos, 
+            consultar tickets existentes, actualizar tickets y eliminar tickets.
+            </summary>
+        </member>
+        <member name="P:EventAccessControl.API.Data.ApplicationDbContext.CheckInLogs">
+            <summary>
+            DbSet que representa la colección de registros de ingreso (check-in) en la base de datos. Permite realizar operaciones CRUD sobre los registros de ingreso, como crear 
+            nuevos registros de ingreso, consultar registros de ingreso existentes, actualizar registros de ingreso y eliminar registros de ingreso.
+            </summary>
+        </member>
+        <member name="M:EventAccessControl.API.Data.ApplicationDbContext.OnModelCreating(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <summary>
+            Configura el modelo de la base de datos, incluyendo la configuración del control de concurrencia optimista para la entidad Ticket utilizando el campo Xmin. 
+            Esto garantiza que en escenarios de alta concurrencia, como el registro simultáneo de tickets para el mismo evento y correo electrónico, solo una operación pueda 
+            completar exitosamente, mientras que las demás recibirán un error de concurrencia, evitando así registros duplicados y garantizando la integridad de los datos.
+            </summary>
+            <param name="modelBuilder"></param>
+        </member>
         <member name="T:EventAccessControl.API.DTOs.CreateEventDto">
             <summary>
             DTO utilizado para la creación de un nuevo evento. Este modelo se utiliza para recibir los datos necesarios para crear un evento en el sistema.
@@ -260,7 +300,7 @@
         <member name="P:EventAccessControl.API.Models.CheckInLog.DeviceInfo">
             <summary>
             Información adicional relevante sobre el intento de ingreso, como el dispositivo utilizado para el intento, la ubicación del intento, o cualquier otro detalle que pueda
-            ser útil paraauditorías o análisis posteriores. 
+            ser útil para auditorías o análisis posteriores. 
             </summary>
         </member>
         <member name="P:EventAccessControl.API.Models.CheckInLog.Ticket">
@@ -376,13 +416,6 @@
             <summary>
             Fecha y hora en que el ticket fue creado. Se establece automáticamente al momento de la creación del ticket. Se utiliza para llevar un registro de cuándo se registró el 
             ticket y para auditorías posteriores.
-            </summary>
-        </member>
-        <member name="P:EventAccessControl.API.Models.Ticket.Event">
-            <summary>
-            Campo de control de concurrencia optimista que se utiliza para evitar registros duplicados y garantizar la integridad de los datos en escenarios de alta concurrencia. 
-            Se actualiza automáticamente por Entity Framework cada vez que se modifica el registro del ticket. Si dos solicitudes intentan registrar un ticket para el mismo evento y 
-            correo electrónico al mismo tiempo, solo una de ellas podrá completar la operación exitosamente, mientras que la otra recibirá un error de concurrencia.
             </summary>
         </member>
     </members>
