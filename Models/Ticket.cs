@@ -49,6 +49,9 @@ namespace EventAccessControl.API.Models
         /// </summary>
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
+        /// <summary>
+        /// Campo de control de concurrencia optimista. Se utiliza para evitar registros duplicados y garantizar la integridad de los datos en escenarios de alta concurrencia.
+        /// </summary>
         public Event Event { get; set; }
     }
 }

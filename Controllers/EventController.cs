@@ -5,7 +5,7 @@ using EventAccessControl.API.Models;
 using EventAccessControl.API.DTOs;
 
 namespace EventAccessControl.API.Controllers
-{   
+{
     /// <summary>
     /// Controlador para gestionar eventos, incluyendo creación, consulta, actualización y desactivación lógica.
     /// </summary>

@@ -21,16 +21,21 @@ namespace EventAccessControl.API.Controllers
         private readonly ApplicationDbContext _context;
         private readonly TokenService _tokenService;
         private readonly QRService _qrService;
+        private readonly EmailService _emailService;
 
         /// <summary>
-        /// Constructor que inyecta el contexto de la base de datos para acceder a los tickets y eventos.
+        /// Constructor del controlador de tickets, inyectando el contexto de la base de datos, el servicio de generación de tokens, el servicio de generación de códigos QR y el servicio de envío de correos electrónicos.
         /// </summary>
         /// <param name="context"></param>
-        public TicketController(ApplicationDbContext context, TokenService tokenService, QRService qrService)
+        /// <param name="tokenService"></param>
+        /// <param name="qrService"></param>
+        /// <param name="emailService"></param>
+        public TicketController(ApplicationDbContext context, TokenService tokenService, QRService qrService, EmailService emailService)
         {
             _context = context;
             _tokenService = tokenService;
             _qrService = qrService;
+            _emailService = emailService;
         }
 
         // POST: api/ticket/register
@@ -104,15 +109,29 @@ namespace EventAccessControl.API.Controllers
                 _context.Tickets.Add(ticket);
                 await _context.SaveChangesAsync();
 
+                try
+                {
+                    await _emailService.SendQrEmail(ticket.UserEmail, qrBase64);
+                }
+                catch (Exception ex)
+                {
+                    // Log the error (puedes agregar un logger aquí)
+                    Console.WriteLine($"Error al enviar email: {ex.Message}");
+                    // El ticket se registró exitosamente, pero el email falló
+                    return StatusCode(StatusCodes.Status206PartialContent, new
+                    {
+                        Message = "Registro exitoso, pero el email no pudo ser enviado",
+                        TicketId = ticket.Id,
+                        Error = ex.Message
+                    });
+                }
+
                 return Ok(new
                 {
                     Message = "Registro exitoso",
-                    TicketId = ticket.Id,
-                    Code = qrBase64
+                    TicketId = ticket.Id
                 });
             }
-
-
         }
 
         // GET: api/ticket/event/{eventId}
@@ -142,6 +161,11 @@ namespace EventAccessControl.API.Controllers
             return Ok(tickets);
         }
 
+        /// <summary>
+        /// Valida la entrada de un ticket utilizando el token JWT del código QR. Verifica que el token sea válido, que el ticket exista, y que no haya sido utilizado previamente.
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <returns></returns>
         [HttpPost("validate-entry")]
         public async Task<IActionResult> ValidateEntry([FromBody] ValidateEntryDto dto)
         {

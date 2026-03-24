@@ -75,7 +75,7 @@
             duplicado.
             </summary>
         </member>
-        <member name="M:EventAccessControl.API.Controllers.TicketController.#ctor(EventAccessControl.API.Data.ApplicationDbContext,EventAccessControl.API.Services.TokenService,EventAccessControl.API.Services.QRService)">
+        <member name="M:EventAccessControl.API.Controllers.TicketController.#ctor(EventAccessControl.API.Data.ApplicationDbContext,EventAccessControl.API.Services.TokenService,EventAccessControl.API.Services.QRService,EventAccessControl.API.Services.EmailService)">
             <summary>
             Constructor que inyecta el contexto de la base de datos para acceder a los tickets y eventos.
             </summary>
