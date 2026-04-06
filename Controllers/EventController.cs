@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using EventAccessControl.API.Data;
@@ -11,6 +12,7 @@ namespace EventAccessControl.API.Controllers
     /// </summary>
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class EventController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
@@ -32,11 +34,12 @@ namespace EventAccessControl.API.Controllers
         /// <returns></returns>
         /// <response code="201">Evento creado exitosamente.</response>
         /// <response code="400">Datos inválidos o fecha del evento no es futura.</response>
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> CreateEvent(CreateEventDto dto)
         {
             if (dto.EventDate <= DateOnly.FromDateTime(DateTime.UtcNow))
-                return BadRequest("La fecha del evento debe ser futura.");
+                return BadRequest(ApiResponse<object>.Fail("La fecha del evento debe ser futura.", 400));
 
             var newEvent = new Event
             {
@@ -52,7 +55,11 @@ namespace EventAccessControl.API.Controllers
             _context.Events.Add(newEvent);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetEventById), new { id = newEvent.Id }, newEvent);
+            return CreatedAtAction(
+                nameof(GetEventById),
+                new { id = newEvent.Id },
+                ApiResponse<Event>.Ok(newEvent, "Evento creado exitosamente")
+            );
         }
 
         // GET: api/event
@@ -62,14 +69,16 @@ namespace EventAccessControl.API.Controllers
         /// <returns></returns>
         /// <response code="200">Lista de eventos obtenida exitosamente.</response>
         /// <response code="500">Error interno del servidor.</response>
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> GetAllEvents()
         {
             var events = await _context.Events
+                .Where(e => e.IsActive)
                 .OrderBy(e => e.EventDate)
                 .ToListAsync();
 
-            return Ok(events);
+            return Ok(ApiResponse<List<Event>>.Ok(events, "Lista de eventos obtenida exitosamente"));
         }
 
         // GET: api/event/{id}
@@ -80,17 +89,17 @@ namespace EventAccessControl.API.Controllers
         /// <returns></returns>
         /// <response code="200">Evento encontrado y detalles retornados exitosamente.</response>
         /// <response code="404">Evento no encontrado.</response>
+        [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetEventById(Guid id)
         {
             var eventEntity = await _context.Events
-                .Include(e => e.Tickets)
                 .FirstOrDefaultAsync(e => e.Id == id);
 
             if (eventEntity == null)
-                return NotFound("Evento no encontrado.");
+                return NotFound(ApiResponse<object>.Fail("Evento no encontrado.", 404));
 
-            return Ok(eventEntity);
+            return Ok(ApiResponse<Event>.Ok(eventEntity, "Evento encontrado exitosamente"));
         }
 
         // PUT: api/event/{id}
@@ -102,16 +111,20 @@ namespace EventAccessControl.API.Controllers
         /// <returns></returns>
         /// <response code="204">Evento actualizado exitosamente.</response>
         /// <response code="400">Datos inválidos.</response>
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateEvent(Guid id, [FromBody] UpdateEventDto dto)
         {
             if (dto == null)
-                return BadRequest("El DTO es requerido.");
+                return BadRequest(ApiResponse<object>.Fail("El DTO es requerido.", 400));
+
+            if (dto.EventDate <= DateOnly.FromDateTime(DateTime.UtcNow))
+                return BadRequest(ApiResponse<object>.Fail("La fecha del evento debe ser futura.", 400));
 
             var eventEntity = await _context.Events.FindAsync(id);
 
             if (eventEntity == null)
-                return NotFound("Evento no encontrado.");
+                return NotFound(ApiResponse<object>.Fail("Evento no encontrado.", 404));
 
             eventEntity.Name = dto.Name;
             eventEntity.Description = dto.Description;
@@ -122,7 +135,7 @@ namespace EventAccessControl.API.Controllers
 
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok(ApiResponse<object>.Ok(null, "Evento actualizado exitosamente"));
         }
 
         // DELETE lógico (desactivar)
@@ -133,28 +146,30 @@ namespace EventAccessControl.API.Controllers
         /// <returns></returns>
         /// <response code="204">Evento desactivado exitosamente.</response>
         /// <response code="404">Evento no encontrado.</response>
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeactivateEvent(Guid id)
         {
             var eventEntity = await _context.Events.FindAsync(id);
 
             if (eventEntity == null)
-                return NotFound("Evento no encontrado.");
+                return NotFound(ApiResponse<object>.Fail("Evento no encontrado.", 404));
 
             eventEntity.IsActive = false;
 
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok(ApiResponse<object>.Ok(null, "Evento desactivado exitosamente"));
         }
 
         /// <summary>
-        /// Obtiene estadísticas de un evento específico, incluyendo la cantidad de tickets registrados, la cantidad de tickets utilizados para ingreso, y la cantidad de tickets 
-        /// restantes disponibles según la capacidad máxima del evento. Esta información es útil para monitorear el uso de los tickets y para gestionar el aforo del evento en 
-        /// tiempo real. El endpoint retorna un DTO con las estadísticas del evento solicitado.
+        /// Obtiene estadísticas de un evento específico, incluyendo la cantidad de tickets registrados, 
+        /// la cantidad de tickets utilizados para ingreso, y la cantidad de tickets 
+        /// restantes disponibles según la capacidad máxima del evento.
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
+        [Authorize(Roles = "Admin")]
         [HttpGet("{id}/stats")]
         public async Task<IActionResult> GetEventStats(Guid id)
         {
@@ -162,7 +177,7 @@ namespace EventAccessControl.API.Controllers
                 .FirstOrDefaultAsync(e => e.Id == id);
 
             if (eventEntity == null)
-                return NotFound("Evento no encontrado.");
+                return NotFound(ApiResponse<object>.Fail("Evento no encontrado.", 404));
 
             var ticketsRegistered = await _context.Tickets
                 .CountAsync(t => t.EventId == id);
@@ -179,7 +194,7 @@ namespace EventAccessControl.API.Controllers
                 Remaining = eventEntity.MaxCapacity - checkedIn
             };
 
-            return Ok(stats);
+            return Ok(ApiResponse<EventStatsDto>.Ok(stats, "Estadísticas del evento obtenidas exitosamente"));
         }
     }
 }
