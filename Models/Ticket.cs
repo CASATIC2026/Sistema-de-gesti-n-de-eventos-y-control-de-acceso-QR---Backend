@@ -3,9 +3,7 @@ using System.ComponentModel.DataAnnotations;
 namespace EventAccessControl.API.Models
 {
     /// <summary>
-    /// Modelo que representa un ticket registrado para un evento específico, asociado a un correo electrónico de usuario. Incluye información sobre el estado de uso del ticket, 
-    /// fecha de uso, y una referencia al evento al que pertenece. Implementa control de concurrencia optimista mediante RowVersion para evitar registros duplicados y garantizar 
-    /// la integridad de los datos en escenarios de alta concurrencia.
+    /// Modelo que representa un ticket registrado para un evento específico, asociado a un correo electrónico de usuario. 
     /// </summary>
     public class Ticket
     {
@@ -23,35 +21,50 @@ namespace EventAccessControl.API.Models
         /// Correo electrónico del usuario para el cual se registra el ticket. Es obligatorio y se utiliza para validar registros duplicados y para identificar al usuario asociado 
         /// al ticket.
         /// </summary>
-        public string UserEmail { get; set; }
+        public string? UserEmail { get; set; }
 
         /// <summary>
-        /// Hash del código único generado para el ticket. Se utiliza para validar la autenticidad del ticket durante los intentos de ingreso al evento. Es un valor que se genera al 
-        /// momento de registrar el ticket y se almacena en la base de datos para su posterior comparación durante
+        /// Hash del código único generado para el ticket. 
         /// </summary>
-        public string TokenHash { get; set; }
+        public string? TokenHash { get; set; }
 
         /// <summary>
-        /// Indica si el ticket ha sido utilizado para ingresar al evento. Es un valor booleano que se establece en true cuando el ticket es validado exitosamente en un intento de 
-        /// ingreso. Se utiliza para evitar el uso múltiple de un mismo ticket.
+        /// Indica si el ticket ha sido utilizado para ingresar al evento. Es un valor booleano que se establece en 
+        /// true cuando el ticket es validado exitosamente en un intento de ingreso. 
         /// </summary>
         public bool IsUsed { get; set; }
 
         /// <summary>
-        /// Fecha y hora en que el ticket fue utilizado para ingresar al evento. Es un valor nullable que se establece cuando IsUsed es true. Se utiliza para llevar un registro de 
-        /// cuándo se utilizó el ticket y para auditorías posteriores.
+        /// Fecha y hora en que el ticket fue utilizado para ingresar al evento. 
         /// </summary>
         public DateTime? UsedAt { get; set; }
 
         /// <summary>
-        /// Fecha y hora en que el ticket fue creado. Se establece automáticamente al momento de la creación del ticket. Se utiliza para llevar un registro de cuándo se registró el 
-        /// ticket y para auditorías posteriores.
+        /// Fecha y hora en que el ticket fue creado. 
         /// </summary>
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         /// <summary>
-        /// Campo de control de concurrencia optimista. Se utiliza para evitar registros duplicados y garantizar la integridad de los datos en escenarios de alta concurrencia.
+        /// Estado del envío del correo electrónico con el código del ticket. Puede tener valores como "PENDIENTE", 
+        /// "ENVIADO", "FALLIDO", etc. 
         /// </summary>
-        public Event Event { get; set; }
+        public string EmailStatus { get; set; } = "PENDIENTE";
+
+        /// <summary>
+        /// Contador de reintentos de envío del correo electrónico. Se incrementa cada vez que se intenta enviar el 
+        /// correo electrónico con el código del ticket. 
+        public int EmailRetryCount { get; set; } = 0;
+        
+        /// <summary>
+        /// Fecha y hora del último intento de envío del correo electrónico. Se actualiza cada vez que se intenta 
+        /// enviar el correo electrónico con el código del ticket. 
+        /// </summary>
+        public DateTime? EmailSentAt { get; set; }
+
+        /// <summary>
+        /// Campo de control de concurrencia optimista. Se utiliza para evitar registros duplicados y garantizar la 
+        /// integridad de los datos en escenarios de alta concurrencia.
+        /// </summary>
+        public Event? Event { get; set; }
     }
 }
