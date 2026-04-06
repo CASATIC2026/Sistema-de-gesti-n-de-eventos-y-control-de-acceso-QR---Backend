@@ -3,27 +3,34 @@ using QRCoder;
 namespace EventAccessControl.API.Services
 {   
     /// <summary>
-    /// Servicio para generar códigos QR en formato base64.
+    /// Servicio para generar códigos QR. Utiliza la biblioteca QRCoder para crear códigos QR
     /// </summary>
     public class QRService
-    {
+    {   
         /// <summary>
-        /// Método para generar un código QR a partir de un texto dado y devolverlo en formato base64. Este método utiliza la biblioteca QRCoder para crear el código QR, lo 
-        /// convierte a un arreglo de bytes, y luego lo codifica en base64 para que pueda ser fácilmente enviado por correo electrónico o utilizado en otras partes de la aplicación.
-        /// </summary>
+        /// Genera un código QR en formato PNG a partir del texto proporcionado.
+        /// </summary> 
         /// <param name="text"></param>
         /// <returns></returns>
+        public byte[] GenerateQRCodePng(string text)
+        {
+            if (string.IsNullOrWhiteSpace(text))
+                throw new ArgumentException("El contenido del QR no puede ser vacío.");
+
+            using var qrGenerator = new QRCodeGenerator();
+            using var qrData = qrGenerator.CreateQrCode(text, QRCodeGenerator.ECCLevel.Q);
+            using var qrCode = new PngByteQRCode(qrData);
+
+            return qrCode.GetGraphic(20);
+        }
+
+        /// <summary>
+        /// Genera un código QR en formato PNG a partir del texto proporcionado y devuelve el resultado en formato base64. 
+        /// </summary>
         public string GenerateQRCodeBase64(string text)
         {
-            using (var qrGenerator = new QRCodeGenerator())
-            {
-                var qrCodeData = qrGenerator.CreateQrCode(text, QRCodeGenerator.ECCLevel.Q);
-                using (var qrCode = new BitmapByteQRCode(qrCodeData))
-                {
-                    byte[] qrBytes = qrCode.GetGraphic(20);
-                    return Convert.ToBase64String(qrBytes);
-                }
-            }
+            var qrBytes = GenerateQRCodePng(text);
+            return Convert.ToBase64String(qrBytes);
         }
     }
 }
