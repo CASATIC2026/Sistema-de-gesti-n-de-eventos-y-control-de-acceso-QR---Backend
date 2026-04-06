@@ -770,6 +770,133 @@
           "lib/net6.0/QRCoder.dll": {}
         }
       },
+      "QuestPDF/2024.3.0": {
+        "type": "package",
+        "compile": {
+          "lib/net8.0/QuestPDF.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net8.0/QuestPDF.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtimeTargets": {
+          "runtimes/any/native/LatoFont/Lato-Black.ttf": {
+            "assetType": "native",
+            "rid": "any"
+          },
+          "runtimes/any/native/LatoFont/Lato-BlackItalic.ttf": {
+            "assetType": "native",
+            "rid": "any"
+          },
+          "runtimes/any/native/LatoFont/Lato-Bold.ttf": {
+            "assetType": "native",
+            "rid": "any"
+          },
+          "runtimes/any/native/LatoFont/Lato-BoldItalic.ttf": {
+            "assetType": "native",
+            "rid": "any"
+          },
+          "runtimes/any/native/LatoFont/Lato-ExtraBold.ttf": {
+            "assetType": "native",
+            "rid": "any"
+          },
+          "runtimes/any/native/LatoFont/Lato-ExtraBoldItalic.ttf": {
+            "assetType": "native",
+            "rid": "any"
+          },
+          "runtimes/any/native/LatoFont/Lato-ExtraLight.ttf": {
+            "assetType": "native",
+            "rid": "any"
+          },
+          "runtimes/any/native/LatoFont/Lato-ExtraLightItalic.ttf": {
+            "assetType": "native",
+            "rid": "any"
+          },
+          "runtimes/any/native/LatoFont/Lato-Italic.ttf": {
+            "assetType": "native",
+            "rid": "any"
+          },
+          "runtimes/any/native/LatoFont/Lato-Light.ttf": {
+            "assetType": "native",
+            "rid": "any"
+          },
+          "runtimes/any/native/LatoFont/Lato-LightItalic.ttf": {
+            "assetType": "native",
+            "rid": "any"
+          },
+          "runtimes/any/native/LatoFont/Lato-Medium.ttf": {
+            "assetType": "native",
+            "rid": "any"
+          },
+          "runtimes/any/native/LatoFont/Lato-MediumItalic.ttf": {
+            "assetType": "native",
+            "rid": "any"
+          },
+          "runtimes/any/native/LatoFont/Lato-Regular.ttf": {
+            "assetType": "native",
+            "rid": "any"
+          },
+          "runtimes/any/native/LatoFont/Lato-SemiBold.ttf": {
+            "assetType": "native",
+            "rid": "any"
+          },
+          "runtimes/any/native/LatoFont/Lato-SemiBoldItalic.ttf": {
+            "assetType": "native",
+            "rid": "any"
+          },
+          "runtimes/any/native/LatoFont/Lato-Thin.ttf": {
+            "assetType": "native",
+            "rid": "any"
+          },
+          "runtimes/any/native/LatoFont/Lato-ThinItalic.ttf": {
+            "assetType": "native",
+            "rid": "any"
+          },
+          "runtimes/any/native/LatoFont/OFL.txt": {
+            "assetType": "native",
+            "rid": "any"
+          },
+          "runtimes/linux-arm64/native/libQuestPdfSkia.so": {
+            "assetType": "native",
+            "rid": "linux-arm64"
+          },
+          "runtimes/linux-x64/native/libQuestPdfSkia.so": {
+            "assetType": "native",
+            "rid": "linux-x64"
+          },
+          "runtimes/osx-arm64/native/libQuestPdfSkia.dylib": {
+            "assetType": "native",
+            "rid": "osx-arm64"
+          },
+          "runtimes/osx-x64/native/libQuestPdfSkia.dylib": {
+            "assetType": "native",
+            "rid": "osx-x64"
+          },
+          "runtimes/win-x64/native/QuestPdfSkia.dll": {
+            "assetType": "native",
+            "rid": "win-x64"
+          }
+        }
+      },
+      "SixLabors.ImageSharp/3.1.12": {
+        "type": "package",
+        "compile": {
+          "lib/net6.0/SixLabors.ImageSharp.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net6.0/SixLabors.ImageSharp.dll": {
+            "related": ".xml"
+          }
+        },
+        "build": {
+          "build/SixLabors.ImageSharp.props": {}
+        }
+      },
       "Swashbuckle.AspNetCore/6.6.2": {
         "type": "package",
         "dependencies": {
@@ -2565,6 +2692,83 @@
         "qrcoder.nuspec"
       ]
     },
+    "QuestPDF/2024.3.0": {
+      "sha512": "3UsHztlheCEa+EgGaND8jSwQrAduayBwwerzAfb40AJM+epRCz/jome2qadEeFrmAC7bqSsggalsSsAriCKHnA==",
+      "type": "package",
+      "path": "questpdf/2024.3.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Contributors.md",
+        "Description.md",
+        "Documentation.xml",
+        "ExternalDependencyLicenses/emsdk.txt",
+        "ExternalDependencyLicenses/expat.txt",
+        "ExternalDependencyLicenses/harfbuzz/ExternalDependencyLicenses/harfbuzz",
+        "ExternalDependencyLicenses/icu.txt",
+        "ExternalDependencyLicenses/libjpeg-turbo.txt",
+        "ExternalDependencyLicenses/libpng.txt",
+        "ExternalDependencyLicenses/libwebp.txt",
+        "ExternalDependencyLicenses/ninja-build.txt",
+        "ExternalDependencyLicenses/readme.txt",
+        "ExternalDependencyLicenses/skia.txt",
+        "ExternalDependencyLicenses/wuffs.txt",
+        "ExternalDependencyLicenses/zlib.txt",
+        "Logo.png",
+        "PackageLicense.md",
+        "PackageReadme.md",
+        "ReleaseNotes.txt",
+        "build/net4/QuestPDF.targets",
+        "lib/net6.0/QuestPDF.dll",
+        "lib/net6.0/QuestPDF.xml",
+        "lib/net8.0/QuestPDF.dll",
+        "lib/net8.0/QuestPDF.xml",
+        "lib/netstandard2.0/QuestPDF.dll",
+        "lib/netstandard2.0/QuestPDF.xml",
+        "questpdf.2024.3.0.nupkg.sha512",
+        "questpdf.nuspec",
+        "runtimes/any/native/LatoFont/Lato-Black.ttf",
+        "runtimes/any/native/LatoFont/Lato-BlackItalic.ttf",
+        "runtimes/any/native/LatoFont/Lato-Bold.ttf",
+        "runtimes/any/native/LatoFont/Lato-BoldItalic.ttf",
+        "runtimes/any/native/LatoFont/Lato-ExtraBold.ttf",
+        "runtimes/any/native/LatoFont/Lato-ExtraBoldItalic.ttf",
+        "runtimes/any/native/LatoFont/Lato-ExtraLight.ttf",
+        "runtimes/any/native/LatoFont/Lato-ExtraLightItalic.ttf",
+        "runtimes/any/native/LatoFont/Lato-Italic.ttf",
+        "runtimes/any/native/LatoFont/Lato-Light.ttf",
+        "runtimes/any/native/LatoFont/Lato-LightItalic.ttf",
+        "runtimes/any/native/LatoFont/Lato-Medium.ttf",
+        "runtimes/any/native/LatoFont/Lato-MediumItalic.ttf",
+        "runtimes/any/native/LatoFont/Lato-Regular.ttf",
+        "runtimes/any/native/LatoFont/Lato-SemiBold.ttf",
+        "runtimes/any/native/LatoFont/Lato-SemiBoldItalic.ttf",
+        "runtimes/any/native/LatoFont/Lato-Thin.ttf",
+        "runtimes/any/native/LatoFont/Lato-ThinItalic.ttf",
+        "runtimes/any/native/LatoFont/OFL.txt",
+        "runtimes/linux-arm64/native/libQuestPdfSkia.so",
+        "runtimes/linux-x64/native/libQuestPdfSkia.so",
+        "runtimes/osx-arm64/native/libQuestPdfSkia.dylib",
+        "runtimes/osx-x64/native/libQuestPdfSkia.dylib",
+        "runtimes/win-x64/native/QuestPdfSkia.dll"
+      ]
+    },
+    "SixLabors.ImageSharp/3.1.12": {
+      "sha512": "iAg6zifihXEFS/t7fiHhZBGAdCp3FavsF4i2ZIDp0JfeYeDVzvmlbY1CNhhIKimaIzrzSi5M/NBFcWvZT2rB/A==",
+      "type": "package",
+      "path": "sixlabors.imagesharp/3.1.12",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE",
+        "build/SixLabors.ImageSharp.props",
+        "lib/net6.0/SixLabors.ImageSharp.dll",
+        "lib/net6.0/SixLabors.ImageSharp.xml",
+        "sixlabors.imagesharp.128.png",
+        "sixlabors.imagesharp.3.1.12.nupkg.sha512",
+        "sixlabors.imagesharp.nuspec"
+      ]
+    },
     "Swashbuckle.AspNetCore/6.6.2": {
       "sha512": "+NB4UYVYN6AhDSjW0IJAd1AGD8V33gemFNLPaxKTtPkHB+HaKAKf9MGAEUPivEWvqeQfcKIw8lJaHq6LHljRuw==",
       "type": "package",
@@ -3125,6 +3329,8 @@
       "Microsoft.EntityFrameworkCore.Tools >= 8.0.2",
       "Npgsql.EntityFrameworkCore.PostgreSQL >= 8.0.2",
       "QRCoder >= 1.4.3",
+      "QuestPDF >= 2024.3.0",
+      "SixLabors.ImageSharp >= 3.1.12",
       "Swashbuckle.AspNetCore >= 6.6.2",
       "System.IdentityModel.Tokens.Jwt >= 8.16.0"
     ]
@@ -3207,6 +3413,14 @@
           "QRCoder": {
             "target": "Package",
             "version": "[1.4.3, )"
+          },
+          "QuestPDF": {
+            "target": "Package",
+            "version": "[2024.3.0, )"
+          },
+          "SixLabors.ImageSharp": {
+            "target": "Package",
+            "version": "[3.1.12, )"
           },
           "Swashbuckle.AspNetCore": {
             "target": "Package",
