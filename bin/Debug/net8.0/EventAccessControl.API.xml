@@ -6,28 +6,31 @@
     <members>
         <member name="T:EventAccessControl.API.Controllers.AuthController">
             <summary>
-            Controlador para gestionar autenticación y autorización en el sistema. Incluye endpoints para registrar nuevos usuarios y para iniciar sesión en el sistema.
+            Controlador para gestionar autenticación y autorización en el sistema. Incluye endpoints para registrar nuevos 
+            usuarios y para iniciar sesión en el sistema.
             </summary>
         </member>
         <member name="M:EventAccessControl.API.Controllers.AuthController.#ctor(EventAccessControl.API.Data.ApplicationDbContext,EventAccessControl.API.Services.TokenService)">
             <summary>
-            Constructor del controlador de autenticación, inyectando el contexto de la base de datos y el servicio de generación de tokens.
+            Constructor del controlador de autenticación, inyectando el contexto de la base de datos y el servicio de 
+            generación de tokens.
             </summary>
             <param name="context"></param>
             <param name="tokenService"></param>
         </member>
         <member name="M:EventAccessControl.API.Controllers.AuthController.Register(EventAccessControl.API.DTOs.RegisterDto)">
             <summary>
-            Registra un nuevo usuario en el sistema utilizando el correo electrónico y la contraseña proporcionados en el DTO. Valida que el usuario no exista y crea un nuevo usuario 
-            con el correo electrónico y la contraseña proporcionados. Retorna un mensaje de éxito.
+            Registra un nuevo usuario en el sistema utilizando el correo electrónico y la contraseña proporcionados en 
+            el DTO. 
             </summary>
             <param name="dto"></param>
             <returns></returns>
         </member>
         <member name="M:EventAccessControl.API.Controllers.AuthController.Login(EventAccessControl.API.DTOs.LoginDto)">
             <summary>
-            Inicia sesión en el sistema utilizando el correo electrónico y la contraseña proporcionados en el DTO. Valida las credenciales del usuario y genera un token JWT para 
-            el usuario. Retorna un token JWT válido para el usuario.
+            Inicia sesión en el sistema utilizando el correo electrónico y la contraseña proporcionados en el DTO. 
+            Valida las credenciales del usuario y genera un token JWT para 
+            el usuario.
             </summary>
             <param name="dto"></param>
             <returns></returns>
@@ -90,9 +93,9 @@
         </member>
         <member name="M:EventAccessControl.API.Controllers.EventController.GetEventStats(System.Guid)">
             <summary>
-            Obtiene estadísticas de un evento específico, incluyendo la cantidad de tickets registrados, la cantidad de tickets utilizados para ingreso, y la cantidad de tickets 
-            restantes disponibles según la capacidad máxima del evento. Esta información es útil para monitorear el uso de los tickets y para gestionar el aforo del evento en 
-            tiempo real. El endpoint retorna un DTO con las estadísticas del evento solicitado.
+            Obtiene estadísticas de un evento específico, incluyendo la cantidad de tickets registrados, 
+            la cantidad de tickets utilizados para ingreso, y la cantidad de tickets 
+            restantes disponibles según la capacidad máxima del evento.
             </summary>
             <param name="id"></param>
             <returns></returns>
@@ -114,8 +117,9 @@
         </member>
         <member name="M:EventAccessControl.API.Controllers.TicketController.RegisterTicket(EventAccessControl.API.DTOs.RegisterTicketDto)">
             <summary>
-            Registra un nuevo ticket para un evento específico utilizando el correo electrónico del usuario. Valida que el evento exista, esté activo, no haya ocurrido, y que no 
-            se exceda el aforo. También evita registros duplicados por correo electrónico. Retorna un código único para el ticket registrado.
+            Registra un nuevo ticket para un evento específico utilizando el correo electrónico del usuario. 
+            Valida que el evento exista, esté activo, no haya ocurrido, y que no 
+            se exceda el aforo. 
             </summary>
             <param name="dto"></param>
             <returns></returns>
@@ -123,16 +127,24 @@
             <response code="400">Datos inválidos, evento no activo, evento ya ocurrido, aforo completo o correo ya registrado.</response>
             <response code="404">Evento no encontrado.</response>
         </member>
-        <member name="M:EventAccessControl.API.Controllers.TicketController.GetTicketsByEvent(System.Guid)">
+        <member name="M:EventAccessControl.API.Controllers.TicketController.GetMyTickets">
             <summary>
-            Obtiene la lista de tickets registrados para un evento específico, incluyendo el correo del usuario, estado de uso y fecha de uso. Retorna una lista vacía si no hay 
-            tickets registrados o si el evento no existe.
+            Obtiene la lista de tickets registrados por el usuario autenticado.
+            Lee el correo desde los claims del token JWT y retorna la información 
+            de los tickets junto con los datos básicos del evento asociado.
             </summary>
-            <param name="eventId"></param>
             <returns></returns>
-            <response code="200">Lista de tickets obtenida exitosamente (puede estar vacía).</response>
-            <response code="404">Evento no encontrado.</response>
-            <response code="500">Error interno del servidor.</response>
+            <response code="200">Lista de tickets del usuario obtenida exitosamente.</response>
+            <response code="401">No se pudo identificar al usuario desde el token.</response>
+        </member>
+        <member name="M:EventAccessControl.API.Controllers.TicketController.GetTicketsByEvent(System.Guid,System.Int32,System.Int32)">
+            <summary>
+            Obtiene la lista de tickets registrados para un evento específico con paginación.
+            </summary>
+            <param name="eventId">El identificador único del evento.</param>
+            <param name="page">El número de página a consultar (por defecto 1).</param>
+            <param name="pageSize">La cantidad de registros por página (por defecto 10, máximo 100).</param>
+            <returns></returns>
         </member>
         <member name="M:EventAccessControl.API.Controllers.TicketController.ValidateEntry(EventAccessControl.API.DTOs.ValidateEntryDto)">
             <summary>
@@ -143,15 +155,12 @@
         </member>
         <member name="T:EventAccessControl.API.Data.ApplicationDbContext">
             <summary>
-            Contexto de la base de datos para la aplicación de control de acceso a eventos. Define las entidades Event, Ticket y CheckInLog, y configura el control de concurrencia 
-            optimista para la entidad Ticket utilizando el campo Xmin. Este contexto se utiliza para interactuar con la base de datos y realizar operaciones CRUD sobre las entidades 
-            definidas.
+            Contexto de la base de datos para la aplicación de control de acceso a eventos. 
             </summary>
         </member>
         <member name="M:EventAccessControl.API.Data.ApplicationDbContext.#ctor(Microsoft.EntityFrameworkCore.DbContextOptions{EventAccessControl.API.Data.ApplicationDbContext})">
             <summary>
-            Constructor que recibe las opciones de configuración para el contexto de la base de datos. Estas opciones se utilizan para configurar la conexión a la base de datos y 
-            otros aspectos relacionados con el contexto. 
+            Constructor que recibe las opciones de configuración para el contexto de la base de datos. 
             </summary>
             <param name="options"></param>
         </member>
@@ -181,9 +190,8 @@
         </member>
         <member name="M:EventAccessControl.API.Data.ApplicationDbContext.OnModelCreating(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <summary>
-            Configura el modelo de la base de datos, incluyendo la configuración del control de concurrencia optimista para la entidad Ticket utilizando el campo Xmin. 
-            Esto garantiza que en escenarios de alta concurrencia, como el registro simultáneo de tickets para el mismo evento y correo electrónico, solo una operación pueda 
-            completar exitosamente, mientras que las demás recibirán un error de concurrencia, evitando así registros duplicados y garantizando la integridad de los datos.
+             Configura el modelo de datos para la base de datos, incluyendo la configuración de claves primarias, relaciones 
+            entre entidades, índices y tokens de concurrencia.
             </summary>
             <param name="modelBuilder"></param>
         </member>
@@ -199,31 +207,29 @@
         </member>
         <member name="P:EventAccessControl.API.DTOs.CreateEventDto.Description">
             <summary>
-            Descripción opcional del evento, que puede incluir detalles adicionales sobre el evento, como el tema, los oradores, o cualquier otra información relevante. 
-            Este campo es opcional y tiene una longitud máxima de 1000 caracteres para permitir una descripción detallada sin exceder un límite razonable.
+            Descripción opcional del evento, que puede incluir detalles adicionales sobre el evento.
             </summary>
         </member>
         <member name="P:EventAccessControl.API.DTOs.CreateEventDto.EventDate">
             <summary>
-            Fecha del evento, que es un campo obligatorio para establecer cuándo se llevará a cabo el evento. Se utiliza el tipo DateOnly para representar solo la fecha sin la hora, 
-            ya que no es necesario incluir información de hora para este tipo de eventos.
+            Fecha del evento, que es un campo obligatorio para establecer cuándo se llevará a cabo el evento. 
             </summary>
         </member>
         <member name="P:EventAccessControl.API.DTOs.CreateEventDto.MaxCapacity">
             <summary>
-            Capacidad máxima de asistentes al evento, que es un campo obligatorio para establecer un límite en la cantidad de personas que pueden asistir al evento. 
+            Capacidad máxima de asistentes al evento, que es un campo obligatorio para establecer un límite en la 
+            cantidad de personas que pueden asistir al evento. 
             </summary>
         </member>
         <member name="P:EventAccessControl.API.DTOs.CreateEventDto.Location">
             <summary>
             Ubicación del evento, que es un campo opcional para proporcionar información sobre dónde se llevará a cabo el evento. 
-            Este campo puede incluir detalles como la dirección, el nombre del lugar, o cualquier otra información relevante sobre la ubicación del evento.
             </summary>
         </member>
         <member name="T:EventAccessControl.API.DTOs.EventStatsDto">
             <summary>
-            DTO para representar las estadísticas de un evento, incluyendo la capacidad total, el número de tickets registrados, el número de entradas validadas, y el número de entradas 
-            restantes. Este DTO se utiliza para mostrar información relevante sobre el estado del evento en términos de acceso y control de entradas.
+            DTO para representar las estadísticas de un evento, incluyendo la capacidad total, el número de tickets 
+            registrados, el número de entradas validadas, y el número de entradas restantes. 
             </summary>
         </member>
         <member name="P:EventAccessControl.API.DTOs.EventStatsDto.EventId">
@@ -233,32 +239,29 @@
         </member>
         <member name="P:EventAccessControl.API.DTOs.EventStatsDto.Capacity">
             <summary>
-            Capacidad total del evento, es decir, el número máximo de asistentes permitidos. Esta información es crucial para controlar el acceso y evitar sobrecupo en el evento.
+            Capacidad total del evento, es decir, el número máximo de asistentes permitidos. 
             </summary>
         </member>
         <member name="P:EventAccessControl.API.DTOs.EventStatsDto.TicketsRegistered">
             <summary>
-            Número de tickets que han sido registrados para el evento. Este número puede ser igual o menor a la capacidad total, y es un indicador de cuántas personas han mostrado 
-            interés en asistir al evento.
+            Número de tickets que han sido registrados para el evento. 
             </summary>
         </member>
         <member name="P:EventAccessControl.API.DTOs.EventStatsDto.CheckedIn">
             <summary>
-            Número de entradas que han sido validadas en la entrada del evento. Este número representa cuántas personas han ingresado efectivamente al evento, y es un indicador 
-            clave para el control de acceso.
+            Número de entradas que han sido validadas en la entrada del evento. 
             </summary>
         </member>
         <member name="P:EventAccessControl.API.DTOs.EventStatsDto.Remaining">
             <summary>
-            Número de entradas restantes, calculado como la diferencia entre la capacidad total y el número de entradas validadas. Este número es importante para el personal del 
-            evento, ya que les permite saber cuántas personas más pueden ingresar antes de alcanzar la capacidad máxima.
+            Número de entradas restantes, calculado como la diferencia entre la capacidad total y el número de 
+            entradas validadas.
             </summary>
         </member>
         <member name="T:EventAccessControl.API.DTOs.LoginDto">
             <summary>
-            DTO utilizado para iniciar sesión en el sistema. Este modelo se utiliza para recibir los datos necesarios para iniciar sesión en el sistema, 
-            incluyendo el correo electrónico y la contraseña. El campo Email es obligatorio para identificar al usuario y para autenticar al usuario en el sistema. 
-            El campo Password es obligatorio para autenticar al usuario en el sistema.
+            DTO utilizado para iniciar sesión en el sistema. Este modelo se utiliza para recibir los datos necesarios para 
+            iniciar sesión en el sistema, incluyendo el correo electrónico y la contraseña. 
             </summary>
         </member>
         <member name="P:EventAccessControl.API.DTOs.LoginDto.Email">
@@ -274,13 +277,12 @@
         <member name="T:EventAccessControl.API.DTOs.RegisterDto">
             <summary>
             DTO utilizado para registrar un nuevo usuario en el sistema. Este modelo se utiliza para recibir los datos necesarios para crear un usuario en el sistema, 
-            incluyendo el correo electrónico y la contraseña. El campo Email es obligatorio para identificar al usuario y para enviar notificaciones relacionadas con el usuario. 
-            El campo Password es obligatorio para autenticar al usuario en el sistema.
+            incluyendo el correo electrónico y la contraseña. 
             </summary>
         </member>
         <member name="P:EventAccessControl.API.DTOs.RegisterDto.Email">
             <summary>
-            Correo electrónico del usuario. Es un campo obligatorio y se utiliza para identificar al usuario y para enviar notificaciones relacionadas con el usuario.
+            Correo electrónico del usuario. 
             </summary>
         </member>
         <member name="P:EventAccessControl.API.DTOs.RegisterDto.Password">
@@ -290,71 +292,65 @@
         </member>
         <member name="T:EventAccessControl.API.DTOs.RegisterTicketDto">
             <summary>
-            DTO utilizado para registrar un nuevo ticket para un evento específico. Este modelo se utiliza para recibir los datos necesarios para crear un ticket en el sistema, 
-            incluyendo el identificador del evento al que se asociará el ticket y el correo electrónico del usuario que posee el ticket. El campo EventId es obligatorio para establecer 
-            la relación entre el ticket y el evento correspondiente, mientras que el campo UserEmail es obligatorio para identificar al usuario que posee el ticket y para enviar 
-            notificaciones relacionadas con el evento. Este DTO es esencial para la funcionalidad de registro de tickets en el sistema de control de acceso a eventos.
+            DTO utilizado para registrar un nuevo ticket para un evento específico. Este modelo se utiliza para recibir 
+            los datos necesarios para crear un ticket en el sistema, incluyendo el identificador del evento al que se 
+            asociará el ticket y el correo electrónico del usuario que posee el ticket. 
             </summary>
         </member>
         <member name="P:EventAccessControl.API.DTOs.RegisterTicketDto.EventId">
             <summary>
-            Identificador del evento al que se asociará el ticket. Es un campo obligatorio que se utiliza para establecer la relación entre el ticket y el evento correspondiente, 
-            lo que permite realizar consultas relacionadas con los tickets de un evento específico y para gestionar la asignación de tickets a eventos en el sistema.
+            Identificador del evento al que se asociará el ticket. 
+            </summary>
+        </member>
+        <member name="P:EventAccessControl.API.DTOs.RegisterTicketDto.UserEmail">
+            <summary>
+            Correo electrónico opcional proporcionado en el cuerpo de la petición.
+            Si no se proporciona, se intentará obtener del token de autenticación.
             </summary>
         </member>
         <member name="T:EventAccessControl.API.DTOs.UpdateEventDto">
             <summary>
-            DTO utilizado para actualizar la información de un evento existente. Este modelo se utiliza para recibir los datos necesarios para modificar un evento en el sistema,
-            incluyendo el nombre, la descripción, la fecha, la capacidad máxima, la ubicación y el estado activo del evento.
+            DTO utilizado para actualizar la información de un evento existente. 
             </summary>
         </member>
         <member name="P:EventAccessControl.API.DTOs.UpdateEventDto.Name">
             <summary>
-            Nombre del evento, que es un campo obligatorio para identificar el evento. Este campo se utiliza para actualizar el nombre del evento en el sistema, lo que permite 
-            mantener la información del evento actualizada y relevante para los usuarios.
+            Nombre del evento, que es un campo obligatorio para identificar el evento. 
             </summary>
         </member>
         <member name="P:EventAccessControl.API.DTOs.UpdateEventDto.Description">
             <summary>
-            Descripción opcional del evento, que puede incluir detalles adicionales sobre el evento, como el tema, los oradores, o cualquier otra información relevante. 
-            Se utiliza para actualizar la descripción del evento en el sistema, lo que permite mantener la información del evento actualizada y relevante para los usuarios.
+            Descripción opcional del evento, que puede incluir detalles adicionales sobre el evento.
             </summary>
         </member>
         <member name="P:EventAccessControl.API.DTOs.UpdateEventDto.EventDate">
             <summary>
-            Fecha del evento, que es un campo obligatorio para establecer cuándo se llevará a cabo el evento. Se utiliza el tipo DateOnly para representar solo la fecha sin la hora, 
-            ya que no es necesario incluir información de hora para este tipo de eventos. 
+            Fecha del evento, que es un campo obligatorio para establecer cuándo se llevará a cabo el evento. 
             </summary>
         </member>
         <member name="P:EventAccessControl.API.DTOs.UpdateEventDto.MaxCapacity">
             <summary>
-            Capacidad máxima de asistentes al evento, que es un campo obligatorio para establecer un límite en la cantidad de personas que pueden asistir al evento. Se utiliza el 
-            tipo int y se valida para asegurarse de que el valor esté dentro de un rango razonable (1 a 100000) para evitar errores en la actualización del evento.
+            Capacidad máxima de asistentes al evento, que es un campo obligatorio para establecer un límite en la cantidad de personas que pueden asistir al evento. 
             </summary>
         </member>
         <member name="P:EventAccessControl.API.DTOs.UpdateEventDto.Location">
             <summary>
-            Ubicación del evento, que es un campo opcional para proporcionar información sobre dónde se llevará a cabo el evento. Este campo puede incluir detalles como la 
-            dirección, el nombre del lugar, o cualquier otra información relevante sobre la ubicación del evento.  
+            Ubicación del evento, que es un campo opcional para proporcionar información sobre dónde se llevará a cabo el evento. 
             </summary>
         </member>
         <member name="P:EventAccessControl.API.DTOs.UpdateEventDto.IsActive">
             <summary>
-            Indica si el evento está activo o no, lo que es un campo obligatorio para establecer el estado del evento en el sistema. Este campo se utiliza para actualizar el estado 
-            del evento, lo que permite controlar la visibilidad y la disponibilidad del evento para los usuarios. Un evento inactivo puede ser ocultado de las listas de eventos 
-            disponibles o puede ser marcado como cerrado para nuevas inscripciones, dependiendo de la lógica de negocio implementada en el sistema.
+            Indica si el evento está activo o no, lo que es un campo obligatorio para establecer el estado del evento en el sistema.
             </summary>
         </member>
         <member name="T:EventAccessControl.API.DTOs.ValidateEntryDto">
             <summary>
-            DTO para validar la entrada de un ticket utilizando el token JWT del código QR. Este DTO contiene una propiedad "Token" que es requerida y se utiliza para recibir el token 
-            JWT enviado desde la aplicación móvil o el dispositivo de escaneo en la entrada del evento. El controlador de tickets utilizará este DTO para validar el token, verificar que el ticket exista, y asegurarse de que no haya sido utilizado previamente para permitir o denegar el acceso al evento. 
+            DTO para validar la entrada de un ticket utilizando el token JWT del código QR.  
             </summary>
         </member>
         <member name="P:EventAccessControl.API.DTOs.ValidateEntryDto.Token">
             <summary>
-            Token JWT del código QR que se va a validar. Esta propiedad es requerida y debe contener el token generado para el ticket correspondiente. El controlador de tickets 
-            utilizará este token para realizar la validación de la entrada al evento.
+            Token JWT del código QR que se va a validar. 
             </summary>
         </member>
         <member name="T:EventAccessControl.API.Migrations.InitialCreate">
@@ -405,12 +401,34 @@
         <member name="M:EventAccessControl.API.Migrations.AddCheckInLogs.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
+        <member name="T:EventAccessControl.API.Migrations.AddUsers">
+            <inheritdoc />
+        </member>
+        <member name="M:EventAccessControl.API.Migrations.AddUsers.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:EventAccessControl.API.Migrations.AddUsers.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:EventAccessControl.API.Migrations.AddUsers.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:EventAccessControl.API.Migrations.AddEmailFieldsToTicket">
+            <inheritdoc />
+        </member>
+        <member name="M:EventAccessControl.API.Migrations.AddEmailFieldsToTicket.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:EventAccessControl.API.Migrations.AddEmailFieldsToTicket.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:EventAccessControl.API.Migrations.AddEmailFieldsToTicket.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
         <member name="T:EventAccessControl.API.Models.CheckInLog">
             <summary>
             Modelo que representa un registro de intento de ingreso al evento utilizando un ticket. Se utiliza para llevar un historial de los intentos de ingreso, incluyendo la fecha y 
-            hora del intento, el resultado del intento (éxito o fallo), y cualquier información adicional relevante, como el dispositivo utilizado para el intento. Este modelo se 
-            relaciona con el modelo Ticket a través de la propiedad TicketId, lo que permite asociar cada intento de ingreso con el ticket correspondiente. El registro de estos intentos 
-            es útil para auditorías, análisis de seguridad y para proporcionar información detallada sobre el uso de los tickets en los eventos.
+            hora del intento, el resultado del intento (éxito o fallo), y cualquier información adicional relevante, como el dispositivo utilizado para el intento.
             </summary>
         </member>
         <member name="P:EventAccessControl.API.Models.CheckInLog.Id">
@@ -420,20 +438,17 @@
         </member>
         <member name="P:EventAccessControl.API.Models.CheckInLog.TicketId">
             <summary>
-            Identificador del ticket utilizado en el intento de ingreso. Es una clave foránea que referencia la entidad Ticket. Es obligatorio para asociar el intento de ingreso con 
-            un ticket específico y para realizar consultas relacionadas con los intentos de ingreso de un ticket en particular.
+            Identificador del ticket utilizado en el intento de ingreso. Es una clave foránea que referencia la entidad Ticket. 
             </summary>
         </member>
         <member name="P:EventAccessControl.API.Models.CheckInLog.AttemptTime">
             <summary>
-            Fecha y hora en que se realizó el intento de ingreso al evento utilizando el ticket. Se establece automáticamente al momento de crear el registro del intento de ingreso. 
-            Se utiliza para llevar un registro cronológico de los intentos de ingreso y para auditorías.
+            Fecha y hora en que se realizó el intento de ingreso al evento utilizando el ticket. 
             </summary>
         </member>
         <member name="P:EventAccessControl.API.Models.CheckInLog.Result">
             <summary>
-            Resultado del intento de ingreso, indicando si fue exitoso o fallido. Es un campo obligatorio que se utiliza para analizar el uso de los tickets y para identificar 
-            patrones de uso, intentos de ingreso fallidos, o posibles problemas con los tickets. 
+            Resultado del intento de ingreso, indicando si fue exitoso o fallido.  
             </summary>
         </member>
         <member name="P:EventAccessControl.API.Models.CheckInLog.DeviceInfo">
@@ -444,15 +459,12 @@
         </member>
         <member name="P:EventAccessControl.API.Models.CheckInLog.Ticket">
             <summary>
-            Propiedad de navegación que establece la relación entre el registro de intento de ingreso y el ticket utilizado en ese intento. Permite acceder a la información del ticket
-            asociado al intento de ingreso, lo que es útil para realizar consultas relacionadas con los intentos de ingreso de un ticket en particular, o para analizar el uso de los 
-            tickets en general.
+            Propiedad de navegación que establece la relación entre el registro de intento de ingreso y el ticket utilizado en ese intento. 
             </summary>
         </member>
         <member name="T:EventAccessControl.API.Models.Event">
             <summary>
             Modelo que representa un evento en el sistema. Contiene información básica del evento como nombre, descripción, fecha, capacidad máxima, ubicación y estado de actividad. 
-            Además, incluye una colección de tickets asociados al evento. Este modelo se utiliza para gestionar los eventos disponibles
             </summary>
         </member>
         <member name="P:EventAccessControl.API.Models.Event.Id">
@@ -462,59 +474,50 @@
         </member>
         <member name="P:EventAccessControl.API.Models.Event.Name">
             <summary>
-            Nombre del evento. Es un campo obligatorio que se utiliza para identificar el evento y para mostrarlo a los usuarios. Se recomienda que el nombre sea descriptivo y 
-            único para facilitar la identificación del evento.
+            Nombre del evento. 
             </summary>
         </member>
         <member name="P:EventAccessControl.API.Models.Event.Description">
             <summary>
-            Descripción opcional del evento. Se utiliza para proporcionar información adicional sobre el evento, como detalles del programa, ponentes, actividades, etc. No es un 
-            campo obligatorio, pero puede ser útil para los usuarios al momento de decidir registrarse en un evento.
+            Descripción opcional del evento. Se utiliza para proporcionar información adicional sobre el evento, como detalles del programa, ponentes, actividades, etc. 
             </summary>
         </member>
         <member name="P:EventAccessControl.API.Models.Event.EventDate">
             <summary>
             Fecha del evento, representada como DateOnly para almacenar solo la parte de la fecha sin la hora. Se utiliza para programar el evento y para validar que los tickets se 
-            registren para eventos futuros. Es un campo obligatorio y debe ser una fecha futura al momento de la creación del evento. Se utiliza para mostrar la fecha del evento a 
-            los usuarios y para realizar validaciones relacionadas con la fecha del evento, como evitar registros para eventos que ya ocurrieron.
+            registren para eventos futuros. 
             </summary>
         </member>
         <member name="P:EventAccessControl.API.Models.Event.MaxCapacity">
             <summary>
-            Capacidad máxima de asistentes para el evento. Se utiliza para controlar el aforo del evento y para validar que no se registren más tickets de los permitidos. Es un campo 
-            obligatorio y debe ser un número positivo. Se utiliza para mostrar la capacidad del evento a los usuarios y para realizar validaciones relacionadas con el aforo, como 
-            evitar registros cuando se alcanza la capacidad máxima del evento.
+            Capacidad máxima de asistentes para el evento. 
             
             </summary>
         </member>
         <member name="P:EventAccessControl.API.Models.Event.Location">
             <summary>
-            Ubicación opcional del evento. Se utiliza para proporcionar información sobre dónde se llevará a cabo el evento, como la dirección, el nombre del lugar, o cualquier 
-            detalle relevante sobre la ubicación. 
+            Ubicación opcional del evento.  
             </summary>
         </member>
         <member name="P:EventAccessControl.API.Models.Event.IsActive">
             <summary>
-            Indica si el evento está activo o no. Un evento activo es aquel que está disponible para que los usuarios se registren y asistan. Un evento inactivo es aquel que ha sido 
-            desactivado, lo que significa que los usuarios no pueden registrarse ni asistir al evento. 
+            Indica si el evento está activo o no.  
             </summary>
         </member>
         <member name="P:EventAccessControl.API.Models.Event.CreatedAt">
             <summary>
-            Fecha y hora en que el evento fue creado. Se establece automáticamente al momento de la creación del evento. Se utiliza para llevar un registro de cuándo se creó el 
-            evento y para auditorías posteriores.
+            Fecha y hora en que el evento fue creado. 
             </summary>
         </member>
         <member name="P:EventAccessControl.API.Models.Event.Tickets">
             <summary>
-            Colección de tickets asociados al evento. Se utiliza para establecer la relación entre el evento y los tickets registrados para ese evento. 
+            Colección de tickets asociados al evento. Se utiliza para establecer la relación entre el evento y los 
+            tickets registrados para ese evento. 
             </summary>
         </member>
         <member name="T:EventAccessControl.API.Models.Ticket">
             <summary>
-            Modelo que representa un ticket registrado para un evento específico, asociado a un correo electrónico de usuario. Incluye información sobre el estado de uso del ticket, 
-            fecha de uso, y una referencia al evento al que pertenece. Implementa control de concurrencia optimista mediante RowVersion para evitar registros duplicados y garantizar 
-            la integridad de los datos en escenarios de alta concurrencia.
+            Modelo que representa un ticket registrado para un evento específico, asociado a un correo electrónico de usuario. 
             </summary>
         </member>
         <member name="P:EventAccessControl.API.Models.Ticket.Id">
@@ -535,31 +538,42 @@
         </member>
         <member name="P:EventAccessControl.API.Models.Ticket.TokenHash">
             <summary>
-            Hash del código único generado para el ticket. Se utiliza para validar la autenticidad del ticket durante los intentos de ingreso al evento. Es un valor que se genera al 
-            momento de registrar el ticket y se almacena en la base de datos para su posterior comparación durante
+            Hash del código único generado para el ticket. 
             </summary>
         </member>
         <member name="P:EventAccessControl.API.Models.Ticket.IsUsed">
             <summary>
-            Indica si el ticket ha sido utilizado para ingresar al evento. Es un valor booleano que se establece en true cuando el ticket es validado exitosamente en un intento de 
-            ingreso. Se utiliza para evitar el uso múltiple de un mismo ticket.
+            Indica si el ticket ha sido utilizado para ingresar al evento. Es un valor booleano que se establece en 
+            true cuando el ticket es validado exitosamente en un intento de ingreso. 
             </summary>
         </member>
         <member name="P:EventAccessControl.API.Models.Ticket.UsedAt">
             <summary>
-            Fecha y hora en que el ticket fue utilizado para ingresar al evento. Es un valor nullable que se establece cuando IsUsed es true. Se utiliza para llevar un registro de 
-            cuándo se utilizó el ticket y para auditorías posteriores.
+            Fecha y hora en que el ticket fue utilizado para ingresar al evento. 
             </summary>
         </member>
         <member name="P:EventAccessControl.API.Models.Ticket.CreatedAt">
             <summary>
-            Fecha y hora en que el ticket fue creado. Se establece automáticamente al momento de la creación del ticket. Se utiliza para llevar un registro de cuándo se registró el 
-            ticket y para auditorías posteriores.
+            Fecha y hora en que el ticket fue creado. 
+            </summary>
+        </member>
+        <member name="P:EventAccessControl.API.Models.Ticket.EmailStatus">
+            <summary>
+            Estado del envío del correo electrónico con el código del ticket. Puede tener valores como "PENDIENTE", 
+            "ENVIADO", "FALLIDO", etc. 
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "P:EventAccessControl.API.Models.Ticket.EmailRetryCount" -->
+        <member name="P:EventAccessControl.API.Models.Ticket.EmailSentAt">
+            <summary>
+            Fecha y hora del último intento de envío del correo electrónico. Se actualiza cada vez que se intenta 
+            enviar el correo electrónico con el código del ticket. 
             </summary>
         </member>
         <member name="P:EventAccessControl.API.Models.Ticket.Event">
             <summary>
-            Campo de control de concurrencia optimista. Se utiliza para evitar registros duplicados y garantizar la integridad de los datos en escenarios de alta concurrencia.
+            Campo de control de concurrencia optimista. Se utiliza para evitar registros duplicados y garantizar la 
+            integridad de los datos en escenarios de alta concurrencia.
             </summary>
         </member>
         <member name="T:EventAccessControl.API.Models.User">
@@ -589,7 +603,7 @@
         </member>
         <member name="P:EventAccessControl.API.Models.User.CreatedAt">
             <summary>
-            Fecha de creación del usuario. Se establece automáticamente al momento de la creación del usuario. Se utiliza para llevar un registro de cuándo se creó el usuario y para auditorías posteriores.
+            Fecha de creación del usuario. Se establece automáticamente al momento de la creación del usuario. 
             </summary>
         </member>
         <member name="T:EventAccessControl.API.Services.EmailService">
@@ -603,7 +617,7 @@
             </summary>
             <param name="config"></param>
         </member>
-        <member name="M:EventAccessControl.API.Services.EmailService.SendQrEmail(System.String,System.String)">
+        <member name="M:EventAccessControl.API.Services.EmailService.SendQrEmail(System.String,System.String,System.String,System.DateOnly,System.Guid)">
             <summary>
             Método para enviar un correo electrónico con un código QR adjunto. Recibe el correo electrónico de destino y el código QR en formato base64 como parámetros. El método construye un mensaje de correo electrónico con el código QR adjunto y lo envía utilizando el servidor SMTP configurado.
             </summary>
@@ -614,35 +628,37 @@
         </member>
         <member name="T:EventAccessControl.API.Services.QRService">
             <summary>
-            Servicio para generar códigos QR en formato base64.
+            Servicio para generar códigos QR. Utiliza la biblioteca QRCoder para crear códigos QR
             </summary>
         </member>
-        <member name="M:EventAccessControl.API.Services.QRService.GenerateQRCodeBase64(System.String)">
+        <member name="M:EventAccessControl.API.Services.QRService.GenerateQRCodePng(System.String)">
             <summary>
-            Método para generar un código QR a partir de un texto dado y devolverlo en formato base64. Este método utiliza la biblioteca QRCoder para crear el código QR, lo 
-            convierte a un arreglo de bytes, y luego lo codifica en base64 para que pueda ser fácilmente enviado por correo electrónico o utilizado en otras partes de la aplicación.
-            </summary>
+            Genera un código QR en formato PNG a partir del texto proporcionado.
+            </summary> 
             <param name="text"></param>
             <returns></returns>
         </member>
+        <member name="M:EventAccessControl.API.Services.QRService.GenerateQRCodeBase64(System.String)">
+            <summary>
+            Genera un código QR en formato PNG a partir del texto proporcionado y devuelve el resultado en formato base64. 
+            </summary>
+        </member>
         <member name="T:EventAccessControl.API.Services.TokenService">
             <summary>
-            Servicio para generar y validar tokens JWT para los tickets de acceso al evento. Este servicio utiliza la configuración de la aplicación para obtener el secreto de firma, 
-            el emisor, y el público del token. El método "GenerateTicketToken" crea un token JWT que incluye los reclamos necesarios para identificar el ticket, el evento, y el correo 
-            electrónico del usuario. 
+            Servicio para generar y validar tokens JWT para los tickets de acceso al evento.  
             </summary>
         </member>
         <member name="M:EventAccessControl.API.Services.TokenService.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
             <summary>
-            Constructor que recibe la configuración de la aplicación para obtener los parámetros necesarios para generar y validar tokens JWT, como el secreto de firma, emisor, y 
-            público.
+            Constructor que recibe la configuración de la aplicación para obtener los parámetros necesarios para generar 
+            y validar tokens JWT, como el secreto de firma, emisor, y público.
             </summary>
             <param name="config"></param>
         </member>
         <member name="M:EventAccessControl.API.Services.TokenService.GenerateTicketToken(System.Guid,System.Guid,System.String)">
             <summary>
-            Método para generar un token JWT para un ticket específico. Recibe el identificador del ticket, el identificador del evento, y el correo electrónico del usuario asociado 
-            al ticket. El método construye un token JWT que incluye estos datos como reclamos.
+            Método para generar un token JWT para un ticket específico. Recibe el identificador del ticket, el 
+            identificador del evento, y el correo electrónico del usuario asociado al ticket. 
             </summary>
             <param name="ticketId"></param>
             <param name="eventId"></param>
@@ -652,8 +668,7 @@
         </member>
         <member name="M:EventAccessControl.API.Services.TokenService.ValidateToken(System.String)">
             <summary>
-            Método para validar un token JWT recibido durante la entrada al evento. Recibe el token como parámetro, y utiliza la configuración de la aplicación para validar el token,
-            incluyendo la firma, el emisor, el público, y la fecha de expiración.
+            Método para validar un token JWT recibido durante la entrada al evento. 
             </summary>
             <param name="token"></param>
             <returns></returns>
@@ -661,8 +676,7 @@
         </member>
         <member name="M:EventAccessControl.API.Services.TokenService.GenerateAuthToken(System.String,System.String)">
             <summary>
-            Método para generar un token JWT para un usuario específico. Recibe el correo electrónico y el rol del usuario como parámetros. El método construye un token JWT que incluye 
-            estos datos como reclamos.
+            Método para generar un token JWT para un usuario específico. 
             </summary>
             <param name="email"></param>
             <param name="role"></param>

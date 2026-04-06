@@ -35,7 +35,6 @@ namespace EventAccessControl.API.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Result")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<Guid?>("TicketId")
@@ -73,7 +72,6 @@ namespace EventAccessControl.API.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
@@ -90,6 +88,16 @@ namespace EventAccessControl.API.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<int>("EmailRetryCount")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime?>("EmailSentAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("EmailStatus")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<Guid>("EventId")
                         .HasColumnType("uuid");
 
@@ -97,14 +105,12 @@ namespace EventAccessControl.API.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<string>("TokenHash")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime?>("UsedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("UserEmail")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<uint>("xmin")
@@ -115,7 +121,8 @@ namespace EventAccessControl.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EventId");
+                    b.HasIndex("EventId", "UserEmail")
+                        .IsUnique();
 
                     b.ToTable("Tickets");
                 });
