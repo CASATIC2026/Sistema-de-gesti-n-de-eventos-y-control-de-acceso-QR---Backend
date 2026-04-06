@@ -4,15 +4,12 @@ using EventAccessControl.API.Models;
 namespace EventAccessControl.API.Data
 {
     /// <summary>
-    /// Contexto de la base de datos para la aplicación de control de acceso a eventos. Define las entidades Event, Ticket y CheckInLog, y configura el control de concurrencia 
-    /// optimista para la entidad Ticket utilizando el campo Xmin. Este contexto se utiliza para interactuar con la base de datos y realizar operaciones CRUD sobre las entidades 
-    /// definidas.
+    /// Contexto de la base de datos para la aplicación de control de acceso a eventos. 
     /// </summary>
     public class ApplicationDbContext : DbContext
     {
         /// <summary>
-        /// Constructor que recibe las opciones de configuración para el contexto de la base de datos. Estas opciones se utilizan para configurar la conexión a la base de datos y 
-        /// otros aspectos relacionados con el contexto. 
+        /// Constructor que recibe las opciones de configuración para el contexto de la base de datos. 
         /// </summary>
         /// <param name="options"></param>
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
@@ -38,12 +35,15 @@ namespace EventAccessControl.API.Data
         /// </summary>
         public DbSet<CheckInLog> CheckInLogs { get; set; }
 
+        /// <summary>
+        /// DbSet que representa la colección de usuarios en la base de datos. Permite realizar operaciones CRUD sobre los usuarios, como crear nuevos usuarios, consultar usuarios 
+        /// existentes, actualizar usuarios y eliminar usuarios.
+        /// </summary>
         public DbSet<User> Users { get; set; }
 
         /// <summary>
-        /// Configura el modelo de la base de datos, incluyendo la configuración del control de concurrencia optimista para la entidad Ticket utilizando el campo Xmin. 
-        /// Esto garantiza que en escenarios de alta concurrencia, como el registro simultáneo de tickets para el mismo evento y correo electrónico, solo una operación pueda 
-        /// completar exitosamente, mientras que las demás recibirán un error de concurrencia, evitando así registros duplicados y garantizando la integridad de los datos.
+        ///  Configura el modelo de datos para la base de datos, incluyendo la configuración de claves primarias, relaciones 
+        /// entre entidades, índices y tokens de concurrencia.
         /// </summary>
         /// <param name="modelBuilder"></param>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -52,6 +52,10 @@ namespace EventAccessControl.API.Data
 
             modelBuilder.Entity<Ticket>()
                 .UseXminAsConcurrencyToken();
+
+            modelBuilder.Entity<Ticket>()
+                .HasIndex(t => new { t.EventId, t.UserEmail })
+                .IsUnique();
         }
     }
 }
