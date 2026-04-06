@@ -114,3 +114,7 @@ C:\Users\GrupoA\Desktop\EventAccessControl.API\bin\Debug\net8.0\Microsoft.Identi
 C:\Users\GrupoA\Desktop\EventAccessControl.API\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
 C:\Users\GrupoA\Desktop\EventAccessControl.API\bin\Debug\net8.0\QRCoder.dll
 C:\Users\GrupoA\Desktop\EventAccessControl.API\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\GrupoA\Desktop\EventAccessControl.API\bin\Debug\net8.0\BCrypt.Net-Next.dll
+C:\Users\GrupoA\Desktop\EventAccessControl.API\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\GrupoA\Desktop\EventAccessControl.API\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
+C:\Users\GrupoA\Desktop\EventAccessControl.API\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll

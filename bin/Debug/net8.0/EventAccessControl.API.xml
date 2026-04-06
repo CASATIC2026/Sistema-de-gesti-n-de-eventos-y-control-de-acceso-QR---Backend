@@ -4,6 +4,34 @@
         <name>EventAccessControl.API</name>
     </assembly>
     <members>
+        <member name="T:EventAccessControl.API.Controllers.AuthController">
+            <summary>
+            Controlador para gestionar autenticación y autorización en el sistema. Incluye endpoints para registrar nuevos usuarios y para iniciar sesión en el sistema.
+            </summary>
+        </member>
+        <member name="M:EventAccessControl.API.Controllers.AuthController.#ctor(EventAccessControl.API.Data.ApplicationDbContext,EventAccessControl.API.Services.TokenService)">
+            <summary>
+            Constructor del controlador de autenticación, inyectando el contexto de la base de datos y el servicio de generación de tokens.
+            </summary>
+            <param name="context"></param>
+            <param name="tokenService"></param>
+        </member>
+        <member name="M:EventAccessControl.API.Controllers.AuthController.Register(EventAccessControl.API.DTOs.RegisterDto)">
+            <summary>
+            Registra un nuevo usuario en el sistema utilizando el correo electrónico y la contraseña proporcionados en el DTO. Valida que el usuario no exista y crea un nuevo usuario 
+            con el correo electrónico y la contraseña proporcionados. Retorna un mensaje de éxito.
+            </summary>
+            <param name="dto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:EventAccessControl.API.Controllers.AuthController.Login(EventAccessControl.API.DTOs.LoginDto)">
+            <summary>
+            Inicia sesión en el sistema utilizando el correo electrónico y la contraseña proporcionados en el DTO. Valida las credenciales del usuario y genera un token JWT para 
+            el usuario. Retorna un token JWT válido para el usuario.
+            </summary>
+            <param name="dto"></param>
+            <returns></returns>
+        </member>
         <member name="T:EventAccessControl.API.Controllers.EventController">
             <summary>
             Controlador para gestionar eventos, incluyendo creación, consulta, actualización y desactivación lógica.
@@ -145,6 +173,12 @@
             nuevos registros de ingreso, consultar registros de ingreso existentes, actualizar registros de ingreso y eliminar registros de ingreso.
             </summary>
         </member>
+        <member name="P:EventAccessControl.API.Data.ApplicationDbContext.Users">
+            <summary>
+            DbSet que representa la colección de usuarios en la base de datos. Permite realizar operaciones CRUD sobre los usuarios, como crear nuevos usuarios, consultar usuarios 
+            existentes, actualizar usuarios y eliminar usuarios.
+            </summary>
+        </member>
         <member name="M:EventAccessControl.API.Data.ApplicationDbContext.OnModelCreating(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <summary>
             Configura el modelo de la base de datos, incluyendo la configuración del control de concurrencia optimista para la entidad Ticket utilizando el campo Xmin. 
@@ -220,6 +254,40 @@
             evento, ya que les permite saber cuántas personas más pueden ingresar antes de alcanzar la capacidad máxima.
             </summary>
         </member>
+        <member name="T:EventAccessControl.API.DTOs.LoginDto">
+            <summary>
+            DTO utilizado para iniciar sesión en el sistema. Este modelo se utiliza para recibir los datos necesarios para iniciar sesión en el sistema, 
+            incluyendo el correo electrónico y la contraseña. El campo Email es obligatorio para identificar al usuario y para autenticar al usuario en el sistema. 
+            El campo Password es obligatorio para autenticar al usuario en el sistema.
+            </summary>
+        </member>
+        <member name="P:EventAccessControl.API.DTOs.LoginDto.Email">
+            <summary>
+            Correo electrónico del usuario. Es un campo obligatorio y se utiliza para identificar al usuario y para autenticar al usuario en el sistema.
+            </summary>
+        </member>
+        <member name="P:EventAccessControl.API.DTOs.LoginDto.Password">
+            <summary>
+            Contraseña del usuario. Es un campo obligatorio y se utiliza para autenticar al usuario en el sistema.
+            </summary>
+        </member>
+        <member name="T:EventAccessControl.API.DTOs.RegisterDto">
+            <summary>
+            DTO utilizado para registrar un nuevo usuario en el sistema. Este modelo se utiliza para recibir los datos necesarios para crear un usuario en el sistema, 
+            incluyendo el correo electrónico y la contraseña. El campo Email es obligatorio para identificar al usuario y para enviar notificaciones relacionadas con el usuario. 
+            El campo Password es obligatorio para autenticar al usuario en el sistema.
+            </summary>
+        </member>
+        <member name="P:EventAccessControl.API.DTOs.RegisterDto.Email">
+            <summary>
+            Correo electrónico del usuario. Es un campo obligatorio y se utiliza para identificar al usuario y para enviar notificaciones relacionadas con el usuario.
+            </summary>
+        </member>
+        <member name="P:EventAccessControl.API.DTOs.RegisterDto.Password">
+            <summary>
+            Contraseña del usuario. Es un campo obligatorio y se utiliza para autenticar al usuario en el sistema.
+            </summary>
+        </member>
         <member name="T:EventAccessControl.API.DTOs.RegisterTicketDto">
             <summary>
             DTO utilizado para registrar un nuevo ticket para un evento específico. Este modelo se utiliza para recibir los datos necesarios para crear un ticket en el sistema, 
@@ -232,12 +300,6 @@
             <summary>
             Identificador del evento al que se asociará el ticket. Es un campo obligatorio que se utiliza para establecer la relación entre el ticket y el evento correspondiente, 
             lo que permite realizar consultas relacionadas con los tickets de un evento específico y para gestionar la asignación de tickets a eventos en el sistema.
-            </summary>
-        </member>
-        <member name="P:EventAccessControl.API.DTOs.RegisterTicketDto.UserEmail">
-            <summary>
-            Correo electrónico del usuario que posee el ticket. Es un campo obligatorio que se utiliza para identificar al usuario que posee el ticket y para enviar notificaciones 
-            relacionadas con el evento, como recordatorios, actualizaciones o cualquier otra comunicación relevante. 
             </summary>
         </member>
         <member name="T:EventAccessControl.API.DTOs.UpdateEventDto">
@@ -341,18 +403,6 @@
             <inheritdoc />
         </member>
         <member name="M:EventAccessControl.API.Migrations.AddCheckInLogs.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="T:EventAccessControl.API.Migrations.AddUsers">
-            <inheritdoc />
-        </member>
-        <member name="M:EventAccessControl.API.Migrations.AddUsers.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="M:EventAccessControl.API.Migrations.AddUsers.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="M:EventAccessControl.API.Migrations.AddUsers.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
         <member name="T:EventAccessControl.API.Models.CheckInLog">
@@ -512,26 +562,55 @@
             Campo de control de concurrencia optimista. Se utiliza para evitar registros duplicados y garantizar la integridad de los datos en escenarios de alta concurrencia.
             </summary>
         </member>
+        <member name="T:EventAccessControl.API.Models.User">
+            <summary>
+            Modelo que representa un usuario en el sistema. Contiene información básica del usuario como correo electrónico, contraseña hash, rol y fecha de creación.
+            </summary>
+        </member>
+        <member name="P:EventAccessControl.API.Models.User.Id">
+            <summary>
+            Identificador único del usuario, generado automáticamente. Se utiliza para referenciar el usuario en operaciones de consulta y registro.
+            </summary>
+        </member>
+        <member name="P:EventAccessControl.API.Models.User.Email">
+            <summary>
+            Correo electrónico del usuario. Es un campo obligatorio y se utiliza para identificar al usuario y para enviar notificaciones relacionadas con el usuario.
+            </summary>
+        </member>
+        <member name="P:EventAccessControl.API.Models.User.PasswordHash">
+            <summary>
+            Contraseña hash del usuario. Es un campo obligatorio y se utiliza para autenticar al usuario en el sistema.
+            </summary>
+        </member>
+        <member name="P:EventAccessControl.API.Models.User.Role">
+            <summary>
+            Rol del usuario. Es un campo obligatorio y se utiliza para identificar el rol del usuario en el sistema.
+            </summary>
+        </member>
+        <member name="P:EventAccessControl.API.Models.User.CreatedAt">
+            <summary>
+            Fecha de creación del usuario. Se establece automáticamente al momento de la creación del usuario. Se utiliza para llevar un registro de cuándo se creó el usuario y para auditorías posteriores.
+            </summary>
+        </member>
         <member name="T:EventAccessControl.API.Services.EmailService">
             <summary>
-            Servicio para enviar correos electrónicos con códigos QR adjuntos.  
-            /// </summary>
+            Servicio para enviar correos electrónicos con códigos QR adjuntos.
+            </summary>
         </member>
         <member name="M:EventAccessControl.API.Services.EmailService.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
             <summary>
-            Constructor que recibe la configuración de la aplicación para obtener los parámetros necesarios para enviar correos electrónicos, como el servidor SMTP, puerto, 
-            credenciales, etc.
+            Constructor que recibe la configuración de la aplicación para obtener los parámetros necesarios para enviar correos electrónicos, como el servidor SMTP, el puerto, el correo electrónico de origen, y la contraseña.
             </summary>
             <param name="config"></param>
         </member>
         <member name="M:EventAccessControl.API.Services.EmailService.SendQrEmail(System.String,System.String)">
             <summary>
-            Método para enviar un correo electrónico con un código QR adjunto. Recibe el correo electrónico del destinatario y el código QR en formato base64. 
-            El método construye el mensaje de correo, adjunta la imagen del código QR, y utiliza el servidor SMTP configurado para enviar el correo al destinatario.
+            Método para enviar un correo electrónico con un código QR adjunto. Recibe el correo electrónico de destino y el código QR en formato base64 como parámetros. El método construye un mensaje de correo electrónico con el código QR adjunto y lo envía utilizando el servidor SMTP configurado.
             </summary>
             <param name="toEmail"></param>
             <param name="qrBase64"></param>
             <returns></returns>
+            <exception cref="T:System.InvalidOperationException"></exception>
         </member>
         <member name="T:EventAccessControl.API.Services.QRService">
             <summary>
@@ -579,6 +658,59 @@
             <param name="token"></param>
             <returns></returns>
             <exception cref="T:System.InvalidOperationException"></exception>
+        </member>
+        <member name="M:EventAccessControl.API.Services.TokenService.GenerateAuthToken(System.String,System.String)">
+            <summary>
+            Método para generar un token JWT para un usuario específico. Recibe el correo electrónico y el rol del usuario como parámetros. El método construye un token JWT que incluye 
+            estos datos como reclamos.
+            </summary>
+            <param name="email"></param>
+            <param name="role"></param>
+            <returns></returns>
+            <exception cref="T:System.InvalidOperationException"></exception>
+        </member>
+        <member name="T:ApiResponse`1">
+            <summary>
+            Clase para manejar las respuestas de la API.
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="P:ApiResponse`1.Message">
+            <summary>
+            Mensaje de la respuesta.
+            </summary>
+        </member>
+        <member name="P:ApiResponse`1.Data">
+            <summary>
+            Datos de la respuesta.
+            </summary>
+        </member>
+        <member name="P:ApiResponse`1.Errors">
+            <summary>
+            Errores de la respuesta.
+            </summary>
+        </member>
+        <member name="P:ApiResponse`1.StatusCode">
+            <summary>
+            Código de estado de la respuesta.
+            </summary>
+        </member>
+        <member name="M:ApiResponse`1.Ok(`0,System.String)">
+            <summary>
+            Método para manejar las respuestas de éxito.
+            </summary>
+            <param name="data"></param>
+            <param name="message"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ApiResponse`1.Fail(System.String,System.Int32,System.Object)">
+            <summary>
+            Método para manejar las respuestas de error.
+            </summary>
+            <param name="message"></param>
+            <param name="statusCode"></param>
+            <param name="errors"></param>
+            <returns></returns>
         </member>
     </members>
 </doc>
