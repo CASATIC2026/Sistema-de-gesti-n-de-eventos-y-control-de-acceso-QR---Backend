@@ -77,9 +77,12 @@
         </member>
         <member name="M:EventAccessControl.API.Controllers.TicketController.#ctor(EventAccessControl.API.Data.ApplicationDbContext,EventAccessControl.API.Services.TokenService,EventAccessControl.API.Services.QRService,EventAccessControl.API.Services.EmailService)">
             <summary>
-            Constructor que inyecta el contexto de la base de datos para acceder a los tickets y eventos.
+            Constructor del controlador de tickets, inyectando el contexto de la base de datos, el servicio de generación de tokens, el servicio de generación de códigos QR y el servicio de envío de correos electrónicos.
             </summary>
             <param name="context"></param>
+            <param name="tokenService"></param>
+            <param name="qrService"></param>
+            <param name="emailService"></param>
         </member>
         <member name="M:EventAccessControl.API.Controllers.TicketController.RegisterTicket(EventAccessControl.API.DTOs.RegisterTicketDto)">
             <summary>
@@ -102,6 +105,13 @@
             <response code="200">Lista de tickets obtenida exitosamente (puede estar vacía).</response>
             <response code="404">Evento no encontrado.</response>
             <response code="500">Error interno del servidor.</response>
+        </member>
+        <member name="M:EventAccessControl.API.Controllers.TicketController.ValidateEntry(EventAccessControl.API.DTOs.ValidateEntryDto)">
+            <summary>
+            Valida la entrada de un ticket utilizando el token JWT del código QR. Verifica que el token sea válido, que el ticket exista, y que no haya sido utilizado previamente.
+            </summary>
+            <param name="dto"></param>
+            <returns></returns>
         </member>
         <member name="T:EventAccessControl.API.Data.ApplicationDbContext">
             <summary>
@@ -176,6 +186,40 @@
             Este campo puede incluir detalles como la dirección, el nombre del lugar, o cualquier otra información relevante sobre la ubicación del evento.
             </summary>
         </member>
+        <member name="T:EventAccessControl.API.DTOs.EventStatsDto">
+            <summary>
+            DTO para representar las estadísticas de un evento, incluyendo la capacidad total, el número de tickets registrados, el número de entradas validadas, y el número de entradas 
+            restantes. Este DTO se utiliza para mostrar información relevante sobre el estado del evento en términos de acceso y control de entradas.
+            </summary>
+        </member>
+        <member name="P:EventAccessControl.API.DTOs.EventStatsDto.EventId">
+            <summary>
+            Identificador único del evento para el cual se están mostrando las estadísticas.
+            </summary>
+        </member>
+        <member name="P:EventAccessControl.API.DTOs.EventStatsDto.Capacity">
+            <summary>
+            Capacidad total del evento, es decir, el número máximo de asistentes permitidos. Esta información es crucial para controlar el acceso y evitar sobrecupo en el evento.
+            </summary>
+        </member>
+        <member name="P:EventAccessControl.API.DTOs.EventStatsDto.TicketsRegistered">
+            <summary>
+            Número de tickets que han sido registrados para el evento. Este número puede ser igual o menor a la capacidad total, y es un indicador de cuántas personas han mostrado 
+            interés en asistir al evento.
+            </summary>
+        </member>
+        <member name="P:EventAccessControl.API.DTOs.EventStatsDto.CheckedIn">
+            <summary>
+            Número de entradas que han sido validadas en la entrada del evento. Este número representa cuántas personas han ingresado efectivamente al evento, y es un indicador 
+            clave para el control de acceso.
+            </summary>
+        </member>
+        <member name="P:EventAccessControl.API.DTOs.EventStatsDto.Remaining">
+            <summary>
+            Número de entradas restantes, calculado como la diferencia entre la capacidad total y el número de entradas validadas. Este número es importante para el personal del 
+            evento, ya que les permite saber cuántas personas más pueden ingresar antes de alcanzar la capacidad máxima.
+            </summary>
+        </member>
         <member name="T:EventAccessControl.API.DTOs.RegisterTicketDto">
             <summary>
             DTO utilizado para registrar un nuevo ticket para un evento específico. Este modelo se utiliza para recibir los datos necesarios para crear un ticket en el sistema, 
@@ -239,6 +283,18 @@
             disponibles o puede ser marcado como cerrado para nuevas inscripciones, dependiendo de la lógica de negocio implementada en el sistema.
             </summary>
         </member>
+        <member name="T:EventAccessControl.API.DTOs.ValidateEntryDto">
+            <summary>
+            DTO para validar la entrada de un ticket utilizando el token JWT del código QR. Este DTO contiene una propiedad "Token" que es requerida y se utiliza para recibir el token 
+            JWT enviado desde la aplicación móvil o el dispositivo de escaneo en la entrada del evento. El controlador de tickets utilizará este DTO para validar el token, verificar que el ticket exista, y asegurarse de que no haya sido utilizado previamente para permitir o denegar el acceso al evento. 
+            </summary>
+        </member>
+        <member name="P:EventAccessControl.API.DTOs.ValidateEntryDto.Token">
+            <summary>
+            Token JWT del código QR que se va a validar. Esta propiedad es requerida y debe contener el token generado para el ticket correspondiente. El controlador de tickets 
+            utilizará este token para realizar la validación de la entrada al evento.
+            </summary>
+        </member>
         <member name="T:EventAccessControl.API.Migrations.InitialCreate">
             <inheritdoc />
         </member>
@@ -285,6 +341,18 @@
             <inheritdoc />
         </member>
         <member name="M:EventAccessControl.API.Migrations.AddCheckInLogs.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:EventAccessControl.API.Migrations.AddUsers">
+            <inheritdoc />
+        </member>
+        <member name="M:EventAccessControl.API.Migrations.AddUsers.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:EventAccessControl.API.Migrations.AddUsers.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:EventAccessControl.API.Migrations.AddUsers.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
         <member name="T:EventAccessControl.API.Models.CheckInLog">
@@ -438,6 +506,79 @@
             Fecha y hora en que el ticket fue creado. Se establece automáticamente al momento de la creación del ticket. Se utiliza para llevar un registro de cuándo se registró el 
             ticket y para auditorías posteriores.
             </summary>
+        </member>
+        <member name="P:EventAccessControl.API.Models.Ticket.Event">
+            <summary>
+            Campo de control de concurrencia optimista. Se utiliza para evitar registros duplicados y garantizar la integridad de los datos en escenarios de alta concurrencia.
+            </summary>
+        </member>
+        <member name="T:EventAccessControl.API.Services.EmailService">
+            <summary>
+            Servicio para enviar correos electrónicos con códigos QR adjuntos.  
+            /// </summary>
+        </member>
+        <member name="M:EventAccessControl.API.Services.EmailService.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Constructor que recibe la configuración de la aplicación para obtener los parámetros necesarios para enviar correos electrónicos, como el servidor SMTP, puerto, 
+            credenciales, etc.
+            </summary>
+            <param name="config"></param>
+        </member>
+        <member name="M:EventAccessControl.API.Services.EmailService.SendQrEmail(System.String,System.String)">
+            <summary>
+            Método para enviar un correo electrónico con un código QR adjunto. Recibe el correo electrónico del destinatario y el código QR en formato base64. 
+            El método construye el mensaje de correo, adjunta la imagen del código QR, y utiliza el servidor SMTP configurado para enviar el correo al destinatario.
+            </summary>
+            <param name="toEmail"></param>
+            <param name="qrBase64"></param>
+            <returns></returns>
+        </member>
+        <member name="T:EventAccessControl.API.Services.QRService">
+            <summary>
+            Servicio para generar códigos QR en formato base64.
+            </summary>
+        </member>
+        <member name="M:EventAccessControl.API.Services.QRService.GenerateQRCodeBase64(System.String)">
+            <summary>
+            Método para generar un código QR a partir de un texto dado y devolverlo en formato base64. Este método utiliza la biblioteca QRCoder para crear el código QR, lo 
+            convierte a un arreglo de bytes, y luego lo codifica en base64 para que pueda ser fácilmente enviado por correo electrónico o utilizado en otras partes de la aplicación.
+            </summary>
+            <param name="text"></param>
+            <returns></returns>
+        </member>
+        <member name="T:EventAccessControl.API.Services.TokenService">
+            <summary>
+            Servicio para generar y validar tokens JWT para los tickets de acceso al evento. Este servicio utiliza la configuración de la aplicación para obtener el secreto de firma, 
+            el emisor, y el público del token. El método "GenerateTicketToken" crea un token JWT que incluye los reclamos necesarios para identificar el ticket, el evento, y el correo 
+            electrónico del usuario. 
+            </summary>
+        </member>
+        <member name="M:EventAccessControl.API.Services.TokenService.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Constructor que recibe la configuración de la aplicación para obtener los parámetros necesarios para generar y validar tokens JWT, como el secreto de firma, emisor, y 
+            público.
+            </summary>
+            <param name="config"></param>
+        </member>
+        <member name="M:EventAccessControl.API.Services.TokenService.GenerateTicketToken(System.Guid,System.Guid,System.String)">
+            <summary>
+            Método para generar un token JWT para un ticket específico. Recibe el identificador del ticket, el identificador del evento, y el correo electrónico del usuario asociado 
+            al ticket. El método construye un token JWT que incluye estos datos como reclamos.
+            </summary>
+            <param name="ticketId"></param>
+            <param name="eventId"></param>
+            <param name="email"></param>
+            <returns></returns>
+            <exception cref="T:System.InvalidOperationException"></exception>
+        </member>
+        <member name="M:EventAccessControl.API.Services.TokenService.ValidateToken(System.String)">
+            <summary>
+            Método para validar un token JWT recibido durante la entrada al evento. Recibe el token como parámetro, y utiliza la configuración de la aplicación para validar el token,
+            incluyendo la firma, el emisor, el público, y la fecha de expiración.
+            </summary>
+            <param name="token"></param>
+            <returns></returns>
+            <exception cref="T:System.InvalidOperationException"></exception>
         </member>
     </members>
 </doc>

@@ -38,6 +38,8 @@ namespace EventAccessControl.API.Data
         /// </summary>
         public DbSet<CheckInLog> CheckInLogs { get; set; }
 
+        public DbSet<User> Users { get; set; }
+
         /// <summary>
         /// Configura el modelo de la base de datos, incluyendo la configuración del control de concurrencia optimista para la entidad Ticket utilizando el campo Xmin. 
         /// Esto garantiza que en escenarios de alta concurrencia, como el registro simultáneo de tickets para el mismo evento y correo electrónico, solo una operación pueda 
