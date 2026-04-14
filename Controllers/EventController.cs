@@ -49,6 +49,7 @@ namespace EventAccessControl.API.Controllers
                 EventDate = dto.EventDate,
                 MaxCapacity = dto.MaxCapacity,
                 Location = dto.Location,
+                ImageUrl = dto.ImageUrl,
                 CreatedAt = DateTime.UtcNow
             };
 
@@ -131,6 +132,7 @@ namespace EventAccessControl.API.Controllers
             eventEntity.EventDate = dto.EventDate;
             eventEntity.MaxCapacity = dto.MaxCapacity;
             eventEntity.Location = dto.Location;
+            eventEntity.ImageUrl = dto.ImageUrl;
             eventEntity.IsActive = dto.IsActive;
 
             await _context.SaveChangesAsync();

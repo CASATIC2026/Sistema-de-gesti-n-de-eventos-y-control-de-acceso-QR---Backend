@@ -27,6 +27,9 @@ namespace EventAccessControl.API.Services
         /// </summary>
         /// <param name="toEmail"></param>
         /// <param name="qrBase64"></param>
+        /// <param name="eventName"></param>
+        /// <param name="eventDate"></param>
+        /// <param name="ticketId"></param>
         /// <returns></returns>
         /// <exception cref="InvalidOperationException"></exception>
         public async Task SendQrEmail(string toEmail, string qrBase64, string eventName, DateOnly eventDate, Guid ticketId)

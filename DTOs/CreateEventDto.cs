@@ -37,5 +37,10 @@ namespace EventAccessControl.API.DTOs
         /// Ubicación del evento, que es un campo opcional para proporcionar información sobre dónde se llevará a cabo el evento. 
         /// </summary>
         public string? Location { get; set; }
+
+        /// <summary>
+        /// URL de la imagen del evento.
+        /// </summary>
+        public string? ImageUrl { get; set; }
     }
 }

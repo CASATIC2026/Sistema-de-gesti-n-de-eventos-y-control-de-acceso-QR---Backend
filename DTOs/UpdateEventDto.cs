@@ -41,5 +41,10 @@ namespace EventAccessControl.API.DTOs
         /// Indica si el evento está activo o no, lo que es un campo obligatorio para establecer el estado del evento en el sistema.
         /// </summary>
         public bool IsActive { get; set; }
+
+        /// <summary>
+        /// URL de la imagen del evento.
+        /// </summary>
+        public string? ImageUrl { get; set; }
     }
 }

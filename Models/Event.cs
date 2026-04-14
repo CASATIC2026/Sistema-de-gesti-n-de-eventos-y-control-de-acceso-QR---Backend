@@ -43,6 +43,11 @@ namespace EventAccessControl.API.Models
         public bool IsActive { get; set; } = true;
 
         /// <summary>
+        /// URL de la imagen del evento.
+        /// </summary>
+        public string? ImageUrl { get; set; }
+
+        /// <summary>
         /// Fecha y hora en que el evento fue creado. 
         /// </summary>
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;

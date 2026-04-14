@@ -226,6 +226,11 @@
             Ubicación del evento, que es un campo opcional para proporcionar información sobre dónde se llevará a cabo el evento. 
             </summary>
         </member>
+        <member name="P:EventAccessControl.API.DTOs.CreateEventDto.ImageUrl">
+            <summary>
+            URL de la imagen del evento.
+            </summary>
+        </member>
         <member name="T:EventAccessControl.API.DTOs.EventStatsDto">
             <summary>
             DTO para representar las estadísticas de un evento, incluyendo la capacidad total, el número de tickets 
@@ -343,6 +348,11 @@
             Indica si el evento está activo o no, lo que es un campo obligatorio para establecer el estado del evento en el sistema.
             </summary>
         </member>
+        <member name="P:EventAccessControl.API.DTOs.UpdateEventDto.ImageUrl">
+            <summary>
+            URL de la imagen del evento.
+            </summary>
+        </member>
         <member name="T:EventAccessControl.API.DTOs.ValidateEntryDto">
             <summary>
             DTO para validar la entrada de un ticket utilizando el token JWT del código QR.  
@@ -425,6 +435,18 @@
         <member name="M:EventAccessControl.API.Migrations.AddEmailFieldsToTicket.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
+        <member name="T:EventAccessControl.API.Migrations.AddImageUrlToEvent">
+            <inheritdoc />
+        </member>
+        <member name="M:EventAccessControl.API.Migrations.AddImageUrlToEvent.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:EventAccessControl.API.Migrations.AddImageUrlToEvent.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:EventAccessControl.API.Migrations.AddImageUrlToEvent.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
         <member name="T:EventAccessControl.API.Models.CheckInLog">
             <summary>
             Modelo que representa un registro de intento de ingreso al evento utilizando un ticket. Se utiliza para llevar un historial de los intentos de ingreso, incluyendo la fecha y 
@@ -504,6 +526,11 @@
             Indica si el evento está activo o no.  
             </summary>
         </member>
+        <member name="P:EventAccessControl.API.Models.Event.ImageUrl">
+            <summary>
+            URL de la imagen del evento.
+            </summary>
+        </member>
         <member name="P:EventAccessControl.API.Models.Event.CreatedAt">
             <summary>
             Fecha y hora en que el evento fue creado. 
@@ -563,7 +590,12 @@
             "ENVIADO", "FALLIDO", etc. 
             </summary>
         </member>
-        <!-- Badly formed XML comment ignored for member "P:EventAccessControl.API.Models.Ticket.EmailRetryCount" -->
+        <member name="P:EventAccessControl.API.Models.Ticket.EmailRetryCount">
+            <summary>
+            Contador de reintentos de envío del correo electrónico. Se incrementa cada vez que se intenta enviar el 
+            correo electrónico con el código del ticket. 
+            </summary>
+        </member>
         <member name="P:EventAccessControl.API.Models.Ticket.EmailSentAt">
             <summary>
             Fecha y hora del último intento de envío del correo electrónico. Se actualiza cada vez que se intenta 
@@ -623,6 +655,9 @@
             </summary>
             <param name="toEmail"></param>
             <param name="qrBase64"></param>
+            <param name="eventName"></param>
+            <param name="eventDate"></param>
+            <param name="ticketId"></param>
             <returns></returns>
             <exception cref="T:System.InvalidOperationException"></exception>
         </member>

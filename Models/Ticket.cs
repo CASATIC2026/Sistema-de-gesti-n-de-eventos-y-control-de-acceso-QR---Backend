@@ -53,6 +53,7 @@ namespace EventAccessControl.API.Models
         /// <summary>
         /// Contador de reintentos de envío del correo electrónico. Se incrementa cada vez que se intenta enviar el 
         /// correo electrónico con el código del ticket. 
+        /// </summary>
         public int EmailRetryCount { get; set; } = 0;
         
         /// <summary>
