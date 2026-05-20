@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.RateLimiting;
 using System.Text;
 
 namespace EventAccessControl.API.Controllers
-{   
+{
     /// <summary>
     /// Controlador para gestionar tickets, incluyendo registro de tickets para eventos específicos y consulta de tickets por evento. Implementa validaciones de aforo y registro 
     /// duplicado.
@@ -249,7 +249,8 @@ namespace EventAccessControl.API.Controllers
                         EventId = t.Event!.Id,
                         Name = t.Event.Name,
                         EventDate = t.Event.EventDate,
-                        IsActive = t.Event.IsActive
+                        IsActive = t.Event.IsActive,
+                        ImageUrl = t.Event.ImageUrl
                     }
                 })
                 .ToListAsync();
@@ -326,8 +327,33 @@ namespace EventAccessControl.API.Controllers
         /// <returns></returns>
         [Authorize(Roles = "Admin")]
         [HttpPost("validate-entry")]
+
         public async Task<IActionResult> ValidateEntry([FromBody] ValidateEntryDto dto)
         {
+
+            Console.WriteLine("=== VALIDATE ENTRY ===");
+            Console.WriteLine(dto.Token);
+
+            var tokenPrincipal = _tokenService.ValidateToken(dto.Token);
+
+            Console.WriteLine("TOKEN VALIDATION RESULT: " + (tokenPrincipal != null));
+
+            if (tokenPrincipal == null)
+            {
+                _context.CheckInLogs.Add(new CheckInLog
+                {
+                    Result = "INVALIDO",
+                    DeviceInfo = HttpContext.Connection.RemoteIpAddress?.ToString()
+                });
+
+                await _context.SaveChangesAsync();
+
+                return BadRequest(ApiResponse<object>.Fail("QR inválido.", 400));
+            }
+
+
+
+
             var principal = _tokenService.ValidateToken(dto.Token);
 
             if (principal == null)
@@ -343,10 +369,49 @@ namespace EventAccessControl.API.Controllers
                 return BadRequest(ApiResponse<object>.Fail("QR inválido.", 400));
             }
 
-            var hash = GenerateSha256Hash(dto.Token);
+            // var hash = GenerateSha256Hash(dto.Token);
+
+            // var ticket = await _context.Tickets
+            //     .FirstOrDefaultAsync(t => t.TokenHash == hash);
+
+            // var tokenPrincipal = _tokenService.ValidateToken(dto.Token);
+
+            if (tokenPrincipal == null)
+            {
+                _context.CheckInLogs.Add(new CheckInLog
+                {
+                    Result = "INVALIDO",
+                    DeviceInfo = HttpContext.Connection.RemoteIpAddress?.ToString()
+                });
+
+                await _context.SaveChangesAsync();
+
+                return BadRequest(ApiResponse<object>.Fail("QR inválido.", 400));
+            }
+
+            var ticketId = tokenPrincipal.FindFirst("ticketId")?.Value;
+
+            if (string.IsNullOrEmpty(ticketId))
+            {
+                _context.CheckInLogs.Add(new CheckInLog
+                {
+                    Result = "INVALIDO",
+                    DeviceInfo = HttpContext.Connection.RemoteIpAddress?.ToString()
+                });
+
+                await _context.SaveChangesAsync();
+
+                return BadRequest(ApiResponse<object>.Fail("Token sin ticketId", 400));
+            }
+
+            if (!Guid.TryParse(ticketId, out var ticketGuid))
+            {
+                return BadRequest(ApiResponse<object>.Fail("TicketId inválido", 400));
+            }
 
             var ticket = await _context.Tickets
-                .FirstOrDefaultAsync(t => t.TokenHash == hash);
+                .FirstOrDefaultAsync(t => t.Id == ticketGuid);
+
 
             if (ticket == null)
             {
@@ -373,10 +438,10 @@ namespace EventAccessControl.API.Controllers
                 await _context.SaveChangesAsync();
 
                 return BadRequest(ApiResponse<object>.Fail(
-                    "Ticket ya utilizado",
-                    400,
-                    new { usedAt = ticket.UsedAt }
-                ));
+        "Ticket ya utilizado",
+        400,
+        new { usedAt = ticket.UsedAt }
+    ));
             }
 
             ticket.IsUsed = true;

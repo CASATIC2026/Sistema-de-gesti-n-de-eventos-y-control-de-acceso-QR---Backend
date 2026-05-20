@@ -3336,23 +3336,26 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\GrupoA\\.nuget\\packages\\": {},
+    "C:\\Users\\Eliel\\.nuget\\packages\\": {},
+    "C:\\Program Files\\DevExpress 25.2\\Components\\Offline Packages": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\GrupoA\\Desktop\\EventAccessControl.API\\EventAccessControl.API.csproj",
+      "projectUniqueName": "C:\\Users\\Eliel\\Documents\\SistemaGestion\\Sistema-de-gesti-n-de-eventos-y-control-de-acceso-QR---Backend\\EventAccessControl.API.csproj",
       "projectName": "EventAccessControl.API",
-      "projectPath": "C:\\Users\\GrupoA\\Desktop\\EventAccessControl.API\\EventAccessControl.API.csproj",
-      "packagesPath": "C:\\Users\\GrupoA\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\GrupoA\\Desktop\\EventAccessControl.API\\obj\\",
+      "projectPath": "C:\\Users\\Eliel\\Documents\\SistemaGestion\\Sistema-de-gesti-n-de-eventos-y-control-de-acceso-QR---Backend\\EventAccessControl.API.csproj",
+      "packagesPath": "C:\\Users\\Eliel\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Eliel\\Documents\\SistemaGestion\\Sistema-de-gesti-n-de-eventos-y-control-de-acceso-QR---Backend\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
+        "C:\\Program Files\\DevExpress 25.2\\Components\\Offline Packages",
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\GrupoA\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Eliel\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 25.2.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -3361,6 +3364,7 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\DevExpress 25.2\\Components\\System\\Components\\Packages": {},
         "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
@@ -3380,7 +3384,7 @@
         "auditLevel": "low",
         "auditMode": "direct"
       },
-      "SdkAnalysisLevel": "10.0.100"
+      "SdkAnalysisLevel": "10.0.200"
     },
     "frameworks": {
       "net8.0": {
@@ -3445,19 +3449,19 @@
         "downloadDependencies": [
           {
             "name": "Microsoft.AspNetCore.App.Ref",
-            "version": "[8.0.24, 8.0.24]"
+            "version": "[8.0.25, 8.0.25]"
           },
           {
             "name": "Microsoft.NETCore.App.Host.win-x64",
-            "version": "[8.0.24, 8.0.24]"
+            "version": "[8.0.25, 8.0.25]"
           },
           {
             "name": "Microsoft.NETCore.App.Ref",
-            "version": "[8.0.24, 8.0.24]"
+            "version": "[8.0.25, 8.0.25]"
           },
           {
             "name": "Microsoft.WindowsDesktop.App.Ref",
-            "version": "[8.0.24, 8.0.24]"
+            "version": "[8.0.25, 8.0.25]"
           }
         ],
         "frameworkReferences": {
@@ -3468,7 +3472,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.103/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.201/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

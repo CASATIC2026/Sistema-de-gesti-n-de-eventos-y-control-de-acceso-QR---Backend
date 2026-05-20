@@ -447,6 +447,18 @@
         <member name="M:EventAccessControl.API.Migrations.AddImageUrlToEvent.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
+        <member name="T:EventAccessControl.API.Migrations.AddImageUrlToEvents">
+            <inheritdoc />
+        </member>
+        <member name="M:EventAccessControl.API.Migrations.AddImageUrlToEvents.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:EventAccessControl.API.Migrations.AddImageUrlToEvents.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:EventAccessControl.API.Migrations.AddImageUrlToEvents.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
         <member name="T:EventAccessControl.API.Models.CheckInLog">
             <summary>
             Modelo que representa un registro de intento de ingreso al evento utilizando un ticket. Se utiliza para llevar un historial de los intentos de ingreso, incluyendo la fecha y 

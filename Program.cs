@@ -116,15 +116,15 @@ builder.Services.AddAuthorization();
 var corsOrigins = builder.Configuration.GetSection("Cors:Origins").Get<string[]>() ?? Array.Empty<string>();
 builder.Services.AddCors(options =>
 {
-    options.AddDefaultPolicy(policy =>
+    options.AddPolicy("AllowFrontend", policy =>
     {
-        if (corsOrigins.Length > 0)
-            policy.WithOrigins(corsOrigins).AllowAnyHeader().AllowAnyMethod();
-        else
-            policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+        policy
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials()
+            .SetIsOriginAllowed(_ => true); //  para desarrollo (IMPORTANTE)
     });
 });
-
 builder.Services.AddRateLimiter(options =>
 {
     // Devolver un 429 Too Many Requests cuando se exceda el límite (estándar HTTP)
@@ -144,13 +144,16 @@ builder.Services.AddRateLimiter(options =>
             }));
 });
 
+//builder.WebHost.UseUrls("http://0.0.0.0:5255");
+//builder.WebHost.UseUrls("http://0.0.0.0:5255");
 var app = builder.Build();
+app.UseCors("AllowFrontend");
 
 app.UseSwagger();
 app.UseSwaggerUI();
 app.UseRateLimiter();
-app.UseHttpsRedirection();
 app.UseCors();
+app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
