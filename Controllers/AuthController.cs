@@ -16,6 +16,8 @@ namespace EventAccessControl.API.Controllers
     {   
         private readonly ApplicationDbContext _context;
         private readonly TokenService _tokenService;
+
+        private readonly EmailService _emailService;
         
         /// <summary>
         /// Constructor del controlador de autenticación, inyectando el contexto de la base de datos y el servicio de 
@@ -23,11 +25,16 @@ namespace EventAccessControl.API.Controllers
         /// </summary>
         /// <param name="context"></param>
         /// <param name="tokenService"></param>
-        public AuthController(ApplicationDbContext context, TokenService tokenService)
-        {
-            _context = context;
-            _tokenService = tokenService;
-        }
+       
+      public AuthController(
+    ApplicationDbContext context,
+    TokenService tokenService,
+    EmailService emailService)
+{
+    _context = context;
+    _tokenService = tokenService;
+    _emailService = emailService;
+}
 
         /// <summary>
         /// Registra un nuevo usuario en el sistema utilizando el correo electrónico y la contraseña proporcionados en 
@@ -97,5 +104,114 @@ namespace EventAccessControl.API.Controllers
                 "Login exitoso"
             ));
         }
+
+
+[HttpPost("forgot-password")]
+public async Task<IActionResult> ForgotPassword(ForgotPasswordDto dto)
+{
+    if (!ModelState.IsValid)
+    {
+        return BadRequest(
+            ApiResponse<object>.Fail(
+                "Datos inválidos.",
+                400,
+                ModelState
+            )
+        );
+    }
+
+    var user = await _context.Users
+        .FirstOrDefaultAsync(u => u.Email == dto.Email);
+
+    if (user == null)
+    {
+        return Ok(
+            ApiResponse<object>.Ok(
+                null,
+                "Si el correo existe, enviamos instrucciones."
+            )
+        );
+    }
+
+    var token = Guid.NewGuid().ToString();
+
+    user.ResetToken = token;
+    user.ResetTokenExpiry = DateTime.UtcNow.AddHours(1);
+
+    await _context.SaveChangesAsync();
+
+    var resetLink =
+        $"http://localhost:5173/reset-password?token={token}";
+
+    await _emailService.SendPasswordResetEmail(
+        dto.Email,
+        resetLink
+    );
+
+    return Ok(
+        ApiResponse<object>.Ok(
+            null,
+            "Correo enviado correctamente."
+        )
+    );
+}
+
+
+        [HttpPost("reset-password")]
+public async Task<IActionResult> ResetPassword(
+    ResetPasswordDto dto)
+{
+    if (!ModelState.IsValid)
+    {
+        return BadRequest(
+            ApiResponse<object>.Fail(
+                "Datos inválidos.",
+                400,
+                ModelState
+            )
+        );
+    }
+
+    var user = await _context.Users
+        .FirstOrDefaultAsync(u =>
+            u.ResetToken == dto.Token);
+
+    if (user == null)
+    {
+        return BadRequest(
+            ApiResponse<object>.Fail(
+                "Token inválido.",
+                400
+            )
+        );
+    }
+
+    if (user.ResetTokenExpiry < DateTime.UtcNow)
+    {
+        return BadRequest(
+            ApiResponse<object>.Fail(
+                "Token expirado.",
+                400
+            )
+        );
+    }
+
+    user.PasswordHash =
+        BCrypt.Net.BCrypt.HashPassword(dto.NewPassword);
+
+    // Inutilizar token después de usarlo
+    user.ResetToken = null;
+    user.ResetTokenExpiry = null;
+
+    await _context.SaveChangesAsync();
+
+    return Ok(
+        ApiResponse<object>.Ok(
+            null,
+            "Contraseña actualizada correctamente."
+        )
+    );
+}
+           
     }
 }

@@ -10,7 +10,7 @@
             usuarios y para iniciar sesión en el sistema.
             </summary>
         </member>
-        <member name="M:EventAccessControl.API.Controllers.AuthController.#ctor(EventAccessControl.API.Data.ApplicationDbContext,EventAccessControl.API.Services.TokenService)">
+        <member name="M:EventAccessControl.API.Controllers.AuthController.#ctor(EventAccessControl.API.Data.ApplicationDbContext,EventAccessControl.API.Services.TokenService,EventAccessControl.API.Services.EmailService)">
             <summary>
             Constructor del controlador de autenticación, inyectando el contexto de la base de datos y el servicio de 
             generación de tokens.
@@ -457,6 +457,18 @@
             <inheritdoc />
         </member>
         <member name="M:EventAccessControl.API.Migrations.AddImageUrlToEvents.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:EventAccessControl.API.Migrations.AddResetPasswordFields">
+            <inheritdoc />
+        </member>
+        <member name="M:EventAccessControl.API.Migrations.AddResetPasswordFields.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:EventAccessControl.API.Migrations.AddResetPasswordFields.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:EventAccessControl.API.Migrations.AddResetPasswordFields.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
         <member name="T:EventAccessControl.API.Models.CheckInLog">

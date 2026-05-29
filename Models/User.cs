@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 
 namespace EventAccessControl.API.Models
-{   
+{
     /// <summary>
     /// Modelo que representa un usuario en el sistema. Contiene información básica del usuario como correo electrónico, contraseña hash, rol y fecha de creación.
     /// </summary>
@@ -33,5 +33,9 @@ namespace EventAccessControl.API.Models
         /// Fecha de creación del usuario. Se establece automáticamente al momento de la creación del usuario. 
         /// </summary>
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+        //reset password
+        public string? ResetToken { get; set; }
+        public DateTime? ResetTokenExpiry { get; set; }
     }
 }

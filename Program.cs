@@ -119,10 +119,9 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowFrontend", policy =>
     {
         policy
+            .WithOrigins("http://localhost:5173")
             .AllowAnyHeader()
-            .AllowAnyMethod()
-            .AllowCredentials()
-            .SetIsOriginAllowed(_ => true); //  para desarrollo (IMPORTANTE)
+            .AllowAnyMethod();
     });
 });
 builder.Services.AddRateLimiter(options =>
@@ -147,15 +146,21 @@ builder.Services.AddRateLimiter(options =>
 //builder.WebHost.UseUrls("http://0.0.0.0:5255");
 //builder.WebHost.UseUrls("http://0.0.0.0:5255");
 var app = builder.Build();
+
+app.UseRouting();
+
 app.UseCors("AllowFrontend");
+
+
+app.UseAuthentication();
+
+app.UseAuthorization();
+
+app.UseRateLimiter();
+
+app.MapControllers();
 
 app.UseSwagger();
 app.UseSwaggerUI();
-app.UseRateLimiter();
-app.UseCors();
-app.UseHttpsRedirection();
-app.UseAuthentication();
-app.UseAuthorization();
-app.MapControllers();
 
 app.Run();

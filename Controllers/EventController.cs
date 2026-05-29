@@ -38,7 +38,7 @@ namespace EventAccessControl.API.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateEvent(CreateEventDto dto)
         {
-            if (dto.EventDate <= DateOnly.FromDateTime(DateTime.UtcNow))
+            if (dto.EventDate < DateOnly.FromDateTime(DateTime.Now))
                 return BadRequest(ApiResponse<object>.Fail("La fecha del evento debe ser futura.", 400));
 
             var newEvent = new Event

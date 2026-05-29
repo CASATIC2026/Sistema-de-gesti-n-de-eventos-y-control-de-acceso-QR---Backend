@@ -141,6 +141,73 @@ namespace EventAccessControl.API.Services
 
             await smtp.SendMailAsync(message);
         }
+
+        public async Task SendPasswordResetEmail(
+    string toEmail,
+    string resetLink)
+{
+    var smtpServer = _config["EmailSettings:SmtpServer"]
+        ?? throw new InvalidOperationException("SmtpServer no configurado.");
+
+    if (!int.TryParse(_config["EmailSettings:Port"], out int port))
+        throw new InvalidOperationException("Puerto SMTP inválido.");
+
+    var senderEmail = _config["EmailSettings:SenderEmail"]
+        ?? throw new InvalidOperationException("SenderEmail no configurado.");
+
+    var senderName = _config["EmailSettings:SenderName"] ?? "Event Access";
+
+    var password = _config["EmailSettings:Password"]
+        ?? throw new InvalidOperationException("Password no configurado.");
+
+    var enableSsl = bool.Parse(
+        _config["EmailSettings:EnableSsl"] ?? "true"
+    );
+
+    using var message = new MailMessage
+    {
+        From = new MailAddress(senderEmail, senderName),
+        Subject = "Recuperación de contraseña",
+        IsBodyHtml = true
+    };
+
+    message.To.Add(toEmail);
+
+    string html = $@"
+        <h2>Recuperación de contraseña</h2>
+
+        <p>
+            Haz clic en el siguiente enlace para
+            restablecer tu contraseña:
+        </p>
+
+        <p>
+            <a href='{resetLink}'>
+                Restablecer contraseña
+            </a>
+        </p>
+
+        <br/>
+
+        <p>
+            Si no solicitaste este cambio,
+            puedes ignorar este correo.
+        </p>
+    ";
+
+    message.Body = html;
+
+    using var smtp = new SmtpClient(smtpServer, port)
+    {
+        Credentials = new NetworkCredential(
+            senderEmail,
+            password
+        ),
+        EnableSsl = enableSsl
+    };
+
+    await smtp.SendMailAsync(message);
+}
         
     }
 }

@@ -325,7 +325,9 @@ namespace EventAccessControl.API.Controllers
         /// </summary>
         /// <param name="dto"></param>
         /// <returns></returns>
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
+        [AllowAnonymous]
+        [EnableRateLimiting("RegisterTicketPolicy")]
         [HttpPost("validate-entry")]
 
         public async Task<IActionResult> ValidateEntry([FromBody] ValidateEntryDto dto)
