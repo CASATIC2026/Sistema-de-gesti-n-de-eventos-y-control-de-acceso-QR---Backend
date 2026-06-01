@@ -23,7 +23,11 @@ namespace EventAccessControl.API.DTOs
         /// Fecha del evento, que es un campo obligatorio para establecer cuándo se llevará a cabo el evento. 
         /// </summary>
         [Required]
-        public required DateOnly EventDate { get; set; }
+        //public required DateOnly EventDate { get; set; }
+         public DateTimeOffset StartDateTime { get; set; }
+
+    [Required]
+    public DateTimeOffset EndDateTime { get; set; }
 
         /// <summary>
         /// Capacidad máxima de asistentes al evento, que es un campo obligatorio para establecer un límite en la 

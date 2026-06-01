@@ -24,7 +24,9 @@ namespace EventAccessControl.API.Models
         /// Fecha del evento, representada como DateOnly para almacenar solo la parte de la fecha sin la hora. Se utiliza para programar el evento y para validar que los tickets se 
         /// registren para eventos futuros. 
         /// </summary>
-        public DateOnly EventDate { get; set; }
+        //public DateOnly EventDate { get; set; }
+        public DateTimeOffset StartDateTime { get; set; }
+        public DateTimeOffset EndDateTime { get; set; }
 
         /// <summary>
         /// Capacidad máxima de asistentes para el evento. 
@@ -50,7 +52,8 @@ namespace EventAccessControl.API.Models
         /// <summary>
         /// Fecha y hora en que el evento fue creado. 
         /// </summary>
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        //public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime CreatedAt { get; set; }
 
         /// <summary>
         /// Colección de tickets asociados al evento. Se utiliza para establecer la relación entre el evento y los 

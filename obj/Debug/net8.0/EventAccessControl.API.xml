@@ -210,7 +210,7 @@
             Descripción opcional del evento, que puede incluir detalles adicionales sobre el evento.
             </summary>
         </member>
-        <member name="P:EventAccessControl.API.DTOs.CreateEventDto.EventDate">
+        <member name="P:EventAccessControl.API.DTOs.CreateEventDto.StartDateTime">
             <summary>
             Fecha del evento, que es un campo obligatorio para establecer cuándo se llevará a cabo el evento. 
             </summary>
@@ -328,7 +328,7 @@
             Descripción opcional del evento, que puede incluir detalles adicionales sobre el evento.
             </summary>
         </member>
-        <member name="P:EventAccessControl.API.DTOs.UpdateEventDto.EventDate">
+        <member name="P:EventAccessControl.API.DTOs.UpdateEventDto.StartDateTime">
             <summary>
             Fecha del evento, que es un campo obligatorio para establecer cuándo se llevará a cabo el evento. 
             </summary>
@@ -471,6 +471,18 @@
         <member name="M:EventAccessControl.API.Migrations.AddResetPasswordFields.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
+        <member name="T:EventAccessControl.API.Migrations.EventDateTimeRefactor">
+            <inheritdoc />
+        </member>
+        <member name="M:EventAccessControl.API.Migrations.EventDateTimeRefactor.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:EventAccessControl.API.Migrations.EventDateTimeRefactor.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:EventAccessControl.API.Migrations.EventDateTimeRefactor.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
         <member name="T:EventAccessControl.API.Models.CheckInLog">
             <summary>
             Modelo que representa un registro de intento de ingreso al evento utilizando un ticket. Se utiliza para llevar un historial de los intentos de ingreso, incluyendo la fecha y 
@@ -528,7 +540,7 @@
             Descripción opcional del evento. Se utiliza para proporcionar información adicional sobre el evento, como detalles del programa, ponentes, actividades, etc. 
             </summary>
         </member>
-        <member name="P:EventAccessControl.API.Models.Event.EventDate">
+        <member name="P:EventAccessControl.API.Models.Event.StartDateTime">
             <summary>
             Fecha del evento, representada como DateOnly para almacenar solo la parte de la fecha sin la hora. Se utiliza para programar el evento y para validar que los tickets se 
             registren para eventos futuros. 
@@ -673,7 +685,7 @@
             </summary>
             <param name="config"></param>
         </member>
-        <member name="M:EventAccessControl.API.Services.EmailService.SendQrEmail(System.String,System.String,System.String,System.DateOnly,System.Guid)">
+        <member name="M:EventAccessControl.API.Services.EmailService.SendQrEmail(System.String,System.String,System.String,System.DateTimeOffset,System.DateTimeOffset,System.Guid)">
             <summary>
             Método para enviar un correo electrónico con un código QR adjunto. Recibe el correo electrónico de destino y el código QR en formato base64 como parámetros. El método construye un mensaje de correo electrónico con el código QR adjunto y lo envía utilizando el servidor SMTP configurado.
             </summary>

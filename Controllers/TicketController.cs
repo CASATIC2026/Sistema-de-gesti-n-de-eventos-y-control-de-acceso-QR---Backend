@@ -78,9 +78,13 @@ namespace EventAccessControl.API.Controllers
             if (!eventEntity.IsActive)
                 return BadRequest(ApiResponse<object>.Fail("El evento no está activo.", 400));
 
-            if (eventEntity.EventDate <= DateOnly.FromDateTime(DateTime.UtcNow))
-                return BadRequest(ApiResponse<object>.Fail("El evento ya ocurrió.", 400));
-
+           if (eventEntity.EndDateTime <= DateTimeOffset.UtcNow)
+{
+    return BadRequest(ApiResponse<object>.Fail(
+        "El evento ya terminó.",
+        400
+    ));
+}
             // Validar aforo
             var currentTickets = await _context.Tickets.CountAsync(t => t.EventId == dto.EventId);
 
@@ -175,8 +179,10 @@ namespace EventAccessControl.API.Controllers
                 await _emailService.SendQrEmail(
                     ticket.UserEmail!,
                     qrBase64,
-                    eventEntity.Name,
-                    eventEntity.EventDate,
+                    eventEntity.Name!,
+                    //eventEntity.EventDate,
+                    eventEntity.StartDateTime,
+                    eventEntity.EndDateTime,
                     ticket.Id
                 );
 
@@ -248,7 +254,9 @@ namespace EventAccessControl.API.Controllers
                     {
                         EventId = t.Event!.Id,
                         Name = t.Event.Name,
-                        EventDate = t.Event.EventDate,
+                        //EventDate = t.Event.EventDate,
+                        StartDateTime = t.Event.StartDateTime,
+                        EndDateTime = t.Event.EndDateTime,
                         IsActive = t.Event.IsActive,
                         ImageUrl = t.Event.ImageUrl
                     }

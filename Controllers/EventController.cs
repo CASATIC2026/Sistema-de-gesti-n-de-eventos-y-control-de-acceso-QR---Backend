@@ -38,15 +38,34 @@ namespace EventAccessControl.API.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateEvent(CreateEventDto dto)
         {
-            if (dto.EventDate < DateOnly.FromDateTime(DateTime.Now))
-                return BadRequest(ApiResponse<object>.Fail("La fecha del evento debe ser futura.", 400));
+            // if (dto.EventDate < DateOnly.FromDateTime(DateTime.Now))
+            //     return BadRequest(ApiResponse<object>.Fail("La fecha del evento debe ser futura.", 400));
+
+            if (dto.StartDateTime <= DateTimeOffset.UtcNow)
+            {
+                return BadRequest(ApiResponse<object>.Fail(
+                    "La fecha de inicio del evento debe ser futura.",
+                    400
+                ));
+            }
+
+            if (dto.EndDateTime <= dto.StartDateTime)
+            {
+                return BadRequest(ApiResponse<object>.Fail(
+                    "La hora de fin debe ser mayor a la de inicio.",
+                    400
+                ));
+            }
+
 
             var newEvent = new Event
             {
                 Id = Guid.NewGuid(),
                 Name = dto.Name,
                 Description = dto.Description,
-                EventDate = dto.EventDate,
+                //EventDate = dto.EventDate,
+                StartDateTime = dto.StartDateTime,
+                EndDateTime = dto.EndDateTime,
                 MaxCapacity = dto.MaxCapacity,
                 Location = dto.Location,
                 ImageUrl = dto.ImageUrl,
@@ -76,7 +95,8 @@ namespace EventAccessControl.API.Controllers
         {
             var events = await _context.Events
                 .Where(e => e.IsActive)
-                .OrderBy(e => e.EventDate)
+               // .OrderBy(e => e.EventDate)
+               .OrderBy(e => e.StartDateTime)
                 .ToListAsync();
 
             return Ok(ApiResponse<List<Event>>.Ok(events, "Lista de eventos obtenida exitosamente"));
@@ -119,8 +139,21 @@ namespace EventAccessControl.API.Controllers
             if (dto == null)
                 return BadRequest(ApiResponse<object>.Fail("El DTO es requerido.", 400));
 
-            if (dto.EventDate <= DateOnly.FromDateTime(DateTime.UtcNow))
-                return BadRequest(ApiResponse<object>.Fail("La fecha del evento debe ser futura.", 400));
+            if (dto.StartDateTime <= DateTimeOffset.UtcNow)
+            {
+                return BadRequest(ApiResponse<object>.Fail(
+                    "La fecha de inicio del evento debe ser futura.",
+                    400
+                ));
+            }
+
+            if (dto.EndDateTime <= dto.StartDateTime)
+            {
+                return BadRequest(ApiResponse<object>.Fail(
+                    "La hora de fin debe ser mayor a la de inicio.",
+                    400
+                ));
+            }
 
             var eventEntity = await _context.Events.FindAsync(id);
 
@@ -129,7 +162,9 @@ namespace EventAccessControl.API.Controllers
 
             eventEntity.Name = dto.Name;
             eventEntity.Description = dto.Description;
-            eventEntity.EventDate = dto.EventDate;
+            //eventEntity.EventDate = dto.EventDate;
+            eventEntity.StartDateTime = dto.StartDateTime;
+            eventEntity.EndDateTime = dto.EndDateTime;
             eventEntity.MaxCapacity = dto.MaxCapacity;
             eventEntity.Location = dto.Location;
             eventEntity.ImageUrl = dto.ImageUrl;

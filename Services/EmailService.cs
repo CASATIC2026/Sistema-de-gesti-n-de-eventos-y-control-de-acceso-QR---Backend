@@ -32,7 +32,7 @@ namespace EventAccessControl.API.Services
         /// <param name="ticketId"></param>
         /// <returns></returns>
         /// <exception cref="InvalidOperationException"></exception>
-        public async Task SendQrEmail(string toEmail, string qrBase64, string eventName, DateOnly eventDate, Guid ticketId)
+        public async Task SendQrEmail(string toEmail, string qrBase64, string eventName, DateTimeOffset startDateTime, DateTimeOffset endDateTime, Guid ticketId)
         {
             var smtpServer = _config["EmailSettings:SmtpServer"]
                 ?? throw new InvalidOperationException("SmtpServer no configurado.");
@@ -64,7 +64,11 @@ namespace EventAccessControl.API.Services
             // HTML con fallback
             string html = $@"
                 <h2>Tu entrada al evento</h2>
-                <p><strong>{WebUtility.HtmlEncode(eventName)}</strong> - {eventDate}</p>
+                <p>
+                <strong>{WebUtility.HtmlEncode(eventName)}</strong><br/>
+                Inicio: {startDateTime:dd/MM/yyyy HH:mm}<br/>
+                Fin: {endDateTime:dd/MM/yyyy HH:mm}
+                </p>
                 <p>Ticket: {ticketId}</p>
                 <p>Presenta este código QR en la entrada.</p>
                 <p><b>Si no ves la imagen, revisa el PDF adjunto.</b></p>
@@ -113,7 +117,9 @@ namespace EventAccessControl.API.Services
                                 {
                                     c2.Spacing(5);
                                     c2.Item().Text(eventName).FontSize(16).Bold();
-                                    c2.Item().Text($"Fecha: {eventDate}");
+                                    //c2.Item().Text($"Fecha: {eventDate}");
+                                    c2.Item().Text($"Inicio: {startDateTime:dd/MM/yyyy HH:mm}");
+                                    c2.Item().Text($"Fin: {endDateTime:dd/MM/yyyy HH:mm}");
                                     c2.Item().Text($"Ticket: {ticketId}");
                                 });
                             });
@@ -145,35 +151,35 @@ namespace EventAccessControl.API.Services
         public async Task SendPasswordResetEmail(
     string toEmail,
     string resetLink)
-{
-    var smtpServer = _config["EmailSettings:SmtpServer"]
-        ?? throw new InvalidOperationException("SmtpServer no configurado.");
+        {
+            var smtpServer = _config["EmailSettings:SmtpServer"]
+                ?? throw new InvalidOperationException("SmtpServer no configurado.");
 
-    if (!int.TryParse(_config["EmailSettings:Port"], out int port))
-        throw new InvalidOperationException("Puerto SMTP inválido.");
+            if (!int.TryParse(_config["EmailSettings:Port"], out int port))
+                throw new InvalidOperationException("Puerto SMTP inválido.");
 
-    var senderEmail = _config["EmailSettings:SenderEmail"]
-        ?? throw new InvalidOperationException("SenderEmail no configurado.");
+            var senderEmail = _config["EmailSettings:SenderEmail"]
+                ?? throw new InvalidOperationException("SenderEmail no configurado.");
 
-    var senderName = _config["EmailSettings:SenderName"] ?? "Event Access";
+            var senderName = _config["EmailSettings:SenderName"] ?? "Event Access";
 
-    var password = _config["EmailSettings:Password"]
-        ?? throw new InvalidOperationException("Password no configurado.");
+            var password = _config["EmailSettings:Password"]
+                ?? throw new InvalidOperationException("Password no configurado.");
 
-    var enableSsl = bool.Parse(
-        _config["EmailSettings:EnableSsl"] ?? "true"
-    );
+            var enableSsl = bool.Parse(
+                _config["EmailSettings:EnableSsl"] ?? "true"
+            );
 
-    using var message = new MailMessage
-    {
-        From = new MailAddress(senderEmail, senderName),
-        Subject = "Recuperación de contraseña",
-        IsBodyHtml = true
-    };
+            using var message = new MailMessage
+            {
+                From = new MailAddress(senderEmail, senderName),
+                Subject = "Recuperación de contraseña",
+                IsBodyHtml = true
+            };
 
-    message.To.Add(toEmail);
+            message.To.Add(toEmail);
 
-    string html = $@"
+            string html = $@"
         <h2>Recuperación de contraseña</h2>
 
         <p>
@@ -195,19 +201,19 @@ namespace EventAccessControl.API.Services
         </p>
     ";
 
-    message.Body = html;
+            message.Body = html;
 
-    using var smtp = new SmtpClient(smtpServer, port)
-    {
-        Credentials = new NetworkCredential(
-            senderEmail,
-            password
-        ),
-        EnableSsl = enableSsl
-    };
+            using var smtp = new SmtpClient(smtpServer, port)
+            {
+                Credentials = new NetworkCredential(
+                    senderEmail,
+                    password
+                ),
+                EnableSsl = enableSsl
+            };
 
-    await smtp.SendMailAsync(message);
-}
-        
+            await smtp.SendMailAsync(message);
+        }
+
     }
 }
