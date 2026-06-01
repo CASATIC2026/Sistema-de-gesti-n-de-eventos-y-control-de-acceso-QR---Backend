@@ -483,6 +483,18 @@
         <member name="M:EventAccessControl.API.Migrations.EventDateTimeRefactor.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
+        <member name="T:EventAccessControl.API.Migrations.AddUserProfileFields">
+            <inheritdoc />
+        </member>
+        <member name="M:EventAccessControl.API.Migrations.AddUserProfileFields.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:EventAccessControl.API.Migrations.AddUserProfileFields.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:EventAccessControl.API.Migrations.AddUserProfileFields.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
         <member name="T:EventAccessControl.API.Models.CheckInLog">
             <summary>
             Modelo que representa un registro de intento de ingreso al evento utilizando un ticket. Se utiliza para llevar un historial de los intentos de ingreso, incluyendo la fecha y 
@@ -745,7 +757,7 @@
             <returns></returns>
             <exception cref="T:System.InvalidOperationException"></exception>
         </member>
-        <member name="M:EventAccessControl.API.Services.TokenService.GenerateAuthToken(System.String,System.String)">
+        <member name="M:EventAccessControl.API.Services.TokenService.GenerateAuthToken(System.Guid,System.String,System.String)">
             <summary>
             Método para generar un token JWT para un usuario específico. 
             </summary>

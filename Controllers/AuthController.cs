@@ -92,7 +92,8 @@ namespace EventAccessControl.API.Controllers
             if (!isValid)
                 return Unauthorized(ApiResponse<object>.Fail("Contraseña inválida.", 401));
 
-            var token = _tokenService.GenerateAuthToken(user.Email, user.Role);
+            //var token = _tokenService.GenerateAuthToken(user.Email, user.Role);
+            var token = _tokenService.GenerateAuthToken(user.Id, user.Email, user.Role);
 
             return Ok(ApiResponse<object>.Ok(
                 new

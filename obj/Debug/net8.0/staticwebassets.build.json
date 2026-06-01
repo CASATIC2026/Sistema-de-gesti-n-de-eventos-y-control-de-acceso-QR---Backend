@@ -1,1 +1,11 @@
-{"Version":1,"Hash":"rrQIJrqN5MAmoyUF0GO+erXUE5tD05dKHIEW5VPCu4Q=","Source":"EventAccessControl.API","BasePath":"/","Mode":"Root","ManifestType":"Build","ReferencedProjectsConfiguration":[],"DiscoveryPatterns":[],"Assets":[],"Endpoints":[]}
+{
+  "Version": 1,
+  "Hash": "Zk1OWHFcQJ9TOBlBFkQofWSiJSVoEi27LHJN52MmsVU=",
+  "Source": "EventAccessControl.API",
+  "BasePath": "_content/EventAccessControl.API",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

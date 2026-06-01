@@ -24,6 +24,12 @@ namespace EventAccessControl.API.Models
         [Required]
         public string? PasswordHash { get; set; }
 
+        public DateTime? BirthDate { get; set; }
+
+        public string? Gender { get; set; }
+
+        public bool ProfileCompleted { get; set; } = false;
+
         /// <summary>
         /// Rol del usuario. Es un campo obligatorio y se utiliza para identificar el rol del usuario en el sistema.
         /// </summary>

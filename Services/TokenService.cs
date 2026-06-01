@@ -4,7 +4,7 @@ using System.Text;
 using Microsoft.IdentityModel.Tokens;
 
 namespace EventAccessControl.API.Services
-{   
+{
     /// <summary>
     /// Servicio para generar y validar tokens JWT para los tickets de acceso al evento.  
     /// </summary>
@@ -99,9 +99,9 @@ namespace EventAccessControl.API.Services
         /// <param name="role"></param>
         /// <returns></returns>
         /// <exception cref="InvalidOperationException"></exception>
-        public string GenerateAuthToken(string email, string role)
+        public string GenerateAuthToken(Guid userId, string email, string role)
         {
-            var secret = _config["JwtAuthToken:Secret"] 
+            var secret = _config["JwtAuthToken:Secret"]
                 ?? throw new InvalidOperationException("JwtAuthToken:Secret not configured");
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret));
@@ -109,8 +109,9 @@ namespace EventAccessControl.API.Services
 
             var claims = new[]
             {
-                new Claim(ClaimTypes.Email, email),
-                new Claim(ClaimTypes.Role, role)
+               new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
+               new Claim(ClaimTypes.Email, email),
+               new Claim(ClaimTypes.Role, role)
             };
 
             var token = new JwtSecurityToken(
