@@ -9,6 +9,9 @@ using Microsoft.OpenApi.Models;
 using QuestPDF.Infrastructure;
 using Microsoft.AspNetCore.RateLimiting;
 using System.Threading.RateLimiting;
+using DotNetEnv;
+
+Env.Load();
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -46,7 +49,14 @@ builder.Services.AddScoped<QRService>();
 builder.Services.AddScoped<EmailService>();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+{
+       var conn = Environment.GetEnvironmentVariable("DATABASE_URL");
+
+    options.UseNpgsql(conn, npgsql =>
+    {
+        npgsql.EnableRetryOnFailure();
+    });
+});
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
@@ -150,6 +160,9 @@ builder.Services.AddRateLimiter(options =>
 //builder.WebHost.UseUrls("http://0.0.0.0:5255");
 //builder.WebHost.UseUrls("http://0.0.0.0:5255");
 var app = builder.Build();
+var connectionString = Environment.GetEnvironmentVariable("DATABASE_URL");
+
+Console.WriteLine(connectionString);
 
 app.UseCors("AllowFrontend");
 app.UseRouting();

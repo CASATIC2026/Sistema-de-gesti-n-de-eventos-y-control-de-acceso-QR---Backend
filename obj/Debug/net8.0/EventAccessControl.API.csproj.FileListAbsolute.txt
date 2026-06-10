@@ -10,6 +10,7 @@ C:\Users\Eliel\Downloads\SistemaGestion_actualizado_2\SistemaGestion\Sistema-de-
 C:\Users\Eliel\Downloads\SistemaGestion_actualizado_2\SistemaGestion\Sistema-de-gesti-n-de-eventos-y-control-de-acceso-QR---Backend\bin\Debug\net8.0\EventAccessControl.API.pdb
 C:\Users\Eliel\Downloads\SistemaGestion_actualizado_2\SistemaGestion\Sistema-de-gesti-n-de-eventos-y-control-de-acceso-QR---Backend\bin\Debug\net8.0\EventAccessControl.API.xml
 C:\Users\Eliel\Downloads\SistemaGestion_actualizado_2\SistemaGestion\Sistema-de-gesti-n-de-eventos-y-control-de-acceso-QR---Backend\bin\Debug\net8.0\BCrypt.Net-Next.dll
+C:\Users\Eliel\Downloads\SistemaGestion_actualizado_2\SistemaGestion\Sistema-de-gesti-n-de-eventos-y-control-de-acceso-QR---Backend\bin\Debug\net8.0\DotNetEnv.dll
 C:\Users\Eliel\Downloads\SistemaGestion_actualizado_2\SistemaGestion\Sistema-de-gesti-n-de-eventos-y-control-de-acceso-QR---Backend\bin\Debug\net8.0\Humanizer.dll
 C:\Users\Eliel\Downloads\SistemaGestion_actualizado_2\SistemaGestion\Sistema-de-gesti-n-de-eventos-y-control-de-acceso-QR---Backend\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 C:\Users\Eliel\Downloads\SistemaGestion_actualizado_2\SistemaGestion\Sistema-de-gesti-n-de-eventos-y-control-de-acceso-QR---Backend\bin\Debug\net8.0\Microsoft.Bcl.AsyncInterfaces.dll
@@ -35,6 +36,7 @@ C:\Users\Eliel\Downloads\SistemaGestion_actualizado_2\SistemaGestion\Sistema-de-
 C:\Users\Eliel\Downloads\SistemaGestion_actualizado_2\SistemaGestion\Sistema-de-gesti-n-de-eventos-y-control-de-acceso-QR---Backend\bin\Debug\net8.0\QRCoder.dll
 C:\Users\Eliel\Downloads\SistemaGestion_actualizado_2\SistemaGestion\Sistema-de-gesti-n-de-eventos-y-control-de-acceso-QR---Backend\bin\Debug\net8.0\QuestPDF.dll
 C:\Users\Eliel\Downloads\SistemaGestion_actualizado_2\SistemaGestion\Sistema-de-gesti-n-de-eventos-y-control-de-acceso-QR---Backend\bin\Debug\net8.0\SixLabors.ImageSharp.dll
+C:\Users\Eliel\Downloads\SistemaGestion_actualizado_2\SistemaGestion\Sistema-de-gesti-n-de-eventos-y-control-de-acceso-QR---Backend\bin\Debug\net8.0\Superpower.dll
 C:\Users\Eliel\Downloads\SistemaGestion_actualizado_2\SistemaGestion\Sistema-de-gesti-n-de-eventos-y-control-de-acceso-QR---Backend\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
 C:\Users\Eliel\Downloads\SistemaGestion_actualizado_2\SistemaGestion\Sistema-de-gesti-n-de-eventos-y-control-de-acceso-QR---Backend\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 C:\Users\Eliel\Downloads\SistemaGestion_actualizado_2\SistemaGestion\Sistema-de-gesti-n-de-eventos-y-control-de-acceso-QR---Backend\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll
@@ -129,6 +131,7 @@ C:\Users\Eliel\Downloads\SistemaGestion_actualizado_2\SistemaGestion\Sistema-de-
 C:\Users\Eliel\Downloads\SistemaGestion_actualizado_2\SistemaGestion\Sistema-de-gesti-n-de-eventos-y-control-de-acceso-QR---Backend\obj\Debug\net8.0\EventAccessControl.API.csproj.CoreCompileInputs.cache
 C:\Users\Eliel\Downloads\SistemaGestion_actualizado_2\SistemaGestion\Sistema-de-gesti-n-de-eventos-y-control-de-acceso-QR---Backend\obj\Debug\net8.0\EventAccessControl.API.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\Eliel\Downloads\SistemaGestion_actualizado_2\SistemaGestion\Sistema-de-gesti-n-de-eventos-y-control-de-acceso-QR---Backend\obj\Debug\net8.0\EventAccessControl.API.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\Eliel\Downloads\SistemaGestion_actualizado_2\SistemaGestion\Sistema-de-gesti-n-de-eventos-y-control-de-acceso-QR---Backend\obj\Debug\net8.0\EventAccessControl.API.sourcelink.json
 C:\Users\Eliel\Downloads\SistemaGestion_actualizado_2\SistemaGestion\Sistema-de-gesti-n-de-eventos-y-control-de-acceso-QR---Backend\obj\Debug\net8.0\rjimswa.dswa.cache.json
 C:\Users\Eliel\Downloads\SistemaGestion_actualizado_2\SistemaGestion\Sistema-de-gesti-n-de-eventos-y-control-de-acceso-QR---Backend\obj\Debug\net8.0\rjsmrazor.dswa.cache.json
 C:\Users\Eliel\Downloads\SistemaGestion_actualizado_2\SistemaGestion\Sistema-de-gesti-n-de-eventos-y-control-de-acceso-QR---Backend\obj\Debug\net8.0\rjsmcshtml.dswa.cache.json

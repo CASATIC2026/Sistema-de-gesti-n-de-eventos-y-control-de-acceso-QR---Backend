@@ -50,9 +50,7 @@ namespace EventAccessControl.API.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Ticket>()
-                .UseXminAsConcurrencyToken();
-
+            
             modelBuilder.Entity<Ticket>()
                 .HasIndex(t => new { t.EventId, t.UserEmail })
                 .IsUnique();

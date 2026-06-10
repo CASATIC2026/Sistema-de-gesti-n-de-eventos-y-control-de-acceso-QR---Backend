@@ -1,5 +1,9 @@
 {
   "devDependencies": {
     "vite-plugin-mkcert": "^2.0.0"
+  },
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "pg": "^8.21.0"
   }
 }

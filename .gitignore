@@ -1,0 +1,4 @@
+npm install pg dotenv
+.env
+dist
+build
