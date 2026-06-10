@@ -124,16 +124,20 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddAuthorization();
 
 var corsOrigins = builder.Configuration.GetSection("Cors:Origins").Get<string[]>() ?? Array.Empty<string>();
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
-{
-    policy.WithOrigins(corsOrigins)
-          .AllowAnyHeader()
-          .AllowAnyMethod()
-          .AllowCredentials();
+    {
+        policy.WithOrigins(
+            "http://localhost:5173",
+            "https://extraordinary-genie-5b996e.netlify.app"
+        )
+        .AllowAnyHeader()
+        .AllowAnyMethod();
+    });
 });
-});
+
 builder.Services.AddRateLimiter(options =>
 {
     // Devolver un 429 Too Many Requests cuando se exceda el límite (estándar HTTP)
@@ -160,11 +164,11 @@ var connectionString = Environment.GetEnvironmentVariable("DATABASE_URL");
 
 Console.WriteLine(connectionString);
 
-app.UseCors("AllowFrontend");
 app.UseRouting();
 
-app.UseAuthentication();
+app.UseCors("AllowFrontend");
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseRateLimiter();
