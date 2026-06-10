@@ -1,0 +1,293 @@
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using EventAccessControl.API.Data;
+using EventAccessControl.API.Models;
+using EventAccessControl.API.DTOs;
+
+namespace EventAccessControl.API.Controllers
+{
+    /// <summary>
+    /// Controlador para gestionar eventos, incluyendo creación, consulta, actualización y desactivación lógica.
+    /// </summary>
+    [ApiController]
+    [Route("api/[controller]")]
+    [Authorize]
+    public class EventController : ControllerBase
+    {
+        private readonly ApplicationDbContext _context;
+
+        /// <summary>
+        /// Constructor que inyecta el contexto de la base de datos para acceder a los eventos.
+        /// </summary>
+        /// <param name="context"></param>
+        public EventController(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+
+        // POST: api/event
+        /// <summary>
+        /// Crea un nuevo evento con los datos proporcionados en el DTO. La fecha del evento debe ser futura.
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <returns></returns>
+        /// <response code="201">Evento creado exitosamente.</response>
+        /// <response code="400">Datos inválidos o fecha del evento no es futura.</response>
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        public async Task<IActionResult> CreateEvent(CreateEventDto dto)
+        {
+            // if (dto.EventDate < DateOnly.FromDateTime(DateTime.Now))
+            //     return BadRequest(ApiResponse<object>.Fail("La fecha del evento debe ser futura.", 400));
+
+            if (dto.StartDateTime.ToUniversalTime() <= DateTimeOffset.UtcNow)
+            {
+                return BadRequest(ApiResponse<object>.Fail(
+                    $"La fecha de inicio debe ser futura. Hora actual UTC: {DateTimeOffset.UtcNow}",
+                    400
+                ));
+            }
+
+            if (dto.EndDateTime <= dto.StartDateTime)
+            {
+                return BadRequest(ApiResponse<object>.Fail(
+                    "La hora de fin debe ser mayor a la de inicio.",
+                    400
+                ));
+            }
+
+
+            var newEvent = new Event
+            {
+                Id = Guid.NewGuid(),
+                Name = dto.Name,
+                Description = dto.Description,
+                //EventDate = dto.EventDate,
+                StartDateTime = dto.StartDateTime,
+                EndDateTime = dto.EndDateTime,
+                MaxCapacity = dto.MaxCapacity,
+                Location = dto.Location,
+                ImageUrl = dto.ImageUrl,
+                CreatedAt = DateTime.UtcNow
+            };
+
+            _context.Events.Add(newEvent);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(
+                nameof(GetEventById),
+                new { id = newEvent.Id },
+                ApiResponse<Event>.Ok(newEvent, "Evento creado exitosamente")
+            );
+        }
+
+        // GET: api/event
+        /// <summary>
+        /// Obtiene una lista de todos los eventos, ordenados por fecha. Incluye eventos activos e inactivos.
+        /// </summary>
+        /// <returns></returns>
+        /// <response code="200">Lista de eventos obtenida exitosamente.</response>
+        /// <response code="500">Error interno del servidor.</response>
+        [AllowAnonymous]
+        [HttpGet]
+        public async Task<IActionResult> GetAllEvents()
+        {
+            var events = await _context.Events
+                .Where(e => e.IsActive)
+               // .OrderBy(e => e.EventDate)
+               .OrderBy(e => e.StartDateTime)
+                .ToListAsync();
+
+            return Ok(ApiResponse<List<Event>>.Ok(events, "Lista de eventos obtenida exitosamente"));
+        }
+
+        // GET: api/event/{id}
+        /// <summary>
+        /// Obtiene los detalles de un evento específico por su ID, incluyendo la lista de tickets asociados.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <response code="200">Evento encontrado y detalles retornados exitosamente.</response>
+        /// <response code="404">Evento no encontrado.</response>
+        [AllowAnonymous]
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetEventById(Guid id)
+        {
+            var eventEntity = await _context.Events
+                .FirstOrDefaultAsync(e => e.Id == id);
+
+            if (eventEntity == null)
+                return NotFound(ApiResponse<object>.Fail("Evento no encontrado.", 404));
+
+            return Ok(ApiResponse<Event>.Ok(eventEntity, "Evento encontrado exitosamente"));
+        }
+
+        // PUT: api/event/{id}
+        /// <summary>
+        /// Actualiza los detalles de un evento existente. Permite modificar el nombre, descripción, fecha, capacidad máxima, ubicación y estado activo.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="dto"></param>
+        /// <returns></returns>
+        /// <response code="204">Evento actualizado exitosamente.</response>
+        /// <response code="400">Datos inválidos.</response>
+        [Authorize(Roles = "Admin")]
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateEvent(Guid id, [FromBody] UpdateEventDto dto)
+        {
+            if (dto == null)
+                return BadRequest(ApiResponse<object>.Fail("El DTO es requerido.", 400));
+
+            if (dto.StartDateTime <= DateTimeOffset.UtcNow)
+            {
+                return BadRequest(ApiResponse<object>.Fail(
+                    "La fecha de inicio del evento debe ser futura.",
+                    400
+                ));
+            }
+
+            if (dto.EndDateTime <= dto.StartDateTime)
+            {
+                return BadRequest(ApiResponse<object>.Fail(
+                    "La hora de fin debe ser mayor a la de inicio.",
+                    400
+                ));
+            }
+
+            var eventEntity = await _context.Events.FindAsync(id);
+
+            if (eventEntity == null)
+                return NotFound(ApiResponse<object>.Fail("Evento no encontrado.", 404));
+
+            eventEntity.Name = dto.Name;
+            eventEntity.Description = dto.Description;
+            //eventEntity.EventDate = dto.EventDate;
+            eventEntity.StartDateTime = dto.StartDateTime;
+            eventEntity.EndDateTime = dto.EndDateTime;
+            eventEntity.MaxCapacity = dto.MaxCapacity;
+            eventEntity.Location = dto.Location;
+            eventEntity.ImageUrl = dto.ImageUrl;
+            eventEntity.IsActive = dto.IsActive;
+
+            await _context.SaveChangesAsync();
+
+            return Ok(ApiResponse<object>.Ok(null, "Evento actualizado exitosamente"));
+        }
+
+        // DELETE lógico (desactivar)
+        /// <summary>
+        /// Desactiva un evento estableciendo su propiedad IsActive a false. El evento no se elimina físicamente de la base de datos.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <response code="204">Evento desactivado exitosamente.</response>
+        /// <response code="404">Evento no encontrado.</response>
+        [Authorize(Roles = "Admin")]
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeactivateEvent(Guid id)
+        {
+            var eventEntity = await _context.Events.FindAsync(id);
+
+            if (eventEntity == null)
+                return NotFound(ApiResponse<object>.Fail("Evento no encontrado.", 404));
+
+            eventEntity.IsActive = false;
+
+            await _context.SaveChangesAsync();
+
+            return Ok(ApiResponse<object>.Ok(null, "Evento desactivado exitosamente"));
+        }
+
+        /// <summary>
+        /// Obtiene estadísticas de un evento específico, incluyendo la cantidad de tickets registrados, 
+        /// la cantidad de tickets utilizados para ingreso, y la cantidad de tickets 
+        /// restantes disponibles según la capacidad máxima del evento.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [Authorize(Roles = "Admin")]
+        [HttpGet("{id}/stats")]
+        public async Task<IActionResult> GetEventStats(Guid id)
+        {
+            var eventEntity = await _context.Events
+                .FirstOrDefaultAsync(e => e.Id == id);
+
+            if (eventEntity == null)
+                return NotFound(ApiResponse<object>.Fail("Evento no encontrado.", 404));
+
+            var ticketsRegistered = await _context.Tickets
+                .CountAsync(t => t.EventId == id);
+
+            var checkedIn = await _context.Tickets
+                .CountAsync(t => t.EventId == id && t.IsUsed);
+
+            // Obtener emails de los asistentes registrados para cruzar con perfiles
+            var attendeeEmails = await _context.Tickets
+                .Where(t => t.EventId == id)
+                .Select(t => t.UserEmail)
+                .ToListAsync();
+
+            // Buscar usuarios con perfil completo que tengan ticket en este evento
+            var userProfiles = await _context.Users
+                .Where(u => u.Email != null && attendeeEmails.Contains(u.Email) && u.ProfileCompleted)
+                .Select(u => new { u.Gender, u.BirthDate })
+                .ToListAsync();
+
+            // Distribución de género
+            var genderDist = new GenderDistributionDto
+            {
+                Male = userProfiles.Count(u => u.Gender == "Male"),
+                Female = userProfiles.Count(u => u.Gender == "Female"),
+                Other = userProfiles.Count(u => u.Gender == "Other"),
+                PreferNotToSay = userProfiles.Count(u => u.Gender == "PreferNotToSay"),
+                SinDato = attendeeEmails.Count - userProfiles.Count
+            };
+            // Edad promedio y rangos
+            var today = DateTime.Today;
+
+            var ages = userProfiles
+                .Where(u => u.BirthDate.HasValue)
+                .Select(u =>
+                {
+                    var birth = u.BirthDate!.Value.ToDateTime(TimeOnly.MinValue);
+
+                    var age = today.Year - birth.Year;
+
+                    if (birth > today.AddYears(-age))
+                        age--;
+
+                    return age;
+                })
+                .ToList();
+
+            double? avgAge = ages.Count > 0
+                ? Math.Round(ages.Average(), 1)
+                : null;
+
+            var ageRanges = new Dictionary<string, int>
+            {
+                ["Menor de 18"] = ages.Count(a => a < 18),
+                ["18-24"] = ages.Count(a => a >= 18 && a <= 24),
+                ["25-34"] = ages.Count(a => a >= 25 && a <= 34),
+                ["35-44"] = ages.Count(a => a >= 35 && a <= 44),
+                ["45-54"] = ages.Count(a => a >= 45 && a <= 54),
+                ["55+"] = ages.Count(a => a >= 55)
+            };
+
+            var stats = new EventStatsDto
+            {
+                EventId = eventEntity.Id,
+                Capacity = eventEntity.MaxCapacity,
+                TicketsRegistered = ticketsRegistered,
+                CheckedIn = checkedIn,
+                Remaining = eventEntity.MaxCapacity - checkedIn,
+                GenderDistribution = genderDist,
+                AvgAge = avgAge,
+                AgeRanges = ageRanges
+            };
+
+            return Ok(ApiResponse<EventStatsDto>.Ok(stats, "Estadísticas del evento obtenidas exitosamente"));
+        }
+    }
+}
