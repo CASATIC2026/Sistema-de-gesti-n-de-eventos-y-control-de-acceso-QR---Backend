@@ -131,11 +131,18 @@ builder.Services.AddCors(options =>
     {
         policy.WithOrigins(
             "http://localhost:5173",
-            "https://extraordinary-genie-5b996e.netlify.app"
+            "https://events-frontend-sage.vercel.app/"
         )
         .AllowAnyHeader()
         .AllowAnyMethod();
     });
+    // options.AddPolicy("AllowAll", policy =>
+    // {
+    //     policy
+    //         .AllowAnyOrigin()   // Permite cualquier origen
+    //         .AllowAnyHeader()   // Permite cualquier header
+    //         .AllowAnyMethod();  // Permite cualquier método (GET, POST, etc.)
+    // });
 });
 
 builder.Services.AddRateLimiter(options =>
@@ -167,6 +174,7 @@ Console.WriteLine(connectionString);
 app.UseRouting();
 
 app.UseCors("AllowFrontend");
+// app.UseCors("AllowAll");
 
 app.UseAuthentication();
 app.UseAuthorization();
