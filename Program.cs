@@ -14,6 +14,8 @@ using DotNetEnv;
 Env.Load();
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
 
 QuestPDF.Settings.License = LicenseType.Community; // Set the license type
 
@@ -48,15 +50,19 @@ builder.Services.AddScoped<TokenService>();
 builder.Services.AddScoped<QRService>();
 builder.Services.AddScoped<EmailService>();
 
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-{
-       var conn = Environment.GetEnvironmentVariable("DATABASE_URL");
+// builder.Services.AddDbContext<ApplicationDbContext>(options =>
+// {
+//        var conn = Environment.GetEnvironmentVariable("DATABASE_URL");
 
-    options.UseNpgsql(conn, npgsql =>
-    {
-        npgsql.EnableRetryOnFailure();
-    });
-});
+//     options.UseNpgsql(conn, npgsql =>
+//     {
+//         npgsql.EnableRetryOnFailure();
+//     });
+// });
+
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
