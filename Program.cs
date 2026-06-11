@@ -123,7 +123,7 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddAuthorization();
 
-var corsOrigins = builder.Configuration.GetSection("Cors:Origins").Get<string[]>() ?? Array.Empty<string>();
+// var corsOrigins = builder.Configuration.GetSection("Cors:Origins").Get<string[]>() ?? Array.Empty<string>();
 
 builder.Services.AddCors(options =>
 {
@@ -131,18 +131,11 @@ builder.Services.AddCors(options =>
     {
         policy.WithOrigins(
             "http://localhost:5173",
-            "https://events-frontend-sage.vercel.app/"
+            "https://events-frontend-sage.vercel.app"
         )
         .AllowAnyHeader()
         .AllowAnyMethod();
     });
-    // options.AddPolicy("AllowAll", policy =>
-    // {
-    //     policy
-    //         .AllowAnyOrigin()   // Permite cualquier origen
-    //         .AllowAnyHeader()   // Permite cualquier header
-    //         .AllowAnyMethod();  // Permite cualquier método (GET, POST, etc.)
-    // });
 });
 
 builder.Services.AddRateLimiter(options =>
