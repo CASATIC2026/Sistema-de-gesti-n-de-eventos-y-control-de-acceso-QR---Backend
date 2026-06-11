@@ -135,10 +135,17 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.WithOrigins(
-            "http://localhost:5173",
-            "https://events-frontend-sage.vercel.app"
-        )
+        policy
+        //.WithOrigins(
+        //    "http://localhost:5173",
+        //    "https://events-frontend-sage.vercel.app"
+        //)
+                .SetIsOriginAllowed(origin =>
+                {
+                    var uri = new Uri(origin);
+                    return uri.Host == "localhost" ||
+                           origin == "https://events-frontend-sage.vercel.app";
+                })
         .AllowAnyHeader()
         .AllowAnyMethod();
     });
