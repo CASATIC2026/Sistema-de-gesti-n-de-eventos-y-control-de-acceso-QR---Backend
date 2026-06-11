@@ -3,8 +3,20 @@
   "WorkspaceRootPath": "C:\\Users\\Eliel\\Downloads\\SistemaGestion_actualizado_2\\SistemaGestion\\Sistema-de-gesti-n-de-eventos-y-control-de-acceso-QR---Backend\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{864818DA-9C11-334A-8C0A-8284DCD5944E}|EventAccessControl.API.csproj|c:\\users\\eliel\\downloads\\sistemagestion_actualizado_2\\sistemagestion\\sistema-de-gesti-n-de-eventos-y-control-de-acceso-qr---backend\\.dockerignore||{3B902123-F8A7-4915-9F01-361F908088D0}",
-      "RelativeMoniker": "D:0:0:{864818DA-9C11-334A-8C0A-8284DCD5944E}|EventAccessControl.API.csproj|solutionrelative:.dockerignore||{3B902123-F8A7-4915-9F01-361F908088D0}"
+      "AbsoluteMoniker": "D:0:0:{864818DA-9C11-334A-8C0A-8284DCD5944E}|EventAccessControl.API.csproj|c:\\users\\eliel\\downloads\\sistemagestion_actualizado_2\\sistemagestion\\sistema-de-gesti-n-de-eventos-y-control-de-acceso-qr---backend\\services\\emailservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{864818DA-9C11-334A-8C0A-8284DCD5944E}|EventAccessControl.API.csproj|solutionrelative:services\\emailservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{864818DA-9C11-334A-8C0A-8284DCD5944E}|EventAccessControl.API.csproj|c:\\users\\eliel\\downloads\\sistemagestion_actualizado_2\\sistemagestion\\sistema-de-gesti-n-de-eventos-y-control-de-acceso-qr---backend\\controllers\\ticketcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{864818DA-9C11-334A-8C0A-8284DCD5944E}|EventAccessControl.API.csproj|solutionrelative:controllers\\ticketcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{864818DA-9C11-334A-8C0A-8284DCD5944E}|EventAccessControl.API.csproj|c:\\users\\eliel\\downloads\\sistemagestion_actualizado_2\\sistemagestion\\sistema-de-gesti-n-de-eventos-y-control-de-acceso-qr---backend\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{864818DA-9C11-334A-8C0A-8284DCD5944E}|EventAccessControl.API.csproj|solutionrelative:controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{864818DA-9C11-334A-8C0A-8284DCD5944E}|EventAccessControl.API.csproj|c:\\users\\eliel\\downloads\\sistemagestion_actualizado_2\\sistemagestion\\sistema-de-gesti-n-de-eventos-y-control-de-acceso-qr---backend\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{864818DA-9C11-334A-8C0A-8284DCD5944E}|EventAccessControl.API.csproj|solutionrelative:appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{864818DA-9C11-334A-8C0A-8284DCD5944E}|EventAccessControl.API.csproj|c:\\users\\eliel\\downloads\\sistemagestion_actualizado_2\\sistemagestion\\sistema-de-gesti-n-de-eventos-y-control-de-acceso-qr---backend\\dockerfile||{8B382828-6202-11D1-8870-0000F87579D2}",
@@ -15,55 +27,39 @@
       "RelativeMoniker": "D:0:0:{864818DA-9C11-334A-8C0A-8284DCD5944E}|EventAccessControl.API.csproj|solutionrelative:controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{864818DA-9C11-334A-8C0A-8284DCD5944E}|EventAccessControl.API.csproj|c:\\users\\eliel\\downloads\\sistemagestion_actualizado_2\\sistemagestion\\sistema-de-gesti-n-de-eventos-y-control-de-acceso-qr---backend\\controllers\\ticketcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{864818DA-9C11-334A-8C0A-8284DCD5944E}|EventAccessControl.API.csproj|solutionrelative:controllers\\ticketcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{864818DA-9C11-334A-8C0A-8284DCD5944E}|EventAccessControl.API.csproj|c:\\users\\eliel\\downloads\\sistemagestion_actualizado_2\\sistemagestion\\sistema-de-gesti-n-de-eventos-y-control-de-acceso-qr---backend\\controllers\\eventcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{864818DA-9C11-334A-8C0A-8284DCD5944E}|EventAccessControl.API.csproj|solutionrelative:controllers\\eventcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{864818DA-9C11-334A-8C0A-8284DCD5944E}|EventAccessControl.API.csproj|c:\\users\\eliel\\downloads\\sistemagestion_actualizado_2\\sistemagestion\\sistema-de-gesti-n-de-eventos-y-control-de-acceso-qr---backend\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{864818DA-9C11-334A-8C0A-8284DCD5944E}|EventAccessControl.API.csproj|solutionrelative:controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{864818DA-9C11-334A-8C0A-8284DCD5944E}|EventAccessControl.API.csproj|c:\\users\\eliel\\downloads\\sistemagestion_actualizado_2\\sistemagestion\\sistema-de-gesti-n-de-eventos-y-control-de-acceso-qr---backend\\data\\applicationdbcontextfactory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{864818DA-9C11-334A-8C0A-8284DCD5944E}|EventAccessControl.API.csproj|solutionrelative:data\\applicationdbcontextfactory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{864818DA-9C11-334A-8C0A-8284DCD5944E}|EventAccessControl.API.csproj|c:\\users\\eliel\\downloads\\sistemagestion_actualizado_2\\sistemagestion\\sistema-de-gesti-n-de-eventos-y-control-de-acceso-qr---backend\\.env||{8B382828-6202-11D1-8870-0000F87579D2}",
-      "RelativeMoniker": "D:0:0:{864818DA-9C11-334A-8C0A-8284DCD5944E}|EventAccessControl.API.csproj|solutionrelative:.env||{8B382828-6202-11D1-8870-0000F87579D2}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{864818DA-9C11-334A-8C0A-8284DCD5944E}|EventAccessControl.API.csproj|c:\\users\\eliel\\downloads\\sistemagestion_actualizado_2\\sistemagestion\\sistema-de-gesti-n-de-eventos-y-control-de-acceso-qr---backend\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{864818DA-9C11-334A-8C0A-8284DCD5944E}|EventAccessControl.API.csproj|solutionrelative:appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     }
   ],
   "DocumentGroupContainers": [
     {
       "Orientation": 1,
-      "VerticalTabListWidth": 100,
+      "VerticalTabListWidth": 275,
       "DocumentGroups": [
         {
           "DockedHeight": 252,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 1,
           "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": ".dockerignore",
-              "DocumentMoniker": "C:\\Users\\Eliel\\Downloads\\SistemaGestion_actualizado_2\\SistemaGestion\\Sistema-de-gesti-n-de-eventos-y-control-de-acceso-QR---Backend\\.dockerignore",
-              "RelativeDocumentMoniker": ".dockerignore",
-              "ToolTip": "C:\\Users\\Eliel\\Downloads\\SistemaGestion_actualizado_2\\SistemaGestion\\Sistema-de-gesti-n-de-eventos-y-control-de-acceso-QR---Backend\\.dockerignore",
-              "RelativeToolTip": ".dockerignore",
-              "ViewState": "AgIAABUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2026-06-10T18:35:19.698Z",
+              "Title": "EmailService.cs",
+              "DocumentMoniker": "C:\\Users\\Eliel\\Downloads\\SistemaGestion_actualizado_2\\SistemaGestion\\Sistema-de-gesti-n-de-eventos-y-control-de-acceso-QR---Backend\\Services\\EmailService.cs",
+              "RelativeDocumentMoniker": "Services\\EmailService.cs",
+              "ToolTip": "C:\\Users\\Eliel\\Downloads\\SistemaGestion_actualizado_2\\SistemaGestion\\Sistema-de-gesti-n-de-eventos-y-control-de-acceso-QR---Backend\\Services\\EmailService.cs",
+              "RelativeToolTip": "Services\\EmailService.cs",
+              "ViewState": "AgIAAEsAAAAAAAAAAAAAAFsAAAAcAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-11T13:37:20.46Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 4,
               "Title": "Dockerfile",
               "DocumentMoniker": "C:\\Users\\Eliel\\Downloads\\SistemaGestion_actualizado_2\\SistemaGestion\\Sistema-de-gesti-n-de-eventos-y-control-de-acceso-QR---Backend\\Dockerfile",
               "RelativeDocumentMoniker": "Dockerfile",
@@ -71,12 +67,11 @@
               "RelativeToolTip": "Dockerfile",
               "ViewState": "AgIAAA8AAAAAAAAAAAAAAA0AAABOAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2026-06-10T18:27:26.612Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-06-10T18:27:26.612Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 5,
               "Title": "UserController.cs",
               "DocumentMoniker": "C:\\Users\\Eliel\\Downloads\\SistemaGestion_actualizado_2\\SistemaGestion\\Sistema-de-gesti-n-de-eventos-y-control-de-acceso-QR---Backend\\Controllers\\UserController.cs",
               "RelativeDocumentMoniker": "Controllers\\UserController.cs",
@@ -84,25 +79,24 @@
               "RelativeToolTip": "Controllers\\UserController.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-06-10T18:26:59.949Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-06-10T18:26:59.949Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 1,
               "Title": "TicketController.cs",
               "DocumentMoniker": "C:\\Users\\Eliel\\Downloads\\SistemaGestion_actualizado_2\\SistemaGestion\\Sistema-de-gesti-n-de-eventos-y-control-de-acceso-QR---Backend\\Controllers\\TicketController.cs",
               "RelativeDocumentMoniker": "Controllers\\TicketController.cs",
               "ToolTip": "C:\\Users\\Eliel\\Downloads\\SistemaGestion_actualizado_2\\SistemaGestion\\Sistema-de-gesti-n-de-eventos-y-control-de-acceso-QR---Backend\\Controllers\\TicketController.cs",
               "RelativeToolTip": "Controllers\\TicketController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAK0AAAAAAAAAAAAwwLIAAAArAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-06-10T18:26:59.756Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 6,
               "Title": "EventController.cs",
               "DocumentMoniker": "C:\\Users\\Eliel\\Downloads\\SistemaGestion_actualizado_2\\SistemaGestion\\Sistema-de-gesti-n-de-eventos-y-control-de-acceso-QR---Backend\\Controllers\\EventController.cs",
               "RelativeDocumentMoniker": "Controllers\\EventController.cs",
@@ -110,12 +104,11 @@
               "RelativeToolTip": "Controllers\\EventController.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-06-10T18:26:59.467Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-06-10T18:26:59.467Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 2,
               "Title": "AuthController.cs",
               "DocumentMoniker": "C:\\Users\\Eliel\\Downloads\\SistemaGestion_actualizado_2\\SistemaGestion\\Sistema-de-gesti-n-de-eventos-y-control-de-acceso-QR---Backend\\Controllers\\AuthController.cs",
               "RelativeDocumentMoniker": "Controllers\\AuthController.cs",
@@ -128,80 +121,16 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": ".env",
-              "DocumentMoniker": "C:\\Users\\Eliel\\Downloads\\SistemaGestion_actualizado_2\\SistemaGestion\\Sistema-de-gesti-n-de-eventos-y-control-de-acceso-QR---Backend\\.env",
-              "RelativeDocumentMoniker": ".env",
-              "ToolTip": "C:\\Users\\Eliel\\Downloads\\SistemaGestion_actualizado_2\\SistemaGestion\\Sistema-de-gesti-n-de-eventos-y-control-de-acceso-QR---Backend\\.env",
-              "RelativeToolTip": ".env",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAABoAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2026-06-10T18:21:33.204Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:128:0:{13b12e3e-c1b4-4539-9371-4fe9a0d523fc}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:1309131781:0:{81164725-9a96-4ece-a4cb-440d8fd285e5}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{0ad07096-bba9-4900-a651-0598d26f6d24}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{ca8cc5c7-0231-406a-95cd-aa5ed6ac0190}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "ApplicationDbContextFactory.cs",
-              "DocumentMoniker": "C:\\Users\\Eliel\\Downloads\\SistemaGestion_actualizado_2\\SistemaGestion\\Sistema-de-gesti-n-de-eventos-y-control-de-acceso-QR---Backend\\Data\\ApplicationDbContextFactory.cs",
-              "RelativeDocumentMoniker": "Data\\ApplicationDbContextFactory.cs",
-              "ToolTip": "C:\\Users\\Eliel\\Downloads\\SistemaGestion_actualizado_2\\SistemaGestion\\Sistema-de-gesti-n-de-eventos-y-control-de-acceso-QR---Backend\\Data\\ApplicationDbContextFactory.cs",
-              "RelativeToolTip": "Data\\ApplicationDbContextFactory.cs",
-              "ViewState": "AgIAAAcAAACgJEmSJDk3wAoAAAAiAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-06-10T18:22:22.461Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 3,
               "Title": "appsettings.json",
               "DocumentMoniker": "C:\\Users\\Eliel\\Downloads\\SistemaGestion_actualizado_2\\SistemaGestion\\Sistema-de-gesti-n-de-eventos-y-control-de-acceso-QR---Backend\\appsettings.json",
               "RelativeDocumentMoniker": "appsettings.json",
               "ToolTip": "C:\\Users\\Eliel\\Downloads\\SistemaGestion_actualizado_2\\SistemaGestion\\Sistema-de-gesti-n-de-eventos-y-control-de-acceso-QR---Backend\\appsettings.json",
               "RelativeToolTip": "appsettings.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAaAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAAiAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
               "WhenOpened": "2026-06-10T18:18:03.143Z",
               "EditorCaption": ""
-            }
-          ]
-        },
-        {
-          "DockedHeight": 29,
-          "SelectedChildIndex": -1,
-          "Children": [
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
             }
           ]
         }

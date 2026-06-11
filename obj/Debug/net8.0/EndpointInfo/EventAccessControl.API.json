@@ -1,0 +1,747 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "EventAccessControl.API",
+    "version": "1.0"
+  },
+  "paths": {
+    "/api/auth/register": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Registra un nuevo usuario en el sistema utilizando el correo electrónico y la contraseña proporcionados en \r\nel DTO.",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/auth/login": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Inicia sesión en el sistema utilizando el correo electrónico y la contraseña proporcionados en el DTO. \r\nValida las credenciales del usuario y genera un token JWT para \r\nel usuario.",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/auth/forgot-password": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ForgotPasswordDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ForgotPasswordDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ForgotPasswordDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/auth/reset-password": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResetPasswordDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResetPasswordDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResetPasswordDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Event": {
+      "post": {
+        "tags": [
+          "Event"
+        ],
+        "summary": "Crea un nuevo evento con los datos proporcionados en el DTO. La fecha del evento debe ser futura.",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateEventDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateEventDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateEventDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "201": {
+            "description": "Evento creado exitosamente."
+          },
+          "400": {
+            "description": "Datos inválidos o fecha del evento no es futura."
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Event"
+        ],
+        "summary": "Obtiene una lista de todos los eventos, ordenados por fecha. Incluye eventos activos e inactivos.",
+        "responses": {
+          "200": {
+            "description": "Lista de eventos obtenida exitosamente."
+          },
+          "500": {
+            "description": "Error interno del servidor."
+          }
+        }
+      }
+    },
+    "/api/Event/{id}": {
+      "get": {
+        "tags": [
+          "Event"
+        ],
+        "summary": "Obtiene los detalles de un evento específico por su ID, incluyendo la lista de tickets asociados.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Evento encontrado y detalles retornados exitosamente."
+          },
+          "404": {
+            "description": "Evento no encontrado."
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Event"
+        ],
+        "summary": "Actualiza los detalles de un evento existente. Permite modificar el nombre, descripción, fecha, capacidad máxima, ubicación y estado activo.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateEventDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateEventDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateEventDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "204": {
+            "description": "Evento actualizado exitosamente."
+          },
+          "400": {
+            "description": "Datos inválidos."
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Event"
+        ],
+        "summary": "Desactiva un evento estableciendo su propiedad IsActive a false. El evento no se elimina físicamente de la base de datos.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "204": {
+            "description": "Evento desactivado exitosamente."
+          },
+          "404": {
+            "description": "Evento no encontrado."
+          }
+        }
+      }
+    },
+    "/api/Event/{id}/stats": {
+      "get": {
+        "tags": [
+          "Event"
+        ],
+        "summary": "Obtiene estadísticas de un evento específico, incluyendo la cantidad de tickets registrados, \r\nla cantidad de tickets utilizados para ingreso, y la cantidad de tickets \r\nrestantes disponibles según la capacidad máxima del evento.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Ticket/register": {
+      "post": {
+        "tags": [
+          "Ticket"
+        ],
+        "summary": "Registra un nuevo ticket para un evento específico utilizando el correo electrónico del usuario. \r\nValida que el evento exista, esté activo, no haya ocurrido, y que no \r\nse exceda el aforo.",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterTicketDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterTicketDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterTicketDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Registro exitoso y código del ticket retornado."
+          },
+          "400": {
+            "description": "Datos inválidos, evento no activo, evento ya ocurrido, aforo completo o correo ya registrado."
+          },
+          "404": {
+            "description": "Evento no encontrado."
+          }
+        }
+      }
+    },
+    "/api/Ticket/my-tickets": {
+      "get": {
+        "tags": [
+          "Ticket"
+        ],
+        "summary": "Obtiene la lista de tickets registrados por el usuario autenticado.\r\nLee el correo desde los claims del token JWT y retorna la información \r\nde los tickets junto con los datos básicos del evento asociado.",
+        "responses": {
+          "200": {
+            "description": "Lista de tickets del usuario obtenida exitosamente."
+          },
+          "401": {
+            "description": "No se pudo identificar al usuario desde el token."
+          }
+        }
+      }
+    },
+    "/api/Ticket/event/{eventId}": {
+      "get": {
+        "tags": [
+          "Ticket"
+        ],
+        "summary": "Obtiene la lista de tickets registrados para un evento específico con paginación.",
+        "parameters": [
+          {
+            "name": "eventId",
+            "in": "path",
+            "description": "El identificador único del evento.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "El número de página a consultar (por defecto 1).",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "La cantidad de registros por página (por defecto 10, máximo 100).",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Ticket/validate-entry": {
+      "post": {
+        "tags": [
+          "Ticket"
+        ],
+        "summary": "Valida la entrada de un ticket utilizando el token JWT del código QR. Verifica que el token sea válido, que el ticket exista, y que no haya sido utilizado previamente.",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidateEntryDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidateEntryDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidateEntryDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/user/me": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/user/profile": {
+      "put": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Completa el perfil del usuario autenticado guardando fecha de nacimiento y género.\r\nSolo puede ejecutarse una vez (si el perfil ya está completo, retorna 400).",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompleteProfileDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompleteProfileDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompleteProfileDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CompleteProfileDto": {
+        "type": "object",
+        "properties": {
+          "birthDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "gender": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateEventDto": {
+        "required": [
+          "endDateTime",
+          "maxCapacity",
+          "name",
+          "startDateTime"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "maxLength": 200,
+            "minLength": 1,
+            "type": "string",
+            "description": "Nombre del evento, que es un campo obligatorio para identificar el evento."
+          },
+          "description": {
+            "type": "string",
+            "description": "Descripción opcional del evento, que puede incluir detalles adicionales sobre el evento.",
+            "nullable": true
+          },
+          "startDateTime": {
+            "type": "string",
+            "description": "Fecha del evento, que es un campo obligatorio para establecer cuándo se llevará a cabo el evento.",
+            "format": "date-time"
+          },
+          "endDateTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "maxCapacity": {
+            "maximum": 5000,
+            "minimum": 1,
+            "type": "integer",
+            "description": "Capacidad máxima de asistentes al evento, que es un campo obligatorio para establecer un límite en la \r\ncantidad de personas que pueden asistir al evento.",
+            "format": "int32"
+          },
+          "location": {
+            "maxLength": 300,
+            "type": "string",
+            "description": "Ubicación del evento, que es un campo opcional para proporcionar información sobre dónde se llevará a cabo el evento.",
+            "nullable": true
+          },
+          "imageUrl": {
+            "type": "string",
+            "description": "URL de la imagen del evento.",
+            "format": "uri",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "DTO utilizado para la creación de un nuevo evento. Este modelo se utiliza para recibir los datos necesarios para crear un evento en el sistema."
+      },
+      "ForgotPasswordDto": {
+        "required": [
+          "email"
+        ],
+        "type": "object",
+        "properties": {
+          "email": {
+            "minLength": 1,
+            "type": "string",
+            "format": "email"
+          }
+        },
+        "additionalProperties": false
+      },
+      "LoginDto": {
+        "required": [
+          "email",
+          "password"
+        ],
+        "type": "object",
+        "properties": {
+          "email": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Correo electrónico del usuario. Es un campo obligatorio y se utiliza para identificar al usuario y para autenticar al usuario en el sistema.",
+            "format": "email"
+          },
+          "password": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Contraseña del usuario. Es un campo obligatorio y se utiliza para autenticar al usuario en el sistema."
+          }
+        },
+        "additionalProperties": false,
+        "description": "DTO utilizado para iniciar sesión en el sistema. Este modelo se utiliza para recibir los datos necesarios para \r\niniciar sesión en el sistema, incluyendo el correo electrónico y la contraseña."
+      },
+      "RegisterDto": {
+        "required": [
+          "email",
+          "password"
+        ],
+        "type": "object",
+        "properties": {
+          "email": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Correo electrónico del usuario.",
+            "format": "email"
+          },
+          "password": {
+            "minLength": 6,
+            "type": "string",
+            "description": "Contraseña del usuario. Es un campo obligatorio y se utiliza para autenticar al usuario en el sistema."
+          }
+        },
+        "additionalProperties": false,
+        "description": "DTO utilizado para registrar un nuevo usuario en el sistema. Este modelo se utiliza para recibir los datos necesarios para crear un usuario en el sistema, \r\nincluyendo el correo electrónico y la contraseña."
+      },
+      "RegisterTicketDto": {
+        "required": [
+          "eventId"
+        ],
+        "type": "object",
+        "properties": {
+          "eventId": {
+            "type": "string",
+            "description": "Identificador del evento al que se asociará el ticket.",
+            "format": "uuid"
+          },
+          "userEmail": {
+            "type": "string",
+            "description": "Correo electrónico opcional proporcionado en el cuerpo de la petición.\r\nSi no se proporciona, se intentará obtener del token de autenticación.",
+            "format": "email",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "DTO utilizado para registrar un nuevo ticket para un evento específico. Este modelo se utiliza para recibir \r\nlos datos necesarios para crear un ticket en el sistema, incluyendo el identificador del evento al que se \r\nasociará el ticket y el correo electrónico del usuario que posee el ticket."
+      },
+      "ResetPasswordDto": {
+        "required": [
+          "newPassword",
+          "token"
+        ],
+        "type": "object",
+        "properties": {
+          "token": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "newPassword": {
+            "minLength": 6,
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateEventDto": {
+        "required": [
+          "endDateTime",
+          "maxCapacity",
+          "name",
+          "startDateTime"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "maxLength": 200,
+            "minLength": 1,
+            "type": "string",
+            "description": "Nombre del evento, que es un campo obligatorio para identificar el evento."
+          },
+          "description": {
+            "type": "string",
+            "description": "Descripción opcional del evento, que puede incluir detalles adicionales sobre el evento.",
+            "nullable": true
+          },
+          "startDateTime": {
+            "type": "string",
+            "description": "Fecha del evento, que es un campo obligatorio para establecer cuándo se llevará a cabo el evento.",
+            "format": "date-time"
+          },
+          "endDateTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "maxCapacity": {
+            "maximum": 5000,
+            "minimum": 1,
+            "type": "integer",
+            "description": "Capacidad máxima de asistentes al evento, que es un campo obligatorio para establecer un límite en la cantidad de personas que pueden asistir al evento.",
+            "format": "int32"
+          },
+          "location": {
+            "type": "string",
+            "description": "Ubicación del evento, que es un campo opcional para proporcionar información sobre dónde se llevará a cabo el evento.",
+            "nullable": true
+          },
+          "isActive": {
+            "type": "boolean",
+            "description": "Indica si el evento está activo o no, lo que es un campo obligatorio para establecer el estado del evento en el sistema."
+          },
+          "imageUrl": {
+            "type": "string",
+            "description": "URL de la imagen del evento.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "DTO utilizado para actualizar la información de un evento existente."
+      },
+      "ValidateEntryDto": {
+        "required": [
+          "token"
+        ],
+        "type": "object",
+        "properties": {
+          "token": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Token JWT del código QR que se va a validar."
+          }
+        },
+        "additionalProperties": false,
+        "description": "DTO para validar la entrada de un ticket utilizando el token JWT del código QR."
+      }
+    },
+    "securitySchemes": {
+      "Bearer": {
+        "type": "apiKey",
+        "description": "JWT Authorization header using the Bearer scheme. Enter 'Bearer {token}'",
+        "name": "Authorization",
+        "in": "header"
+      }
+    }
+  },
+  "security": [
+    {
+      "Bearer": [ ]
+    }
+  ]
+}

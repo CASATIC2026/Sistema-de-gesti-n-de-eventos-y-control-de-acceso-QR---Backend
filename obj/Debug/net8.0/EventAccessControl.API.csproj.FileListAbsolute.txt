@@ -148,3 +148,4 @@ C:\Users\Eliel\Downloads\SistemaGestion_actualizado_2\SistemaGestion\Sistema-de-
 C:\Users\Eliel\Downloads\SistemaGestion_actualizado_2\SistemaGestion\Sistema-de-gesti-n-de-eventos-y-control-de-acceso-QR---Backend\obj\Debug\net8.0\EventAccessControl.API.pdb
 C:\Users\Eliel\Downloads\SistemaGestion_actualizado_2\SistemaGestion\Sistema-de-gesti-n-de-eventos-y-control-de-acceso-QR---Backend\obj\Debug\net8.0\EventAccessControl.API.genruntimeconfig.cache
 C:\Users\Eliel\Downloads\SistemaGestion_actualizado_2\SistemaGestion\Sistema-de-gesti-n-de-eventos-y-control-de-acceso-QR---Backend\obj\Debug\net8.0\ref\EventAccessControl.API.dll
+C:\Users\Eliel\Downloads\SistemaGestion_actualizado_2\SistemaGestion\Sistema-de-gesti-n-de-eventos-y-control-de-acceso-QR---Backend\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt

@@ -190,13 +190,13 @@ namespace EventAccessControl.API.Controllers
                 ticket.EmailSentAt = DateTime.UtcNow;
             }
             catch (Exception ex)
-{
-    ticket.EmailStatus = "FALLIDO";
-    ticket.EmailRetryCount++;
+            {
+                ticket.EmailStatus = "FALLIDO";
+                ticket.EmailRetryCount++;
 
-    Console.WriteLine("===== EMAIL ERROR =====");
-    Console.WriteLine(ex.ToString());
-}
+                Console.WriteLine("===== EMAIL ERROR =====");
+                Console.WriteLine(ex.ToString());
+            }
 
             if (_context.ChangeTracker.HasChanges())
             {
